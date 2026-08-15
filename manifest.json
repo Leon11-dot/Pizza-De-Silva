@@ -1,0 +1,9 @@
+{
+  "name": "Pizza De Silva",
+  "short_name": "De Silva",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff9f3",
+  "theme_color": "#9e1c12",
+  "icons": []
+}

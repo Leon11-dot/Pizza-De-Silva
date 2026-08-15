@@ -1,0 +1,7 @@
+services:
+  - type: web
+    runtime: static
+    name: pizza-de-silva
+    buildCommand: echo "No build required"
+    staticPublishPath: .
+    autoDeploy: true

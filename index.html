@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#7f100b">
+<title>Pizza De Silva – Online bestellen</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar"><div class="nav">
+  <a class="brand" href="#"><div class="logo">🍕</div><div><b>PIZZA DE SILVA</b><small>Direkt bestellen • Lieferung & Abholung</small></div></a>
+  <nav class="navlinks"><a href="#bestseller">Bestseller</a><a href="#menu">Speisekarte</a><a href="#how">So geht’s</a><a href="#contact">Kontakt</a></nav>
+  <div class="navright"><button class="btn secondary" onclick="document.querySelector('.cart').scrollIntoView({behavior:'smooth'})">🛒 <span id="cartCount">0</span></button></div>
+</div></header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="pill">🔥 Frisch aus dem Ofen • Direkt von Pizza De Silva</span>
+    <h1>Mehr Geschmack.<br><em>Mehr De Silva.</em></h1>
+    <p>Pizza, Pasta, Burger, Baguettes, Salate, Finger Food und mehr. Bestelle direkt bei uns – deine Bestellung kommt ohne Umweg direkt in unsere Bestellzentrale.</p>
+    <div class="hero-actions">
+      <button class="btn gold" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">🍕 Jetzt bestellen</button>
+      <button class="btn secondary" onclick="document.getElementById('bestseller').scrollIntoView({behavior:'smooth'})">Bestseller ansehen</button>
+    </div>
+    <div class="hero-trust">
+      <span id="openBadge">Status wird geladen…</span>
+      <span>✓ Lieferung</span><span>✓ Abholung</span><span>✓ Barzahlung</span>
+    </div>
+  </div>
+  <div class="hero-side">
+    <img src="assets/hawai.png" onerror="this.src='assets/hawaii.png'" alt="">
+    <img src="assets/cheeseburger.png" alt="">
+    <img src="assets/frutti-mare.png" alt="">
+    <img src="assets/baguette-haehnchen.png" alt="">
+  </div>
+</section>
+
+<div class="ribbon"><div class="ribbon-inner">
+  <strong>🍕 Direkt bestellen. Persönlich bestätigt. Frisch zubereitet.</strong>
+  <span class="ribbon-dot">•</span><span>Keine Bestellplattform dazwischen</span>
+  <span class="ribbon-dot">•</span><span>Lieferzeit direkt von uns</span>
+</div></div>
+
+<section class="quick" id="how"><div class="quick-grid">
+  <div class="quick-card"><i>🛒</i><div><b>1. Lieblingsgericht wählen</b><span>Größe, Variante und Wünsche auswählen</span></div></div>
+  <div class="quick-card"><i>🔔</i><div><b>2. Bestellung landet bei uns</b><span>Unser Bestellalarm startet sofort</span></div></div>
+  <div class="quick-card"><i>⏱️</i><div><b>3. Wir nennen die Zeit</b><span>20, 30, 40, 50, 60 oder 90 Minuten</span></div></div>
+  <div class="quick-card"><i>🛵</i><div><b>4. Frisch geliefert</b><span id="deliveryAreaText">Liefergebiet wird geladen…</span></div></div>
+</div></section>
+
+<section class="featured-wrap" id="bestseller">
+  <div class="featured">
+    <div class="featured-head"><div><h2>Unsere Bestseller</h2><p>Ein paar Favoriten direkt aus unserer Karte.</p></div><button class="btn gold" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Zur ganzen Speisekarte</button></div>
+    <div class="featured-grid">
+      <article class="feature-card"><img src="assets/salami.png"><div><b>Pizza Salami</b><span>ab 6,50 €</span></div></article>
+      <article class="feature-card"><img src="assets/hollandaise.png" onerror="this.src='assets/haehnchen.png'"><div><b>Hähnchen Hollandaise</b><span>ab 10,00 €</span></div></article>
+      <article class="feature-card"><img src="assets/cheeseburger.png"><div><b>Cheeseburger mit Pommes</b><span>8,50 €</span></div></article>
+      <article class="feature-card"><img src="assets/bolognese.png"><div><b>Pasta Bolognese</b><span>9,50 €</span></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="menu">
+  <div class="section-head"><div><h2>Unsere Speisekarte</h2><p>Alle Gerichte aus deiner Karte 2026 – mit Bildern, Größen und Preisen.</p></div></div>
+  <div class="categories" id="categories"></div>
+  <div class="shop">
+    <main class="products" id="products"></main>
+    <aside class="cart">
+      <div class="cart-head"><h2>Dein Warenkorb</h2><span class="badge"><span id="cartCount2">0</span> Artikel</span></div>
+      <div id="cartRows" class="empty">Noch nichts ausgewählt. Such dir etwas Leckeres aus 🍕</div>
+      <div class="totals">
+        <div class="total-line"><span>Zwischensumme</span><span id="subtotal">0,00 €</span></div>
+        <div class="total-line"><span>Liefergebühr</span><span id="deliveryFee">0,00 €</span></div>
+        <div class="grand"><span>Gesamt</span><span id="total">0,00 €</span></div>
+      </div>
+      <button class="btn primary" style="width:100%" onclick="openCheckout()">Bestellung abschließen</button>
+      <p style="font-size:.75rem;color:#756760;text-align:center;margin-bottom:0">Die Bestellung wird erst nach unserer Bestätigung verbindlich angenommen.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta-inner">
+    <div><h3>Direkt bei Pizza De Silva bestellen</h3><p><span id="openingText">Öffnungszeiten werden geladen…</span></p></div>
+    <button class="btn gold" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Jetzt Essen auswählen</button>
+  </div>
+</section>
+
+<footer class="footer" id="contact"><div class="footer-inner">
+  <div><h3>Pizza De Silva</h3><p>Pizza, Pasta, Finger Food, Baguettes, Salate, Fleischgerichte und Getränke – direkt online bestellen.</p></div>
+  <div><h4>Bestellung</h4><p>Lieferung & Abholung<br>Lieferzeit nach Bestätigung<br><span id="openingTextFooter"></span></p></div>
+  <div><h4>Rechtliches</h4><p><a href="legal.html">Impressum & Datenschutz</a><br><a href="admin.html">Admin</a></p></div>
+</div></footer>
+
+<div class="modal-bg" id="productModal"><div class="modal">
+  <button class="btn secondary close" onclick="closeModal('productModal')">✕</button>
+  <h2 id="pName"></h2><p class="desc" id="pDesc"></p>
+  <div class="field"><label>Größe / Variante</label><select id="pVariant"></select></div>
+  <div class="field" id="extraField" style="display:none"><label>Extra</label><select id="pExtra"><option value="">Kein Extra</option></select></div>
+  <div class="field"><label>Wunsch / Hinweis</label><input id="pNote" placeholder="z. B. ohne Zwiebeln, extra scharf"></div>
+  <button class="btn primary" style="width:100%" onclick="addProduct()">In den Warenkorb</button>
+</div></div>
+
+<div class="modal-bg" id="checkoutModal"><div class="modal">
+  <button class="btn secondary close" onclick="closeModal('checkoutModal')">✕</button>
+  <h2>Bestellung abschließen</h2>
+  <div class="field"><label>Lieferart</label><select id="type"><option>Lieferung</option><option>Abholung</option></select></div>
+  <div class="field"><label>Name</label><input id="name"></div>
+  <div class="field"><label>Telefonnummer</label><input id="phone" inputmode="tel"></div>
+  <div class="field"><label>Adresse</label><input id="address" placeholder="Straße, Hausnummer, PLZ Ort"></div>
+  <div class="field"><label>Zahlung</label><select id="payment"><option>Barzahlung</option><option disabled>Online-Zahlung – wird verbunden</option></select></div>
+  <div class="field"><label>Bemerkung</label><textarea id="note" rows="3" placeholder="Klingel, Etage, Sonderwünsche ..."></textarea></div>
+  <label style="display:flex;gap:9px;align-items:flex-start;font-size:.85rem;margin:12px 0"><input type="checkbox" id="terms"><span>Ich bestätige, dass meine Angaben stimmen und die Bestellung erst nach Annahme durch Pizza De Silva verbindlich wird.</span></label>
+  <div class="notice">Nach dem Absenden siehst du deine Bestellnummer. Sobald wir annehmen, wird die ungefähre Liefer- oder Abholzeit angezeigt.</div>
+  <button class="btn primary" style="width:100%;margin-top:13px" onclick="placeOrder()">Bestellung senden</button>
+  <div id="checkoutResult" style="margin-top:12px"></div>
+</div></div>
+
+<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app.js"></script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js');</script>
+</body></html>

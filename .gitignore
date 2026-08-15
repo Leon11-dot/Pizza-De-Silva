@@ -1,0 +1,9 @@
+# Local / private files
+.env
+.env.*
+printer/private*
+*.local
+
+# OS files
+.DS_Store
+Thumbs.db

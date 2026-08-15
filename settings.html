@@ -1,0 +1,11 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pizza De Silva – Einstellungen</title><link rel="stylesheet" href="styles.css"></head>
+<body><header class="topbar"><div class="nav"><div class="brand"><div class="logo">⚙️</div><div><b>PIZZA DE SILVA</b><small>Shop-Einstellungen</small></div></div><div class="navright"><a class="btn secondary" href="admin.html">Bestellungen</a></div></div></header>
+<main class="status-page"><div class="status-card"><h1>Shop-Einstellungen</h1><p class="meta">Öffnen/Schließen, Lieferkosten und Mindestbestellwert.</p>
+<div class="field"><label>Online-Bestellungen</label><select id="storeOpen"><option value="true">Geöffnet</option><option value="false">Geschlossen</option></select></div>
+<div class="field"><label>Öffnungszeiten (Text)</label><input id="openingHours"></div>
+<div class="field"><label>Liefergebiet (Text)</label><input id="deliveryArea"></div>
+<div class="field"><label>Mindestbestellwert (€)</label><input id="minimum" type="number" min="0" step="0.50"></div>
+<div class="field"><label>Liefergebühr (€)</label><input id="fee" type="number" min="0" step="0.50"></div>
+<div class="field"><label>Automatische Stornierung nach Minuten</label><input id="cancelMinutes" type="number" min="1" max="30"></div>
+<button class="btn primary" style="width:100%" onclick="saveSettings()">Speichern</button><div id="result" style="margin-top:12px"></div>
+</div></main><script src="config.js"></script><script src="backend.js"></script><script src="settings.js"></script></body></html>
