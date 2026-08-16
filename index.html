@@ -46,8 +46,8 @@
 <section class="quick" id="how"><div class="quick-grid">
   <div class="quick-card"><i>🛒</i><div><b>1. Lieblingsgericht wählen</b><span>Größe, Variante und Wünsche auswählen</span></div></div>
   <div class="quick-card"><i>🔔</i><div><b>2. Bestellung landet bei uns</b><span>Unser Bestellalarm startet sofort</span></div></div>
-  <div class="quick-card"><i>⏱️</i><div><b>3. Wir nennen die Zeit</b><span>20, 30, 40, 50, 60 oder 90 Minuten</span></div></div>
-  <div class="quick-card"><i>🛵</i><div><b>4. Frisch geliefert</b><span id="deliveryAreaText">Liefergebiet wird geladen…</span></div></div>
+  <div class="quick-card"><i>🥡</i><div><b id="pickupStatusText">Abholung</b><span>Abholung ohne Mindestbestellwert</span></div></div>
+  <div class="quick-card"><i>🛵</i><div><b id="deliveryStatusText">Lieferung</b><span id="deliveryAreaText">Liefergebiet wird geladen…</span></div></div>
 </div></section>
 
 <section class="featured-wrap" id="bestseller">
@@ -91,7 +91,7 @@
 <footer class="footer" id="contact"><div class="footer-inner">
   <div><h3>Pizza De Silva</h3><p>Pizza, Pasta, Finger Food, Baguettes, Salate, Fleischgerichte und Getränke – direkt online bestellen.</p></div>
   <div><h4>Bestellung</h4><p>Lieferung & Abholung<br>Lieferzeit nach Bestätigung<br><span id="openingTextFooter"></span></p></div>
-  <div><h4>Rechtliches</h4><p><a href="legal.html">Impressum & Datenschutz</a><br><a href="admin.html">Admin</a></p></div>
+  <div><h4>Rechtliches</h4><p><a href="legal.html">Impressum & Datenschutz</a></p></div>
 </div></footer>
 
 <div class="modal-bg" id="productModal"><div class="modal">
@@ -106,7 +106,7 @@
 <div class="modal-bg" id="checkoutModal"><div class="modal">
   <button class="btn secondary close" onclick="closeModal('checkoutModal')">✕</button>
   <h2>Bestellung abschließen</h2>
-  <div class="field"><label>Lieferart</label><select id="type"><option>Lieferung</option><option>Abholung</option></select></div>
+  <div class="field"><label>Lieferart</label><select id="type"><option value="Lieferung">Lieferung</option><option value="Abholung">Abholung</option></select></div><div id="deliveryMinimumInfo" class="notice" style="display:none"></div>
   <div class="field"><label>Name</label><input id="name"></div>
   <div class="field"><label>Telefonnummer</label><input id="phone" inputmode="tel"></div>
   <div class="field"><label>Adresse</label><input id="address" placeholder="Straße, Hausnummer, PLZ Ort"></div>
