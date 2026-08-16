@@ -1,5 +1,5 @@
 
-const CACHE='pds-v10-delivery-zones';
+const CACHE='pds-v11-auto-distance-customer';
 const STATIC=['./','./index.html'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([

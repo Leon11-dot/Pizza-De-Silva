@@ -106,17 +106,23 @@
 <div class="modal-bg" id="checkoutModal"><div class="modal">
   <button class="btn secondary close" onclick="closeModal('checkoutModal')">✕</button>
   <h2>Bestellung abschließen</h2>
+  <div class="account-box">
+    <div class="account-head"><div><b>Kundenkonto (optional)</b><small>Als Gast bestellen oder Daten speichern.</small></div><span id="customerAccountStatus">Nicht angemeldet</span></div>
+    <div id="customerAccountGuest">
+      <div class="account-grid"><input type="email" id="customerEmail" placeholder="E-Mail"><input type="password" id="customerPassword" placeholder="Passwort"></div>
+      <div class="account-actions"><button class="btn secondary" type="button" onclick="customerLogin()">Anmelden</button><button class="btn secondary" type="button" onclick="customerRegister()">Konto erstellen</button></div>
+    </div>
+    <div id="customerAccountLogged" style="display:none"><div class="success">Deine gespeicherten Daten werden übernommen.</div><button class="linkbtn" type="button" onclick="customerLogout()">Abmelden</button></div>
+    <div id="customerAccountMessage"></div>
+  </div>
   <div class="field"><label>Lieferart</label><select id="type"><option value="Lieferung">Lieferung</option><option value="Abholung">Abholung</option></select></div><div id="deliveryMinimumInfo" class="notice" style="display:none"></div>
   <div class="field"><label>Name</label><input id="name"></div>
   <div class="field"><label>Telefonnummer</label><input id="phone" inputmode="tel"></div>
   <div class="field"><label>Adresse</label><input id="address" placeholder="Straße, Hausnummer, PLZ Ort"></div>
 <div class="field" id="distanceField">
-<label>Lieferzone</label>
-<select id="deliveryZone">
-<option value="5">bis 5 km</option>
-<option value="10">über 5 km bis 10 km</option>
-</select>
-<small>Maximaler Lieferradius: 10 km ab Niederstrasse 76, 47829 Krefeld-Uerdingen.</small>
+  <label>Lieferadresse prüfen</label>
+  <button class="btn secondary" type="button" onclick="checkDeliveryAddress()">Entfernung & Lieferkosten prüfen</button>
+  <small>Maximal 10 km ab Niederstrasse 76, 47829 Krefeld-Uerdingen.</small>
 </div>
 <div id="zonePriceInfo" class="notice" style="display:none"></div>
   <div class="field"><label>Zahlung</label><select id="payment"><option>Barzahlung</option><option disabled>Online-Zahlung – wird verbunden</option></select></div>

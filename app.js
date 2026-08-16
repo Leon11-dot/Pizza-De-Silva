@@ -1,18 +1,64 @@
 
-function getSelectedDeliveryZone(){
-  const v=Number(document.getElementById('deliveryZone')?.value||5);
-  if(v<=5) return {label:'bis 5 km',fee:Number(settings?.deliveryFee5km||0),minimum:Number(settings?.deliveryMinimum5km||0)};
-  return {label:'5–10 km',fee:Number(settings?.deliveryFee10km||0),minimum:Number(settings?.deliveryMinimum10km||0)};
+const PDS_RESTAURANT={lat:51.357857,lon:6.648934};
+let verifiedDeliveryZone=null;
+
+function haversineKm(a,b,c,d){
+  const R=6371,toRad=x=>x*Math.PI/180;
+  const x=toRad(c-a),y=toRad(d-b);
+  const q=Math.sin(x/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(y/2)**2;
+  return R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));
 }
-function updateDeliveryZoneInfo(){
-  const info=document.getElementById('zonePriceInfo');
-  if(!info||!settings) return;
-  if(document.getElementById('type')?.value!=='Lieferung'){info.style.display='none';return;}
-  const z=getSelectedDeliveryZone();
-  info.style.display='block';
-  info.innerHTML=`<b>${z.label}</b><br>Liefergebühr: ${money(z.fee)} • Mindestbestellwert: ${money(z.minimum)}`;
-  renderCart();
+async function geocodeAddress(address){
+  const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=de&q=${encodeURIComponent(address)}`);
+  if(!r.ok) throw new Error("Adresse nicht gefunden");
+  const x=await r.json();
+  if(!x.length) throw new Error("Adresse nicht gefunden");
+  return {lat:Number(x[0].lat),lon:Number(x[0].lon)};
 }
+function zoneForDistance(km){
+  if(km<=5) return {label:"bis 5 km",fee:Number(settings?.deliveryFee5km||0),minimum:Number(settings?.deliveryMinimum5km||0),distanceKm:km};
+  if(km<=10) return {label:"5–10 km",fee:Number(settings?.deliveryFee10km||0),minimum:Number(settings?.deliveryMinimum10km||0),distanceKm:km};
+  return null;
+}
+async function checkDeliveryAddress(){
+  const addr=document.getElementById("address")?.value.trim();
+  const info=document.getElementById("zonePriceInfo");
+  if(!addr) return alert("Bitte zuerst die Lieferadresse eingeben.");
+  info.style.display="block"; info.className="notice"; info.textContent="Adresse wird geprüft…";
+  try{
+    const g=await geocodeAddress(addr);
+    const km=haversineKm(PDS_RESTAURANT.lat,PDS_RESTAURANT.lon,g.lat,g.lon);
+    const z=zoneForDistance(km);
+    if(!z){verifiedDeliveryZone=null;info.innerHTML=`Entfernung ca. <b>${km.toFixed(1)} km</b>. Lieferung ist nur bis 10 km möglich.`;renderCart();return;}
+    verifiedDeliveryZone=z; info.className="success";
+    info.innerHTML=`Entfernung ca. <b>${km.toFixed(1)} km</b> • ${z.label}<br>Liefergebühr: <b>${money(z.fee)}</b> • Mindestbestellwert: <b>${money(z.minimum)}</b>`;
+    renderCart();
+  }catch(e){verifiedDeliveryZone=null;info.className="notice";info.textContent="Adresse nicht gefunden. Bitte Straße, Hausnummer, PLZ und Ort vollständig eingeben.";renderCart();}
+}
+async function syncCustomerUi(){
+  const guest=document.getElementById("customerAccountGuest"),logged=document.getElementById("customerAccountLogged"),status=document.getElementById("customerAccountStatus");
+  if(!guest||!logged||!status) return;
+  if(PDS_BACKEND.isCustomerSignedIn()){
+    guest.style.display="none";logged.style.display="block";status.textContent="Angemeldet";
+    try{const p=await PDS_BACKEND.getCustomerProfile();if(p){if(p.name)name.value=p.name;if(p.phone)phone.value=p.phone;if(p.address)address.value=p.address;}}catch(e){}
+  }else{guest.style.display="block";logged.style.display="none";status.textContent="Nicht angemeldet";}
+}
+async function customerLogin(){
+  const msg=document.getElementById("customerAccountMessage");
+  try{await PDS_BACKEND.customerSignIn(customerEmail.value.trim(),customerPassword.value);msg.innerHTML='<div class="success">Anmeldung erfolgreich.</div>';await syncCustomerUi();}
+  catch(e){msg.innerHTML='<div class="notice">Anmeldung fehlgeschlagen.</div>';}
+}
+async function customerRegister(){
+  const msg=document.getElementById("customerAccountMessage"),email=customerEmail.value.trim(),pw=customerPassword.value;
+  if(!email||pw.length<6){msg.innerHTML='<div class="notice">Bitte E-Mail und mindestens 6 Zeichen Passwort eingeben.</div>';return;}
+  try{const d=await PDS_BACKEND.customerSignUp(email,pw);msg.innerHTML=d.access_token?'<div class="success">Konto erstellt.</div>':'<div class="success">Konto erstellt. Bitte E-Mail bestätigen und danach anmelden.</div>';await syncCustomerUi();}
+  catch(e){msg.innerHTML='<div class="notice">Registrierung nicht möglich.</div>';}
+}
+function customerLogout(){PDS_BACKEND.customerSignOut();syncCustomerUi();}
+
+
+function getSelectedDeliveryZone(){ return verifiedDeliveryZone||{label:"nicht geprüft",fee:0,minimum:0,distanceKm:null}; }
+function updateDeliveryZoneInfo(){ renderCart(); }
 
 
 const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
@@ -230,7 +276,7 @@ function renderCart(){
   }
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const fee=(document.getElementById('type')?.value==='Lieferung'?getSelectedDeliveryZone().fee:0);
+  const fee=(document.getElementById('type')?.value==='Lieferung'&&verifiedDeliveryZone?verifiedDeliveryZone.fee:0);
   document.getElementById('subtotal').textContent=money(subtotal);
   document.getElementById('deliveryFee').textContent=money(fee);
   document.getElementById('total').textContent=money(subtotal+fee);
@@ -260,80 +306,62 @@ function updateCheckoutAvailability(){
 }
 
 function updateCheckoutTypeUI(){
-  const type=document.getElementById('type');
-  if(!type) return;
+  const type=document.getElementById('type'); if(!type) return;
   const isDelivery=type.value==='Lieferung';
   const address=document.getElementById('address');
   if(address) address.closest('.field').style.display=isDelivery?'grid':'none';
-
-  const minimumInfo=document.getElementById('deliveryMinimumInfo');
-  if(minimumInfo){
-    const min=getSelectedDeliveryZone().minimum;
-    minimumInfo.style.display=isDelivery && min>0 ? 'block' : 'none';
-    minimumInfo.textContent=isDelivery && min>0 ? `Mindestbestellwert für Lieferung: ${money(min)}` : '';
-  }
+  const df=document.getElementById('distanceField'); if(df) df.style.display=isDelivery?'grid':'none';
+  const zi=document.getElementById('zonePriceInfo'); if(zi&&!isDelivery) zi.style.display='none';
+  const minimumInfo=document.getElementById('deliveryMinimumInfo'); if(minimumInfo) minimumInfo.style.display='none';
   renderCart();
 }
 
 function openCheckout(){
   if(!cart.length) return alert('Bitte zuerst etwas auswählen.');
   if(!settings) return alert('Shop-Einstellungen werden noch geladen.');
-
-  const deliveryOpen=!!settings.deliveryOpen;
-  const pickupOpen=!!settings.pickupOpen;
-  if(!deliveryOpen && !pickupOpen) return alert('Pizza De Silva ist im Moment geschlossen.');
-
-  const type=document.getElementById('type')?.value || (deliveryOpen?'Lieferung':'Abholung');
-  const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
-
-  if(type==='Lieferung'){
-    if(!deliveryOpen) return alert('Lieferung ist im Moment geschlossen.');
-    const min=Number(settings.deliveryMinimum||0);
-    if(min>0 && subtotal<min) return alert(`Mindestbestellwert für Lieferung: ${money(min)}.`);
-  }else{
-    if(!pickupOpen) return alert('Abholung ist im Moment geschlossen.');
-  }
-
+  if(!settings.deliveryOpen&&!settings.pickupOpen) return alert('Pizza De Silva ist im Moment geschlossen.');
   document.getElementById('checkoutResult').innerHTML='';
   updateCheckoutAvailability();
   showModal('checkoutModal');
+  syncCustomerUi();
+  const a=document.getElementById('address');
+  if(a&&!a.dataset.zoneReset){a.addEventListener('input',()=>{verifiedDeliveryZone=null;const z=document.getElementById('zonePriceInfo');if(z)z.style.display='none';renderCart();});a.dataset.zoneReset='1';}
 }
 
 async function placeOrder(){
-  const type=document.getElementById('type').value,name=document.getElementById('name').value.trim(),
-        phone=document.getElementById('phone').value.trim(),address=document.getElementById('address').value.trim(),
-        terms=document.getElementById('terms').checked;
-  if(!name||!phone||(type==='Lieferung'&&!address)||!terms)
-    return alert('Bitte Name, Telefon, bei Lieferung die Adresse angeben und die Bestätigung anhaken.');
+  const type=document.getElementById('type').value;
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const address=document.getElementById('address').value.trim();
+  const terms=document.getElementById('terms').checked;
+
+  if(!name||!phone||!terms) return alert('Bitte Name, Telefonnummer und Bestätigung ausfüllen.');
   if(type==='Lieferung'){
     if(!settings?.deliveryOpen) return alert('Lieferung ist im Moment geschlossen.');
-    const min=getSelectedDeliveryZone().minimum;
+    if(!address) return alert('Bitte Lieferadresse eingeben.');
+    if(!verifiedDeliveryZone) return alert('Bitte zuerst die Lieferadresse prüfen.');
     const subtotalCheck=cart.reduce((s,x)=>s+x.price*x.qty,0);
-    if(min>0 && subtotalCheck<min) return alert(`Mindestbestellwert für Lieferung: ${money(min)}.`);
+    if(subtotalCheck<verifiedDeliveryZone.minimum) return alert(`Mindestbestellwert für ${verifiedDeliveryZone.label}: ${money(verifiedDeliveryZone.minimum)}.`);
   }else{
     if(!settings?.pickupOpen) return alert('Abholung ist im Moment geschlossen.');
   }
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const fee=(type==='Lieferung'?getSelectedDeliveryZone().fee:0),total=subtotal+fee;
-  const tempNumber=Date.now()%100000;
+  const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0), total=subtotal+fee;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
-  const order={id,number:tempNumber,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,
-    expiresAt:Date.now()+Number(settings?.autoCancelMinutes||PDS_CONFIG.autoCancelMinutes||5)*60000,total,items:cart,
-    customer:{type,name,phone,address,payment:document.getElementById('payment').value,note:document.getElementById('note').value.trim()}};
-
+  const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,
+    expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
+    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:document.getElementById('payment').value,note:document.getElementById('note').value.trim()}};
   try{
     const created=await PDS_BACKEND.createOrder(order);
-    if(created?.number)order.number=created.number;
-    localStorage.setItem('pds_last_order',id);
-    localStorage.setItem(`pds_order_token_${id}`,statusToken);
+    if(created?.number) order.number=created.number;
+    if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address:type==='Lieferung'?address:''});}catch(e){}
+    localStorage.setItem('pds_last_order',id);localStorage.setItem(`pds_order_token_${id}`,statusToken);
     cart=[];saveCart();
     document.getElementById('checkoutResult').innerHTML='<div class="success"><b>Bestellung wurde gesendet.</b><br>Du wirst zur Statusseite weitergeleitet.</div>';
     setTimeout(()=>location.href=`status.html?id=${encodeURIComponent(id)}`,1100);
-  }catch(e){
-    console.error(e);alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');
-  }
+  }catch(e){console.error(e);alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');}
 }
 
-document.getElementById('type')?.addEventListener('change',()=>{updateCheckoutTypeUI();updateDeliveryZoneInfo()}); document.getElementById('deliveryZone')?.addEventListener('change',updateDeliveryZoneInfo); renderCats();renderProducts();renderCart();loadSettings();
+document.getElementById('type')?.addEventListener('change',()=>{updateCheckoutTypeUI();updateDeliveryZoneInfo()}); renderCats();renderProducts();renderCart();loadSettings();

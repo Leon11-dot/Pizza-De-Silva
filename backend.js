@@ -141,9 +141,99 @@ window.PDS_BACKEND = (() => {
     sessionStorage.removeItem("pds_admin_email");
   }
 
+
+  function customerToken(){ return localStorage.getItem("pds_customer_access_token") || ""; }
+  function customerRefresh(){ return localStorage.getItem("pds_customer_refresh_token") || ""; }
+  function decodeJwt(token){
+    try{
+      const p=token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+      return JSON.parse(atob(p));
+    }catch(e){ return null; }
+  }
+  async function customerRest(path, options={}, retry=true){
+    const res=await fetch(`${cfg.supabaseUrl}/rest/v1/${path}`,{
+      ...options,
+      headers:{
+        ...baseHeaders(),
+        ...(customerToken()?{"Authorization":`Bearer ${customerToken()}`}:{ }),
+        ...(options.headers||{})
+      }
+    });
+    if(res.status===401 && retry && customerRefresh()){
+      const rr=await fetch(`${cfg.supabaseUrl}/auth/v1/token?grant_type=refresh_token`,{
+        method:"POST",headers:baseHeaders(),
+        body:JSON.stringify({refresh_token:customerRefresh()})
+      });
+      if(rr.ok){
+        const d=await rr.json();
+        localStorage.setItem("pds_customer_access_token",d.access_token||"");
+        localStorage.setItem("pds_customer_refresh_token",d.refresh_token||customerRefresh());
+        return customerRest(path,options,false);
+      }
+    }
+    if(!res.ok) throw new Error(await res.text()||`HTTP ${res.status}`);
+    const ct=res.headers.get("content-type")||"";
+    return ct.includes("application/json")?res.json():null;
+  }
+  async function customerSignIn(email,password){
+    const res=await fetch(`${cfg.supabaseUrl}/auth/v1/token?grant_type=password`,{
+      method:"POST",headers:baseHeaders(),body:JSON.stringify({email,password})
+    });
+    if(!res.ok) throw new Error("Anmeldung fehlgeschlagen");
+    const d=await res.json();
+    localStorage.setItem("pds_customer_access_token",d.access_token||"");
+    localStorage.setItem("pds_customer_refresh_token",d.refresh_token||"");
+    localStorage.setItem("pds_customer_email",email);
+    return d;
+  }
+  async function customerSignUp(email,password){
+    const res=await fetch(`${cfg.supabaseUrl}/auth/v1/signup`,{
+      method:"POST",headers:baseHeaders(),body:JSON.stringify({email,password})
+    });
+    if(!res.ok) throw new Error("Registrierung fehlgeschlagen");
+    const d=await res.json();
+    if(d.access_token){
+      localStorage.setItem("pds_customer_access_token",d.access_token||"");
+      localStorage.setItem("pds_customer_refresh_token",d.refresh_token||"");
+      localStorage.setItem("pds_customer_email",email);
+    }
+    return d;
+  }
+  async function getCustomerProfile(){
+    if(!customerToken()) return null;
+    const uid=decodeJwt(customerToken())?.sub;
+    if(!uid) return null;
+    const rows=await customerRest(`customer_profiles?user_id=eq.${encodeURIComponent(uid)}&select=*`);
+    return rows?.[0]||null;
+  }
+  async function saveCustomerProfile(profile){
+    const uid=decodeJwt(customerToken())?.sub;
+    if(!uid) return null;
+    const body={
+      user_id:uid,
+      email:profile.email||localStorage.getItem("pds_customer_email")||"",
+      name:profile.name||"",
+      phone:profile.phone||"",
+      address:profile.address||""
+    };
+    const rows=await customerRest("customer_profiles",{
+      method:"POST",
+      headers:{"Prefer":"resolution=merge-duplicates,return=representation"},
+      body:JSON.stringify(body)
+    });
+    return rows?.[0]||body;
+  }
+  function customerSignOut(){
+    localStorage.removeItem("pds_customer_access_token");
+    localStorage.removeItem("pds_customer_refresh_token");
+    localStorage.removeItem("pds_customer_email");
+  }
+
   return {
-    live,
+    live:
     modeLabel: live ? "Online verbunden" : "Vorschau / lokal",
+    customerSignIn, customerSignUp, customerSignOut, getCustomerProfile, saveCustomerProfile,
+    isCustomerSignedIn(){ return !!customerToken(); },
     signIn,
     signOut,
     verifyAdmin,
