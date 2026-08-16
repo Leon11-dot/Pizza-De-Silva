@@ -69,7 +69,13 @@ window.PDS_BACKEND = (() => {
       deliveryAreaText: x.delivery_area_text ?? x.deliveryAreaText ?? "Liefergebiet bitte eintragen",
       deliveryMinimum: Number(x.delivery_minimum ?? x.deliveryMinimum ?? 0),
       deliveryFee: Number(x.delivery_fee ?? x.deliveryFee ?? 0),
-      autoCancelMinutes: Number(x.auto_cancel_minutes ?? x.autoCancelMinutes ?? 5)
+      autoCancelMinutes: Number(x.auto_cancel_minutes ?? x.autoCancelMinutes ?? 5),
+      restaurantAddress: x.restaurant_address ?? "Niederstrasse 76, 47829 Krefeld-Uerdingen",
+      deliveryRadiusKm: Number(x.delivery_radius_km ?? 10),
+      deliveryFee5km: Number(x.delivery_fee_5km ?? 0),
+      deliveryMinimum5km: Number(x.delivery_minimum_5km ?? 0),
+      deliveryFee10km: Number(x.delivery_fee_10km ?? 0),
+      deliveryMinimum10km: Number(x.delivery_minimum_10km ?? 0)
     };
   }
 
@@ -167,7 +173,13 @@ window.PDS_BACKEND = (() => {
         delivery_area_text: settings.deliveryAreaText,
         delivery_minimum: settings.deliveryMinimum,
         delivery_fee: settings.deliveryFee,
-        auto_cancel_minutes: settings.autoCancelMinutes
+        auto_cancel_minutes: settings.autoCancelMinutes,
+        restaurant_address: settings.restaurantAddress,
+        delivery_radius_km: settings.deliveryRadiusKm,
+        delivery_fee_5km: settings.deliveryFee5km,
+        delivery_minimum_5km: settings.deliveryMinimum5km,
+        delivery_fee_10km: settings.deliveryFee10km,
+        delivery_minimum_10km: settings.deliveryMinimum10km
       };
       await request("store_settings?id=eq.1", {
         method:"PATCH",

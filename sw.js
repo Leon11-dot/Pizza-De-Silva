@@ -1,5 +1,5 @@
 
-const CACHE='pds-v8-admin-auth';
+const CACHE='pds-v10-delivery-zones';
 const STATIC=['./','./index.html'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([

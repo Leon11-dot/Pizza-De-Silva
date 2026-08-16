@@ -5,6 +5,14 @@
 <div class="field"><label>Abholung</label><select id="pickupOpen"><option value="true">Geöffnet</option><option value="false">Geschlossen</option></select></div>
 <div class="field"><label>Öffnungszeiten (Text)</label><input id="openingHours"></div>
 <div class="field"><label>Liefergebiet (Text)</label><input id="deliveryArea"></div>
+<div class="field"><label>Restaurant-Adresse</label><input id="restaurantAddress"></div>
+<div class="notice"><b>Lieferzone bis 5 km</b></div>
+<div class="field"><label>Liefergebühr bis 5 km (€)</label><input id="deliveryFee5km" type="number" min="0" step="0.50"></div>
+<div class="field"><label>Mindestbestellwert bis 5 km (€)</label><input id="deliveryMinimum5km" type="number" min="0" step="0.50"></div>
+<div class="notice"><b>Lieferzone über 5 km bis 10 km</b></div>
+<div class="field"><label>Liefergebühr 5–10 km (€)</label><input id="deliveryFee10km" type="number" min="0" step="0.50"></div>
+<div class="field"><label>Mindestbestellwert 5–10 km (€)</label><input id="deliveryMinimum10km" type="number" min="0" step="0.50"></div>
+
 <div class="field"><label>Mindestbestellwert (€)</label><input id="minimum" type="number" min="0" step="0.50"></div>
 <div class="field"><label>Liefergebühr (€)</label><input id="fee" type="number" min="0" step="0.50"></div>
 <div class="field"><label>Automatische Stornierung nach Minuten</label><input id="cancelMinutes" type="number" min="1" max="30"></div>

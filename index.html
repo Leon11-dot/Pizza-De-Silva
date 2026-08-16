@@ -110,6 +110,15 @@
   <div class="field"><label>Name</label><input id="name"></div>
   <div class="field"><label>Telefonnummer</label><input id="phone" inputmode="tel"></div>
   <div class="field"><label>Adresse</label><input id="address" placeholder="Straße, Hausnummer, PLZ Ort"></div>
+<div class="field" id="distanceField">
+<label>Lieferzone</label>
+<select id="deliveryZone">
+<option value="5">bis 5 km</option>
+<option value="10">über 5 km bis 10 km</option>
+</select>
+<small>Maximaler Lieferradius: 10 km ab Niederstrasse 76, 47829 Krefeld-Uerdingen.</small>
+</div>
+<div id="zonePriceInfo" class="notice" style="display:none"></div>
   <div class="field"><label>Zahlung</label><select id="payment"><option>Barzahlung</option><option disabled>Online-Zahlung – wird verbunden</option></select></div>
   <div class="field"><label>Bemerkung</label><textarea id="note" rows="3" placeholder="Klingel, Etage, Sonderwünsche ..."></textarea></div>
   <label style="display:flex;gap:9px;align-items:flex-start;font-size:.85rem;margin:12px 0"><input type="checkbox" id="terms"><span>Ich bestätige, dass meine Angaben stimmen und die Bestellung erst nach Annahme durch Pizza De Silva verbindlich wird.</span></label>
