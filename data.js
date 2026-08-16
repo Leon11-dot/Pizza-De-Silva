@@ -1,4 +1,4 @@
-window.PDS_PRODUCTS=[
+window.PDS_PRODUCTS = [
   {
     "id": 1,
     "category": "Pizza",
@@ -6,10 +6,36 @@ window.PDS_PRODUCTS=[
     "description": "Tomatensauce & Käse",
     "image": "margherita.png",
     "variants": {
-      "Klein": 6.5,
-      "Groß": 8.0,
-      "Family": 22.0
-    }
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 8.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 2,
@@ -18,10 +44,36 @@ window.PDS_PRODUCTS=[
     "description": "Zwiebeln",
     "image": "margherita.png",
     "variants": {
-      "Klein": 6.5,
-      "Groß": 9.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 3,
@@ -30,10 +82,36 @@ window.PDS_PRODUCTS=[
     "description": "frische Champignons",
     "image": "funghi.png",
     "variants": {
-      "Klein": 6.5,
-      "Groß": 9.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 4,
@@ -42,10 +120,36 @@ window.PDS_PRODUCTS=[
     "description": "Salami",
     "image": "salami.png",
     "variants": {
-      "Klein": 6.5,
-      "Groß": 9.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 5,
@@ -54,10 +158,36 @@ window.PDS_PRODUCTS=[
     "description": "Schinken",
     "image": "prosciutto.png",
     "variants": {
-      "Klein": 6.5,
-      "Groß": 9.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 6,
@@ -66,10 +196,36 @@ window.PDS_PRODUCTS=[
     "description": "Spinat & Knoblauch",
     "image": "spinaci.png",
     "variants": {
-      "Klein": 7.5,
-      "Groß": 10.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 7,
@@ -78,10 +234,36 @@ window.PDS_PRODUCTS=[
     "description": "Thunfisch",
     "image": "tonno.png",
     "variants": {
-      "Klein": 7.0,
-      "Groß": 10.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.0,
+      "Groß · 30 cm": 10.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 8,
@@ -90,10 +272,36 @@ window.PDS_PRODUCTS=[
     "description": "Scharfe Salami, Peperoni & Oliven",
     "image": "diavolo.png",
     "variants": {
-      "Klein": 7.0,
-      "Groß": 10.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.0,
+      "Groß · 30 cm": 10.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 9,
@@ -102,10 +310,36 @@ window.PDS_PRODUCTS=[
     "description": "Schinken & Ananas",
     "image": "hawaii.png",
     "variants": {
-      "Klein": 7.0,
-      "Groß": 10.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.0,
+      "Groß · 30 cm": 10.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 10,
@@ -114,10 +348,36 @@ window.PDS_PRODUCTS=[
     "description": "Peperoni & Zwiebeln",
     "image": "mafiosi.png",
     "variants": {
-      "Klein": 7.0,
-      "Groß": 9.5,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.0,
+      "Groß · 30 cm": 9.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 11,
@@ -126,10 +386,36 @@ window.PDS_PRODUCTS=[
     "description": "Fleischsauce & Zwiebeln",
     "image": "bolognese-pizza.png",
     "variants": {
-      "Klein": 8.0,
-      "Groß": 10.5,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 8.0,
+      "Groß · 30 cm": 10.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 12,
@@ -138,10 +424,36 @@ window.PDS_PRODUCTS=[
     "description": "Hähnchenbrustfilet, Zwiebeln & Käse",
     "image": "haehnchen.png",
     "variants": {
-      "Klein": 8.5,
-      "Groß": 11.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 13,
@@ -150,10 +462,36 @@ window.PDS_PRODUCTS=[
     "description": "Hähnchenbrust, Sauce Hollandaise & Broccoli",
     "image": "hollandaise.png",
     "variants": {
-      "Klein": 10.0,
-      "Groß": 11.5,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 10.0,
+      "Groß · 30 cm": 11.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 14,
@@ -162,10 +500,36 @@ window.PDS_PRODUCTS=[
     "description": "Thunfisch & Zwiebeln",
     "image": "bella-napoli.png",
     "variants": {
-      "Klein": 7.5,
-      "Groß": 10.5,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 15,
@@ -174,10 +538,36 @@ window.PDS_PRODUCTS=[
     "description": "Schinken, Salami, Spinat & frische Champignons",
     "image": "quattro-stagioni.png",
     "variants": {
-      "Klein": 7.5,
-      "Groß": 10.5,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 16,
@@ -186,10 +576,36 @@ window.PDS_PRODUCTS=[
     "description": "Schinken, Salami & frische Champignons",
     "image": "primavera.png",
     "variants": {
-      "Klein": 7.5,
-      "Groß": 10.5,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 17,
@@ -198,10 +614,36 @@ window.PDS_PRODUCTS=[
     "description": "Mozzarella",
     "image": "mozzarella.png",
     "variants": {
-      "Klein": 7.5,
-      "Groß": 10.5,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 18,
@@ -210,8 +652,36 @@ window.PDS_PRODUCTS=[
     "description": "gefüllt mit Schinken, Salami, Bolognese & frischen Champignons",
     "image": "calzone.png",
     "variants": {
-      "Groß": 10.5
-    }
+      "Klein · 26 cm": 10.5,
+      "Groß · 30 cm": 10.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 19,
@@ -220,10 +690,36 @@ window.PDS_PRODUCTS=[
     "description": "Hähnchenbrustfilet, Schinken & Zwiebeln",
     "image": "michele.png",
     "variants": {
-      "Klein": 8.5,
-      "Groß": 11.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 20,
@@ -232,10 +728,36 @@ window.PDS_PRODUCTS=[
     "description": "Broccoli, frische Champignons, Spinat, Paprika & Zwiebeln",
     "image": "vegetaria.png",
     "variants": {
-      "Klein": 8.5,
-      "Groß": 11.0,
-      "Family": 25.0
-    }
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 21,
@@ -244,10 +766,36 @@ window.PDS_PRODUCTS=[
     "description": "Schafskäse, Spinat & Ei",
     "image": "speciale.png",
     "variants": {
-      "Klein": 9.0,
-      "Groß": 11.0,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 9.0,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 22,
@@ -256,10 +804,36 @@ window.PDS_PRODUCTS=[
     "description": "Thunfisch, Schinken, Oliven & Artischocken",
     "image": "capricciosa.png",
     "variants": {
-      "Klein": 9.0,
-      "Groß": 11.0,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 9.0,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 23,
@@ -268,10 +842,36 @@ window.PDS_PRODUCTS=[
     "description": "Salami, Oliven, Sardellen & Kapern",
     "image": "sicilia.png",
     "variants": {
-      "Klein": 9.5,
-      "Groß": 11.5,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 9.5,
+      "Groß · 30 cm": 11.5
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 24,
@@ -280,10 +880,36 @@ window.PDS_PRODUCTS=[
     "description": "Speck, Zwiebeln & BBQ-Sauce",
     "image": "bbq-burger.png",
     "variants": {
-      "Klein": 9.0,
-      "Groß": 11.0,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 9.0,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 25,
@@ -292,10 +918,36 @@ window.PDS_PRODUCTS=[
     "description": "Vier Käsesorten",
     "image": "quattro-formaggi.png",
     "variants": {
-      "Klein": 8.0,
-      "Groß": 11.0,
-      "Family": 28.0
-    }
+      "Klein · 26 cm": 8.0,
+      "Groß · 30 cm": 11.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 26,
@@ -304,10 +956,36 @@ window.PDS_PRODUCTS=[
     "description": "Krabben & Knoblauch",
     "image": "scampi.png",
     "variants": {
-      "Klein": 10.0,
-      "Groß": 12.0,
-      "Family": 30.0
-    }
+      "Klein · 26 cm": 10.0,
+      "Groß · 30 cm": 12.0
+    },
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": "extra",
@@ -316,11 +994,37 @@ window.PDS_PRODUCTS=[
     "description": "außer Meeresfrüchte",
     "image": "margherita.png",
     "variants": {
-      "Klein": 0.5,
-      "Groß": 1.0,
-      "Family": 4.0
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
     },
-    "isExtra": true
+    "isExtra": true,
+    "extras": [
+      "Salami",
+      "Schinken",
+      "Champignons",
+      "Spinat",
+      "Zwiebeln",
+      "Paprika",
+      "Brokkoli",
+      "Peperoni",
+      "Oliven",
+      "Ananas",
+      "Mais",
+      "Thunfisch",
+      "Käse",
+      "Feta",
+      "Hähnchenbrustfilet",
+      "Fleischsauce / Bolognese",
+      "Sauce Hollandaise",
+      "Kapern",
+      "Sardellen",
+      "Artischocken"
+    ],
+    "extraPrices": {
+      "Klein · 26 cm": 0.5,
+      "Groß · 30 cm": 1.0
+    },
+    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
   },
   {
     "id": 27,
