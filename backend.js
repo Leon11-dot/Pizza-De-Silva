@@ -1,4 +1,3 @@
-
 window.PDS_BACKEND = (() => {
   const cfg = window.PDS_CONFIG || {};
   const live = !!(cfg.supabaseUrl && cfg.supabaseAnonKey);
@@ -11,15 +10,37 @@ window.PDS_BACKEND = (() => {
     };
   }
 
+  function getAccessToken() { return sessionStorage.getItem("pds_access_token") || ""; }
+  function getRefreshToken() { return sessionStorage.getItem("pds_refresh_token") || ""; }
+
   function authHeaders(extra={}) {
-    const token = sessionStorage.getItem("pds_access_token");
+    const token = getAccessToken();
     return baseHeaders({
       ...(token ? {"Authorization": `Bearer ${token}`} : {}),
       ...extra
     });
   }
 
-  async function request(path, options={}, useAuth=false) {
+  async function refreshSession() {
+    if (!live) return true;
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) return false;
+    const res = await fetch(`${cfg.supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
+      method: "POST",
+      headers: baseHeaders(),
+      body: JSON.stringify({refresh_token: refreshToken})
+    });
+    if (!res.ok) {
+      signOut();
+      return false;
+    }
+    const data = await res.json();
+    sessionStorage.setItem("pds_access_token", data.access_token || "");
+    sessionStorage.setItem("pds_refresh_token", data.refresh_token || refreshToken);
+    return true;
+  }
+
+  async function request(path, options={}, useAuth=false, retry=true) {
     const res = await fetch(`${cfg.supabaseUrl}/rest/v1/${path}`, {
       ...options,
       headers: {
@@ -27,14 +48,23 @@ window.PDS_BACKEND = (() => {
         ...(options.headers || {})
       }
     });
+
+    if (res.status === 401 && useAuth && retry && await refreshSession()) {
+      return request(path, options, useAuth, false);
+    }
+
     if (!res.ok) throw new Error(await res.text() || `HTTP ${res.status}`);
     const ct = res.headers.get("content-type") || "";
     return ct.includes("application/json") ? res.json() : null;
   }
 
   function mapSettings(x={}) {
+    const deliveryOpen = x.delivery_open ?? x.deliveryOpen ?? x.store_open ?? x.storeOpen ?? true;
+    const pickupOpen = x.pickup_open ?? x.pickupOpen ?? x.store_open ?? x.storeOpen ?? true;
     return {
-      storeOpen: x.store_open ?? x.storeOpen ?? true,
+      storeOpen: deliveryOpen || pickupOpen,
+      deliveryOpen,
+      pickupOpen,
       openingHoursText: x.opening_hours_text ?? x.openingHoursText ?? "Öffnungszeiten bitte eintragen",
       deliveryAreaText: x.delivery_area_text ?? x.deliveryAreaText ?? "Liefergebiet bitte eintragen",
       deliveryMinimum: Number(x.delivery_minimum ?? x.deliveryMinimum ?? 0),
@@ -61,38 +91,62 @@ window.PDS_BACKEND = (() => {
     };
   }
 
+  async function verifyAdmin() {
+    if (!live) return true;
+    if (!getAccessToken()) return false;
+    try {
+      const rows = await request("admin_users?select=email&limit=1", {}, true);
+      return Array.isArray(rows) && rows.length === 1;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function signIn(email, password) {
+    if (!live) {
+      sessionStorage.setItem("pds_admin_email", email);
+      return {access_token:"local-demo"};
+    }
+
+    const res = await fetch(`${cfg.supabaseUrl}/auth/v1/token?grant_type=password`, {
+      method:"POST",
+      headers:baseHeaders(),
+      body:JSON.stringify({email,password})
+    });
+
+    if (!res.ok) throw new Error(await res.text() || "Anmeldung fehlgeschlagen");
+    const data = await res.json();
+
+    sessionStorage.setItem("pds_access_token", data.access_token || "");
+    sessionStorage.setItem("pds_refresh_token", data.refresh_token || "");
+    sessionStorage.setItem("pds_admin_email", email);
+
+    const allowed = await verifyAdmin();
+    if (!allowed) {
+      signOut();
+      throw new Error("Dieses Konto ist nicht als Pizza-De-Silva-Admin freigeschaltet.");
+    }
+    return data;
+  }
+
+  function signOut() {
+    sessionStorage.removeItem("pds_access_token");
+    sessionStorage.removeItem("pds_refresh_token");
+    sessionStorage.removeItem("pds_admin_email");
+  }
+
   return {
     live,
     modeLabel: live ? "Online verbunden" : "Vorschau / lokal",
-
-    async signIn(email, password) {
-      if (!live) return {access_token:"local-demo"};
-      const res = await fetch(`${cfg.supabaseUrl}/auth/v1/token?grant_type=password`, {
-        method:"POST",
-        headers:baseHeaders(),
-        body:JSON.stringify({email,password})
-      });
-      if (!res.ok) throw new Error(await res.text() || "Anmeldung fehlgeschlagen");
-      const data = await res.json();
-      sessionStorage.setItem("pds_access_token", data.access_token);
-      sessionStorage.setItem("pds_refresh_token", data.refresh_token || "");
-      sessionStorage.setItem("pds_admin_email", email);
-      return data;
-    },
-
-    signOut() {
-      sessionStorage.removeItem("pds_access_token");
-      sessionStorage.removeItem("pds_refresh_token");
-      sessionStorage.removeItem("pds_admin_email");
-    },
-
-    isSignedIn() {
-      return !live || !!sessionStorage.getItem("pds_access_token");
-    },
+    signIn,
+    signOut,
+    verifyAdmin,
+    isSignedIn() { return !live || !!getAccessToken(); },
 
     async getSettings() {
       if (!live) return {
-        storeOpen:true, openingHoursText:cfg.openingHoursText,
+        storeOpen:true, deliveryOpen:true, pickupOpen:true,
+        openingHoursText:cfg.openingHoursText,
         deliveryAreaText:"Liefergebiet bitte eintragen",
         deliveryMinimum:Number(cfg.deliveryMinimum||0),
         deliveryFee:Number(cfg.deliveryFee||0),
@@ -104,8 +158,11 @@ window.PDS_BACKEND = (() => {
 
     async saveSettings(settings) {
       if (!live) return settings;
+      if (!await verifyAdmin()) throw new Error("Nicht als Admin angemeldet.");
       const payload = {
-        store_open: settings.storeOpen,
+        store_open: !!(settings.deliveryOpen || settings.pickupOpen),
+        delivery_open: !!settings.deliveryOpen,
+        pickup_open: !!settings.pickupOpen,
         opening_hours_text: settings.openingHoursText,
         delivery_area_text: settings.deliveryAreaText,
         delivery_minimum: settings.deliveryMinimum,
@@ -144,7 +201,6 @@ window.PDS_BACKEND = (() => {
         headers:{"Prefer":"return=minimal"},
         body:JSON.stringify(payload)
       });
-      // Customer can securely retrieve exactly this order using its random status token header.
       return await this.getOrder(order.id, order.statusToken);
     },
 
@@ -163,6 +219,7 @@ window.PDS_BACKEND = (() => {
 
     async listOrders() {
       if (!live) return JSON.parse(localStorage.getItem("pds_orders") || "[]");
+      if (!await verifyAdmin()) throw new Error("Nicht als Admin angemeldet.");
       const rows = await request("orders?select=*&order=created_at.desc", {}, true);
       return (rows || []).map(mapOrder);
     },
@@ -176,6 +233,7 @@ window.PDS_BACKEND = (() => {
         localStorage.setItem("pds_orders", JSON.stringify(local));
         return x;
       }
+      if (!await verifyAdmin()) throw new Error("Nicht als Admin angemeldet.");
       const payload = {};
       if ("status" in patch) payload.status = patch.status;
       if ("eta" in patch) payload.eta = patch.eta;

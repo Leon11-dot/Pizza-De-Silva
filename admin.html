@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pizza De Silva – Admin</title><link rel="stylesheet" href="styles.css"></head>
 <body>
-<header class="topbar"><div class="nav"><div class="brand"><div class="logo">🔐</div><div><b>PIZZA DE SILVA ADMIN</b><small>Bestellzentrale</small></div></div><div class="navright"><a class="btn secondary" href="settings.html">⚙️ Einstellungen</a><a class="btn secondary" href="index.html">Kundenseite</a></div></div></header>
+<header class="topbar"><div class="nav"><div class="brand"><div class="logo">🔐</div><div><b>PIZZA DE SILVA ADMIN</b><small>Bestellzentrale</small></div></div><div class="navright"><a class="btn secondary" href="settings.html">⚙️ Einstellungen</a><button class="btn secondary" id="logoutBtn" style="display:none" onclick="logout()">Abmelden</button></div></div></header>
 <div id="login" class="admin-login"><div class="login-card">
       <h1>Admin-Anmeldung</h1>
       <p>Mit deinem Pizza-De-Silva-Admin-Konto anmelden.</p>
@@ -13,7 +13,7 @@
   <section class="admin-hero"><div><h1>Bestellzentrale</h1><p>Neue Bestellungen annehmen, Zeit festlegen und Status verwalten.</p></div><div><span class="sys">System aktiv</span><div class="meta" id="modeLabel" style="color:#ffe8df;text-align:right;margin-top:5px"></div></div></section>
   <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm läuft bis zur Annahme oder Ablehnung.</div><button class="btn secondary" style="margin-left:auto" onclick="enableSound()">🔊 Ton aktivieren</button></div>
   <div class="stats"><div class="stat"><span>Neu</span><strong id="sNew">0</strong></div><div class="stat"><span>Angenommen</span><strong id="sAccepted">0</strong></div><div class="stat"><span>In Zubereitung</span><strong id="sPrep">0</strong></div><div class="stat"><span>Erledigt</span><strong id="sDone">0</strong></div><div class="stat"><span>Bestellwert</span><strong id="sRevenue">0 €</strong></div></div>
-  <div class="notice" style="margin-bottom:14px">Vorschau-Modus: Bestellungen werden im Browser gespeichert. Für den echten Betrieb wird die gleiche Oberfläche mit der Online-Datenbank verbunden.</div>
+  <div class="notice" style="margin-bottom:14px">🔒 Diese Bestellzentrale ist nur für freigeschaltete Pizza-De-Silva-Admins erreichbar.</div>
   <section class="orders" id="orders"></section>
 </main>
 <script src="config.js"></script><script src="backend.js"></script><script src="admin.js"></script></body></html>

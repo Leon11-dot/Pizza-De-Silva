@@ -1,6 +1,18 @@
 
-const CACHE='pds-v3';
-const ASSETS=['./','./index.html','./styles.css','./config.js','./backend.js','./data.js','./app.js','./status.html','./status.js'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
-self.addEventListener('fetch',e=>{if(e.request.method==='GET')e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
+const CACHE='pds-v8-admin-auth';
+const STATIC=['./','./index.html'];
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)))});
+self.addEventListener('activate',e=>e.waitUntil(Promise.all([
+  self.clients.claim(),
+  caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
+])));
+self.addEventListener('fetch',e=>{
+  if(e.request.method!=='GET') return;
+  const u=new URL(e.request.url);
+  const fresh=/\.(js|css|json)$/.test(u.pathname);
+  if(fresh){
+    e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));
+  }else{
+    e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
+  }
+});
