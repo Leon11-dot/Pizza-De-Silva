@@ -64,21 +64,36 @@ async function beep(){
   try{
     audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==='suspended') await audioCtx.resume();
-    const now=audioCtx.currentTime;
-    const gain=audioCtx.createGain();
-    gain.gain.setValueAtTime(0.0001,now);
-    gain.gain.exponentialRampToValueAtTime(0.2,now+0.01);
-    gain.gain.exponentialRampToValueAtTime(0.0001,now+0.9);
-    gain.connect(audioCtx.destination);
-    [880,1175].forEach((freq,i)=>{
-      const o=audioCtx.createOscillator();
-      o.type='sine';
-      o.frequency.value=freq;
-      o.connect(gain);
-      o.start(now+i*0.15);
-      o.stop(now+0.7+i*0.15);
+    const start=audioCtx.currentTime;
+    const master=audioCtx.createGain();
+    master.gain.setValueAtTime(0.0001,start);
+    master.gain.exponentialRampToValueAtTime(0.32,start+0.03);
+    master.gain.setValueAtTime(0.32,start+2.85);
+    master.gain.exponentialRampToValueAtTime(0.0001,start+3.0);
+    master.connect(audioCtx.destination);
+    const notes=[
+      [880,0.00,0.34],[660,0.36,0.34],
+      [880,0.72,0.34],[660,1.08,0.34],
+      [990,1.44,0.34],[700,1.80,0.34],
+      [990,2.16,0.34],[700,2.52,0.34]
+    ];
+    notes.forEach(([freq,offset,duration])=>{
+      const osc=audioCtx.createOscillator();
+      const gain=audioCtx.createGain();
+      osc.type='square';
+      osc.frequency.setValueAtTime(freq,start+offset);
+      gain.gain.setValueAtTime(0.0001,start+offset);
+      gain.gain.exponentialRampToValueAtTime(0.22,start+offset+0.015);
+      gain.gain.setValueAtTime(0.22,start+offset+duration-0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001,start+offset+duration);
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(start+offset);
+      osc.stop(start+offset+duration);
     });
-  }catch(e){ console.warn('Bestellalarm Fehler',e); }
+  }catch(e){
+    console.warn('Bestellalarm Fehler',e);
+  }
 }
 
 async function enableSound(){
@@ -190,7 +205,7 @@ async function render(){
     lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
-    if(has&&sound&&!timer)timer=setInterval(beep,4500);
+    if(has&&sound&&!timer)timer=setInterval(beep,5000);
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
