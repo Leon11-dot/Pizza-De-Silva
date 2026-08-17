@@ -462,3 +462,34 @@ select option:disabled{color:#999}
   .product .media img{height:210px}
   .catalog-heading h2{font-size:1.65rem}
 }
+
+.delivery-zones-overview{
+  margin:10px 0 14px;
+  padding:12px;
+  border:1px solid #ead7c9;
+  border-radius:14px;
+  background:#fffaf5;
+}
+.delivery-zones-overview>b{
+  display:block;
+  margin-bottom:7px;
+  color:#7f100b;
+}
+.delivery-zones-overview .zone-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:6px 0;
+  border-top:1px solid #f0dfd2;
+  font-size:.85rem;
+}
+.delivery-zones-overview .zone-row:first-of-type{border-top:0}
+.delivery-zones-overview .zone-row span:last-child{
+  text-align:right;
+  font-weight:700;
+}
+@media(max-width:560px){
+  .delivery-zones-overview .zone-row{display:block}
+  .delivery-zones-overview .zone-row span{display:block}
+  .delivery-zones-overview .zone-row span:last-child{text-align:left;margin-top:2px}
+}

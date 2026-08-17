@@ -72,8 +72,12 @@ window.PDS_BACKEND = (() => {
       autoCancelMinutes: Number(x.auto_cancel_minutes ?? x.autoCancelMinutes ?? 5),
       restaurantAddress: x.restaurant_address ?? "Niederstrasse 76, 47829 Krefeld-Uerdingen",
       deliveryRadiusKm: Number(x.delivery_radius_km ?? 10),
+      deliveryFee2km: Number(x.delivery_fee_2km ?? 0),
+      deliveryMinimum2km: Number(x.delivery_minimum_2km ?? 0),
       deliveryFee5km: Number(x.delivery_fee_5km ?? 0),
       deliveryMinimum5km: Number(x.delivery_minimum_5km ?? 0),
+      deliveryFee7km: Number(x.delivery_fee_7km ?? 0),
+      deliveryMinimum7km: Number(x.delivery_minimum_7km ?? 0),
       deliveryFee10km: Number(x.delivery_fee_10km ?? 0),
       deliveryMinimum10km: Number(x.delivery_minimum_10km ?? 0)
     };
@@ -266,8 +270,12 @@ window.PDS_BACKEND = (() => {
         auto_cancel_minutes: settings.autoCancelMinutes,
         restaurant_address: settings.restaurantAddress,
         delivery_radius_km: settings.deliveryRadiusKm,
+        delivery_fee_2km: settings.deliveryFee2km,
+        delivery_minimum_2km: settings.deliveryMinimum2km,
         delivery_fee_5km: settings.deliveryFee5km,
         delivery_minimum_5km: settings.deliveryMinimum5km,
+        delivery_fee_7km: settings.deliveryFee7km,
+        delivery_minimum_7km: settings.deliveryMinimum7km,
         delivery_fee_10km: settings.deliveryFee10km,
         delivery_minimum_10km: settings.deliveryMinimum10km
       };

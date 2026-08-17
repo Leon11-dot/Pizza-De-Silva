@@ -1,4 +1,17 @@
 
+function renderDeliveryZonesOverview(){
+  if(!settings) return;
+  const set=(id,fee,min)=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=`Liefergebühr ${money(fee)} · Mindestbestellwert ${money(min)}`;
+  };
+  set('zone2Info',settings.deliveryFee2km,settings.deliveryMinimum2km);
+  set('zone5Info',settings.deliveryFee5km,settings.deliveryMinimum5km);
+  set('zone7Info',settings.deliveryFee7km,settings.deliveryMinimum7km);
+  set('zone10Info',settings.deliveryFee10km,settings.deliveryMinimum10km);
+}
+
+
 const PDS_RESTAURANT={lat:51.357857,lon:6.648934};
 let verifiedDeliveryZone=null;
 
@@ -16,8 +29,10 @@ async function geocodeAddress(address){
   return {lat:Number(x[0].lat),lon:Number(x[0].lon)};
 }
 function zoneForDistance(km){
-  if(km<=5) return {label:"bis 5 km",fee:Number(settings?.deliveryFee5km||0),minimum:Number(settings?.deliveryMinimum5km||0),distanceKm:km};
-  if(km<=10) return {label:"5–10 km",fee:Number(settings?.deliveryFee10km||0),minimum:Number(settings?.deliveryMinimum10km||0),distanceKm:km};
+  if(km<=2) return {label:"bis 2 km",fee:Number(settings?.deliveryFee2km||0),minimum:Number(settings?.deliveryMinimum2km||0),distanceKm:km};
+  if(km<=5) return {label:"2–5 km",fee:Number(settings?.deliveryFee5km||0),minimum:Number(settings?.deliveryMinimum5km||0),distanceKm:km};
+  if(km<=7) return {label:"5–7 km",fee:Number(settings?.deliveryFee7km||0),minimum:Number(settings?.deliveryMinimum7km||0),distanceKm:km};
+  if(km<=10) return {label:"7–10 km",fee:Number(settings?.deliveryFee10km||0),minimum:Number(settings?.deliveryMinimum10km||0),distanceKm:km};
   return null;
 }
 async function checkDeliveryAddress(){
@@ -71,6 +86,7 @@ function showModal(id){document.getElementById(id).classList.add('show')}
 
 async function loadSettings(){
   settings=await PDS_BACKEND.getSettings();
+  renderDeliveryZonesOverview();
 
   const deliveryOpen=!!settings.deliveryOpen;
   const pickupOpen=!!settings.pickupOpen;

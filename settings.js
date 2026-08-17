@@ -18,8 +18,12 @@ async function load(){
   document.getElementById('fee').value=Number(s.deliveryFee||0);
   document.getElementById('cancelMinutes').value=Number(s.autoCancelMinutes||5);
   document.getElementById('restaurantAddress').value=s.restaurantAddress||'Niederstrasse 76, 47829 Krefeld-Uerdingen';
+  document.getElementById('deliveryFee2km').value=Number(s.deliveryFee2km||0);
+  document.getElementById('deliveryMinimum2km').value=Number(s.deliveryMinimum2km||0);
   document.getElementById('deliveryFee5km').value=Number(s.deliveryFee5km||0);
   document.getElementById('deliveryMinimum5km').value=Number(s.deliveryMinimum5km||0);
+  document.getElementById('deliveryFee7km').value=Number(s.deliveryFee7km||0);
+  document.getElementById('deliveryMinimum7km').value=Number(s.deliveryMinimum7km||0);
   document.getElementById('deliveryFee10km').value=Number(s.deliveryFee10km||0);
   document.getElementById('deliveryMinimum10km').value=Number(s.deliveryMinimum10km||0);
 }
@@ -39,8 +43,12 @@ async function saveSettings(){
     autoCancelMinutes:Number(document.getElementById('cancelMinutes').value||5),
     restaurantAddress:document.getElementById('restaurantAddress').value.trim(),
     deliveryRadiusKm:10,
+    deliveryFee2km:Number(document.getElementById('deliveryFee2km').value||0),
+    deliveryMinimum2km:Number(document.getElementById('deliveryMinimum2km').value||0),
     deliveryFee5km:Number(document.getElementById('deliveryFee5km').value||0),
     deliveryMinimum5km:Number(document.getElementById('deliveryMinimum5km').value||0),
+    deliveryFee7km:Number(document.getElementById('deliveryFee7km').value||0),
+    deliveryMinimum7km:Number(document.getElementById('deliveryMinimum7km').value||0),
     deliveryFee10km:Number(document.getElementById('deliveryFee10km').value||0),
     deliveryMinimum10km:Number(document.getElementById('deliveryMinimum10km').value||0)
   };

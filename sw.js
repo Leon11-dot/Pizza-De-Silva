@@ -1,5 +1,5 @@
 
-const CACHE='pds-admin-sound-fix-v1';
+const CACHE='pds-4-delivery-zones-v1';
 self.addEventListener('install',e=>{self.skipWaiting();});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
   self.clients.claim(),
