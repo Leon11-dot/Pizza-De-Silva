@@ -230,7 +230,7 @@ window.PDS_BACKEND = (() => {
   }
 
   return {
-    live:
+    live,
     modeLabel: live ? "Online verbunden" : "Vorschau / lokal",
     customerSignIn, customerSignUp, customerSignOut, getCustomerProfile, saveCustomerProfile,
     isCustomerSignedIn(){ return !!customerToken(); },
