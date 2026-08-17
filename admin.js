@@ -12,6 +12,7 @@ async function resumeAudioOnInteraction(){
 const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
 let sound=localStorage.getItem('pds_sound_enabled')==='1',timer=null,audioCtx=null;
 let lastNewIds=new Set();
+let selectedEtas=JSON.parse(localStorage.getItem('pds_selected_etas')||'{}');
 
 function showLogin(message=''){
   document.getElementById('login').style.display='flex';
@@ -111,11 +112,27 @@ async function enableSound(){
   }
 }
 
+
+function setEta(id,min,el){
+  const key=String(id);
+  selectedEtas[key]=Number(min);
+  localStorage.setItem('pds_selected_etas',JSON.stringify(selectedEtas));
+
+  const card=document.querySelector(`[data-order="${CSS.escape(key)}"]`);
+  if(card) card.dataset.eta=String(min);
+
+  document.querySelectorAll(`[data-order="${CSS.escape(key)}"] .time`).forEach(btn=>{
+    btn.classList.toggle('sel',Number(btn.dataset.minutes)===Number(min));
+  });
+}
+
 async function accept(id){
-  const card=document.querySelector(`[data-order="${CSS.escape(String(id))}"]`);
-  const eta=Number(card.dataset.eta||0);
-  if(!eta)return alert('Bitte zuerst eine Zeit auswählen.');
+  const key=String(id);
+  const eta=Number(selectedEtas[key]||0);
+  if(!eta) return alert('Bitte zuerst eine Zeit auswählen.');
   await PDS_BACKEND.updateOrder(id,{status:'accepted',eta,updatedAt:new Date().toISOString()});
+  delete selectedEtas[key];
+  localStorage.setItem('pds_selected_etas',JSON.stringify(selectedEtas));
   render();
 }
 
@@ -213,12 +230,16 @@ async function render(){
     document.getElementById('orders').innerHTML=all.length?all.map(x=>{
       const items=(x.items||[]).map(i=>`<li>${i.qty}× ${i.name} (${i.variant})${i.extraName?' + '+i.extraName:''}${i.note?' – '+i.note:''}</li>`).join('');
       let actions='';
-      if(x.status==='new')actions=`<div class="actions"><button class="time" onclick="setEta('${x.id}',20,this)">20 Min</button><button class="time" onclick="setEta('${x.id}',30,this)">30 Min</button><button class="time" onclick="setEta('${x.id}',40,this)">40 Min</button><button class="time" onclick="setEta('${x.id}',50,this)">50 Min</button><button class="time" onclick="setEta('${x.id}',60,this)">60 Min</button><button class="time" onclick="setEta('${x.id}',90,this)">90 Min</button></div><div class="actions"><button class="btn green" onclick="accept('${x.id}')">✓ Annehmen</button><button class="btn danger" onclick="reject('${x.id}')">✕ Ablehnen</button></div>`;
+      if(x.status==='new'){
+        const chosen=Number(selectedEtas[String(x.id)]||0);
+        const timeBtn=(m)=>`<button class="time ${chosen===m?'sel':''}" data-minutes="${m}" onclick="setEta('${x.id}',${m},this)">${m} Min</button>`;
+        actions=`<div class="actions">${[20,30,40,50,60,90].map(timeBtn).join('')}</div><div class="actions"><button class="btn green" onclick="accept('${x.id}')">✓ Annehmen</button><button class="btn danger" onclick="reject('${x.id}')">✕ Ablehnen</button></div>`;
+      }
       if(x.status==='accepted')actions=`<div class="actions"><button class="btn blue" onclick="status('${x.id}','preparing')">In Zubereitung</button></div>`;
       if(x.status==='preparing')actions=`<div class="actions"><button class="btn secondary" onclick="status('${x.id}','ready')">${x.customer.type==='Abholung'?'Bereit zur Abholung':'Als unterwegs markieren'}</button></div>`;
       if(x.status==='ready')actions=`<div class="actions"><button class="btn green" onclick="status('${x.id}','done')">Abschließen</button></div>`;
 
-      return `<article class="order ${x.status}" data-order="${x.id}">
+      return `<article class="order ${x.status}" data-order="${x.id}" data-eta="${selectedEtas[String(x.id)]||x.eta||''}">`
         <h3>#${x.number} • ${labels[x.status]}</h3>
         <div class="meta">${new Date(x.createdAt).toLocaleString('de-DE')} • ${x.customer.type} • ${x.customer.payment}</div>
         <p><b>${x.customer.name}</b><br>${x.customer.phone}<br>${x.customer.address||''}</p>
