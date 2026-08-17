@@ -110,12 +110,27 @@ async function loadSettings(){
   renderCart();
 }
 
+
+const CATEGORY_META={
+  "Alle":{icon:"🍽️",title:"Alle Gerichte",sub:"Unsere komplette Speisekarte auf einen Blick."},
+  "Pizza":{icon:"🍕",title:"Pizza",sub:"Frisch aus dem Ofen – Größen und mehrere Extra-Zutaten auswählbar."},
+  "Nudelgerichte":{icon:"🍝",title:"Nudelgerichte",sub:"Wähle Spaghetti, Penne, Maccheroni, Tortellini oder Gnocchi. Käse überbacken +2,00 €."},
+  "Finger Food":{icon:"🍟",title:"Finger Food",sub:"Knusprige Klassiker und Beilagen."},
+  "Pizzabrötchen":{icon:"🥖",title:"Pizzabrötchen",sub:"Warm, frisch und ideal zum Teilen."},
+  "Fleischgerichte":{icon:"🍗",title:"Fleischgerichte",sub:"Herzhafte Gerichte frisch zubereitet."},
+  "Baguettes":{icon:"🥖",title:"Baguettes",sub:"Knusprig belegt und frisch zubereitet."},
+  "Salate":{icon:"🥗",title:"Salate",sub:"Frisch, knackig und leicht."},
+  "Desserts":{icon:"🍰",title:"Desserts",sub:"Etwas Süßes zum Abschluss."},
+  "Getränke":{icon:"🥤",title:"Getränke",sub:"Kalt und passend zu deiner Bestellung."}
+};
+
 function renderCats(){
   const el=document.getElementById('categories'); el.innerHTML='';
   cats.forEach(c=>{
+    const meta=CATEGORY_META[c]||{icon:"•",title:c};
     const b=document.createElement('button');
     b.className='chip'+(c===active?' active':'');
-    b.textContent=c;
+    b.innerHTML=`<span class="cat-icon">${meta.icon}</span><span>${c}</span>`;
     b.onclick=()=>{active=c;renderCats();renderProducts()};
     el.appendChild(b);
   });
@@ -123,13 +138,34 @@ function renderCats(){
 
 function renderProducts(){
   const el=document.getElementById('products'); el.innerHTML='';
-  PDS_PRODUCTS.filter(p=>!p.isExtra&&(active==='Alle'||p.category===active)).forEach(p=>{
+  const meta=CATEGORY_META[active]||{icon:"🍽️",title:active,sub:"Wähle dein Lieblingsgericht."};
+  const title=document.getElementById('categoryTitle');
+  const sub=document.getElementById('categorySubtitle');
+  if(title) title.textContent=`${meta.icon} ${meta.title}`;
+  if(sub) sub.textContent=meta.sub||'';
+
+  const list=PDS_PRODUCTS.filter(p=>!p.isExtra&&(active==='Alle'||p.category===active));
+  list.forEach(p=>{
     const first=Object.values(p.variants)[0];
     const card=document.createElement('article'); card.className='product';
+    const pasta=p.category==='Nudelgerichte';
+    const pastaControls=pasta ? `
+      <div class="inline-options">
+        <label>1. Nudelsorte wählen</label>
+        <select class="pasta-variant">
+          ${Object.entries(p.variants).map(([k,v])=>`<option value="${k}">${k}</option>`).join('')}
+        </select>
+        <label>2. Optionen</label>
+        <label class="cheese-toggle">
+          <input type="checkbox" class="pasta-cheese">
+          <span>Mit Käse überbacken</span><b>+ ${money(Number(p.pastaCheeseExtra||2))}</b>
+        </label>
+      </div>` : '';
     card.innerHTML=`<div class="media"><img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async"><span class="num">${p.id}</span>${p.ageRestricted?'<span class="age">18+</span>':''}</div>
       <div class="body"><h3>${p.name}</h3><div class="desc">${p.description||'&nbsp;'}</div>
-      <div class="price">ab ${money(first)}</div><button class="btn primary">Auswählen</button></div>`;
-    card.querySelector('button').onclick=()=>openProduct(p);
+      <div class="price">ab ${money(first)}</div>${pastaControls}
+      <button class="btn primary">${pasta?'In den Warenkorb':'Auswählen'}</button></div>`;
+    card.querySelector('button').onclick=()=>pasta?addPastaFromCard(p,card):openProduct(p);
     el.appendChild(card);
   });
 }
@@ -153,17 +189,54 @@ function updatePizzaExtraPrices(){
 function updateProductModalTotal(){
   if(!selected) return;
   const variant=document.getElementById('pVariant')?.value || '';
-  const base=Number(selected.variants?.[variant]||0);
-  const extras=selectedPizzaExtras();
-  const extraTotal=extras.length*pizzaExtraUnitPrice();
+  let total=Number(selected.variants?.[variant]||0);
+  if(selected.category==='Nudelgerichte' && selected.pastaCheeseExtra){
+    if(document.getElementById('pPastaCheese')?.checked){
+      const extra=Number(selected.pastaCheeseExtra||2);
+      price+=extra;
+      extraName='Mit Käse überbacken';
+      extraItems=[{name:'Mit Käse überbacken',price:extra}];
+    }
+  }else if(selected.pizzaExtras){
+    total += selectedPizzaExtras().length*pizzaExtraUnitPrice();
+  }
+  if(selected.category==='Nudelgerichte' && document.getElementById('pPastaCheese')?.checked){
+    total += Number(selected.pastaCheeseExtra||2);
+  }
   const target=document.getElementById('pCurrentTotal');
-  if(target) target.textContent=money(base+extraTotal);
+  if(target) target.textContent=money(total);
+}
+
+
+function addPastaFromCard(p,card){
+  const variant=card.querySelector('.pasta-variant')?.value || Object.keys(p.variants)[0];
+  const cheese=!!card.querySelector('.pasta-cheese')?.checked;
+  let price=Number(p.variants[variant]||0);
+  const extraItems=[];
+  let extraName='';
+  if(cheese){
+    const extra=Number(p.pastaCheeseExtra||2);
+    price+=extra;
+    extraName='Mit Käse überbacken';
+    extraItems.push({name:'Mit Käse überbacken',price:extra});
+  }
+  cart.push({
+    productId:p.id,name:p.name,variant,note:'',extraName,extraItems,price,qty:1
+  });
+  saveCart();
+  const btn=card.querySelector('.btn.primary');
+  if(btn){
+    const old=btn.textContent; btn.textContent='✓ Hinzugefügt';
+    setTimeout(()=>btn.textContent=old,900);
+  }
 }
 
 function openProduct(p){
   selected=p;
   document.getElementById('pName').textContent=p.name;
   document.getElementById('pDesc').textContent=p.description||'';
+  const variantLabel=document.getElementById('pVariantLabel');
+  if(variantLabel) variantLabel.textContent=p.category==='Nudelgerichte'?'Nudelsorte':'Größe / Variante';
 
   const v=document.getElementById('pVariant');
   v.innerHTML='';
@@ -174,7 +247,17 @@ function openProduct(p){
   };
 
   const ef=document.getElementById('extraField');
-  if(p.pizzaExtras && p.pizzaExtras.length){
+  if(p.category==='Nudelgerichte' && p.pastaCheeseExtra){
+    ef.style.display='grid';
+    ef.innerHTML=`
+      <label>Option</label>
+      <label class="cheese-toggle modal-cheese">
+        <input type="checkbox" id="pPastaCheese">
+        <span>Mit Käse überbacken</span>
+        <b>+ ${money(Number(p.pastaCheeseExtra||2))}</b>
+      </label>`;
+    ef.querySelector('#pPastaCheese').onchange=updateProductModalTotal;
+  }else if(p.pizzaExtras && p.pizzaExtras.length){
     ef.style.display='grid';
     ef.innerHTML=`
       <label>Extra-Zutaten</label>

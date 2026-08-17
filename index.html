@@ -9,14 +9,14 @@
 </head>
 <body>
 <header class="topbar"><div class="nav">
-  <a class="brand brand-logo" href="#"><img loading="eager" decoding="async" src="pizza-de-silva-logo.webp" alt="Pizza De Silva Logo"><div><small>Direkt bestellen • Lieferung & Abholung</small></div></a>
+  <a class="brand brand-logo" href="#"><img loading="eager" decoding="async" src="pizza-de-silva-logo-neu.webp" alt="Pizza De Silva Logo"><div><small>Direkt bestellen • Lieferung & Abholung</small></div></a>
   <nav class="navlinks"><a href="#bestseller">Bestseller</a><a href="#menu">Speisekarte</a><a href="#how">So geht’s</a><a href="#contact">Kontakt</a></nav>
   <div class="navright"><button class="btn secondary" onclick="document.querySelector('.cart').scrollIntoView({behavior:'smooth'})">🛒 <span id="cartCount">0</span></button></div>
 </div></header>
 
 <section class="hero">
   <div class="hero-inner">
-    <img loading="eager" decoding="async" class="hero-logo" src="pizza-de-silva-logo.webp" alt="Pizza De Silva">
+    <img loading="eager" decoding="async" class="hero-logo" src="pizza-de-silva-logo-neu.webp" alt="Pizza De Silva">
     <span class="pill">🔥 Frisch aus dem Ofen • Direkt von Pizza De Silva</span>
     <h1>Mehr Geschmack.<br><em>Mehr De Silva.</em></h1>
     <p>Pizza, Pasta, Burger, Baguettes, Salate, Finger Food und mehr. Bestelle direkt bei uns – deine Bestellung kommt ohne Umweg direkt in unsere Bestellzentrale.</p>
@@ -64,9 +64,21 @@
 
 <section class="section" id="menu">
   <div class="section-head"><div><h2>Unsere Speisekarte</h2><p>Alle Gerichte aus deiner Karte 2026 – mit Bildern, Größen und Preisen.</p></div></div>
-  <div class="categories" id="categories"></div>
-  <div class="shop">
-    <main class="products" id="products"></main>
+  <div class="shop-layout">
+    <aside class="category-panel">
+      <h3>Kategorien</h3>
+      <div class="categories" id="categories"></div>
+    </aside>
+    <div class="catalog-main">
+      <div class="catalog-heading">
+        <div>
+          <h2 id="categoryTitle">🍽️ Alle Gerichte</h2>
+          <p id="categorySubtitle">Wähle dein Lieblingsgericht und passe es nach Wunsch an.</p>
+        </div>
+        <span class="catalog-info">ⓘ Preise & Varianten direkt am Gericht</span>
+      </div>
+      <main class="products" id="products"></main>
+    </div>
     <aside class="cart">
       <div class="cart-head"><h2>Dein Warenkorb</h2><span class="badge"><span id="cartCount2">0</span> Artikel</span></div>
       <div id="cartRows" class="empty">Noch nichts ausgewählt. Such dir etwas Leckeres aus 🍕</div>
@@ -97,7 +109,7 @@
 <div class="modal-bg" id="productModal"><div class="modal">
   <button class="btn secondary close" onclick="closeModal('productModal')">✕</button>
   <h2 id="pName"></h2><p class="desc" id="pDesc"></p>
-  <div class="field"><label>Größe / Variante</label><select id="pVariant"></select></div>
+  <div class="field"><label id="pVariantLabel">Größe / Variante</label><select id="pVariant"></select></div>
   <div class="field" id="extraField" style="display:none"><label>Extra</label><select id="pExtra"><option value="">Kein Extra</option></select></div>
   <div class="field"><label>Wunsch / Hinweis</label><input id="pNote" placeholder="z. B. ohne Zwiebeln, extra scharf"></div>
   <button class="btn primary" style="width:100%" onclick="addProduct()">In den Warenkorb</button>

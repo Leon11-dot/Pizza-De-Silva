@@ -300,3 +300,165 @@ select option:disabled{color:#999}
 .account-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.account-grid input{padding:10px;border:1px solid #d9c1b0;border-radius:10px}
 .account-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 @media(max-width:580px){.account-grid{grid-template-columns:1fr}}
+
+
+/* ===== Kategorie-Seite PRO – Sidebar + Produkte + Warenkorb ===== */
+.shop-layout{
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr) 330px;
+  gap:20px;
+  align-items:start;
+}
+.category-panel{
+  position:sticky; top:92px;
+  background:#fffaf4;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 10px 30px rgba(52,25,12,.07);
+}
+.category-panel h3{
+  margin:0 0 12px;
+  font-family:Georgia,serif;
+  color:var(--burgundy);
+  font-size:1.32rem;
+}
+.category-panel .categories{
+  position:static;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  padding:0;
+  overflow:visible;
+  background:none;
+}
+.category-panel .chip{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border-radius:12px;
+  padding:10px 11px;
+  text-align:left;
+  box-shadow:none;
+}
+.category-panel .chip .cat-icon{width:24px;text-align:center}
+.category-panel .chip.active{
+  background:linear-gradient(135deg,#d82d20,#8d120d);
+  box-shadow:0 7px 18px rgba(180,35,23,.2);
+}
+.catalog-main{min-width:0}
+.catalog-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:14px;
+  margin:2px 0 14px;
+}
+.catalog-heading h2{
+  margin:0;
+  font:700 2rem/1 Georgia,serif;
+  color:var(--burgundy);
+}
+.catalog-heading p{margin:6px 0 0;color:var(--muted);font-size:.9rem}
+.catalog-info{
+  padding:8px 10px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  color:#7d4b3d;
+  font-size:.76rem;
+  font-weight:800;
+  white-space:nowrap;
+}
+.shop-layout .products{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+}
+.shop-layout .cart{
+  position:sticky;
+  top:92px;
+}
+.inline-options{
+  margin:10px 0 12px;
+  display:grid;
+  gap:7px;
+}
+.inline-options>label:not(.cheese-toggle){
+  font-size:.77rem;
+  font-weight:900;
+  color:#5f372c;
+}
+.inline-options select{
+  width:100%;
+  padding:9px 10px;
+  border:1px solid #ddc8b8;
+  border-radius:9px;
+  background:#fff;
+}
+.cheese-toggle{
+  display:grid!important;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:7px;
+  padding:9px 10px!important;
+  border:1px solid #ead7c9!important;
+  border-radius:10px!important;
+  background:#fffaf5!important;
+  cursor:pointer;
+  width:100%!important;
+}
+.cheese-toggle input{width:16px!important;height:16px!important;margin:0!important}
+.cheese-toggle span{font-size:.79rem;font-weight:800}
+.cheese-toggle b{font-size:.78rem;color:var(--burgundy);white-space:nowrap}
+.cheese-toggle:has(input:checked){
+  background:#fff0df!important;
+  border-color:#d79a5b!important;
+}
+.modal-cheese{margin-top:3px}
+.product .body{padding:13px}
+.product .body h3{font-family:Georgia,serif;color:#7f100b}
+.product .media{background:#f2ede8}
+.product .media img{width:100%;height:190px;object-fit:cover}
+.product .btn.primary{width:100%}
+
+/* New logo: more readable and less oversized */
+.brand img, .hero img[src="pizza-de-silva-logo-neu.webp"]{
+  object-fit:contain;
+}
+.brand img{
+  width:150px;
+  height:54px;
+  background:#050505;
+  border-radius:10px;
+  padding:3px 8px;
+}
+.hero-logo{
+  max-width:430px;
+  max-height:245px;
+  object-fit:contain;
+}
+
+@media(max-width:1180px){
+  .shop-layout{grid-template-columns:180px minmax(0,1fr) 300px}
+  .shop-layout .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .shop-layout{display:block}
+  .category-panel{position:static;padding:0;border:0;background:transparent;box-shadow:none;margin-bottom:12px}
+  .category-panel h3{display:none}
+  .category-panel .categories{
+    flex-direction:row;
+    overflow:auto;
+    padding:7px 0 11px;
+    scrollbar-width:none;
+  }
+  .category-panel .chip{width:auto;white-space:nowrap;border-radius:999px}
+  .shop-layout .cart{position:static;margin-top:18px}
+  .catalog-info{display:none}
+}
+@media(max-width:620px){
+  .shop-layout .products{grid-template-columns:1fr}
+  .product .media img{height:210px}
+  .catalog-heading h2{font-size:1.65rem}
+}

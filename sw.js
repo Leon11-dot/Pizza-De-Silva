@@ -1,5 +1,5 @@
 
-const CACHE='pds-render-root-images-v2';
+const CACHE='pds-complete-fingerfood-v2';
 self.addEventListener('install',e=>{self.skipWaiting();});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
   self.clients.claim(),

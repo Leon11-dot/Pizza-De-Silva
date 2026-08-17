@@ -897,8 +897,13 @@ window.PDS_PRODUCTS = [
     "description": "mit Fleischsauce",
     "image": "bolognese.webp",
     "variants": {
-      "Normal": 9.5
-    }
+      "Spaghetti": 9.5,
+      "Penne": 9.5,
+      "Maccheroni": 9.5,
+      "Tortellini": 9.5,
+      "Gnocchi": 9.5
+    },
+    "pastaCheeseExtra": 2.0
   },
   {
     "id": 28,
@@ -907,8 +912,13 @@ window.PDS_PRODUCTS = [
     "description": "mit Tomaten, Thunfisch, Oliven & Sahnesauce",
     "image": "all-tonno.webp",
     "variants": {
-      "Normal": 9.5
-    }
+      "Spaghetti": 9.5,
+      "Penne": 9.5,
+      "Maccheroni": 9.5,
+      "Tortellini": 9.5,
+      "Gnocchi": 9.5
+    },
+    "pastaCheeseExtra": 2.0
   },
   {
     "id": 30,
@@ -917,8 +927,13 @@ window.PDS_PRODUCTS = [
     "description": "Speck & Sahnesauce",
     "image": "carbonara.webp",
     "variants": {
-      "Normal": 9.5
-    }
+      "Spaghetti": 9.5,
+      "Penne": 9.5,
+      "Maccheroni": 9.5,
+      "Tortellini": 9.5,
+      "Gnocchi": 9.5
+    },
+    "pastaCheeseExtra": 2.0
   },
   {
     "id": 31,
@@ -927,8 +942,13 @@ window.PDS_PRODUCTS = [
     "description": "mit Meeresfrüchten",
     "image": "frutti-mare.webp",
     "variants": {
-      "Normal": 11.5
-    }
+      "Spaghetti": 11.5,
+      "Penne": 11.5,
+      "Maccheroni": 11.5,
+      "Tortellini": 11.5,
+      "Gnocchi": 11.5
+    },
+    "pastaCheeseExtra": 2.0
   },
   {
     "id": 32,
@@ -937,8 +957,13 @@ window.PDS_PRODUCTS = [
     "description": "Schinken, Sahnesauce",
     "image": "ala-panna.webp",
     "variants": {
-      "Normal": 9.5
-    }
+      "Spaghetti": 9.5,
+      "Penne": 9.5,
+      "Maccheroni": 9.5,
+      "Tortellini": 9.5,
+      "Gnocchi": 9.5
+    },
+    "pastaCheeseExtra": 2.0
   },
   {
     "id": 33,
@@ -949,9 +974,7 @@ window.PDS_PRODUCTS = [
     "variants": {
       "Normal": 11.0
     },
-    "extras": {
-      "Mit Käse überbacken": 2.0
-    }
+    "pastaCheeseExtra": 2.0
   },
   {
     "id": 34,
@@ -1012,16 +1035,6 @@ window.PDS_PRODUCTS = [
     "image": "nuggets.webp",
     "variants": {
       "Normal": 11.0
-    }
-  },
-  {
-    "id": 40,
-    "category": "Finger Food",
-    "name": "Hähnchen Wrap",
-    "description": "",
-    "image": "chicken-burger.webp",
-    "variants": {
-      "Normal": 9.0
     }
   },
   {
@@ -1236,16 +1249,6 @@ window.PDS_PRODUCTS = [
     "name": "Sprite",
     "description": "0,33 L",
     "image": "sprite-dose.webp",
-    "variants": {
-      "0,33 L": 2.0
-    }
-  },
-  {
-    "id": "G6",
-    "category": "Getränke",
-    "name": "Uludag",
-    "description": "0,33 L",
-    "image": "cola-dose.webp",
     "variants": {
       "0,33 L": 2.0
     }
