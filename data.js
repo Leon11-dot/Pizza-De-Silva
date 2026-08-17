@@ -1198,7 +1198,7 @@ window.PDS_PRODUCTS = [
     "category": "Desserts",
     "name": "Apfelstrudel",
     "description": "mit Vanillesauce",
-    "image": "salat-pomodori.webp",
+    "image": "apfelstrudel.webp",
     "variants": {
       "Normal": 4.5
     }
