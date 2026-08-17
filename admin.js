@@ -1,5 +1,17 @@
+async function resumeAudioOnInteraction(){
+  if(!sound) return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+  }catch(e){}
+}
+['click','pointerup','touchend','keydown'].forEach(evt=>{
+  document.addEventListener(evt,resumeAudioOnInteraction,{passive:true});
+});
+
 const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
-let sound=false,timer=null,audioCtx=null;
+let sound=localStorage.getItem('pds_sound_enabled')==='1',timer=null,audioCtx=null;
+let lastNewIds=new Set();
 
 function showLogin(message=''){
   document.getElementById('login').style.display='flex';
@@ -34,30 +46,54 @@ function logout(){
   showLogin('Du wurdest abgemeldet.');
 }
 
+function updateSoundStatus(){
+  const st=document.getElementById('soundStatus');
+  if(st) st.textContent=sound?'✅ Ton ist aktiviert':'';
+}
 async function initAdmin(){
   if(!PDS_BACKEND.isSignedIn()) return showLogin();
   const ok=await PDS_BACKEND.verifyAdmin();
   if(!ok){PDS_BACKEND.signOut();return showLogin('Bitte erneut anmelden.');}
   showPanel();
+  updateSoundStatus();
   await render();
 }
 
-function beep(){
-  if(!sound)return;
+async function beep(){
+  if(!sound) return;
   try{
     audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.frequency.value=920;g.gain.value=.075;o.connect(g);g.connect(audioCtx.destination);
-    o.start();setTimeout(()=>o.stop(),380);
-  }catch(e){}
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+    const now=audioCtx.currentTime;
+    const gain=audioCtx.createGain();
+    gain.gain.setValueAtTime(0.0001,now);
+    gain.gain.exponentialRampToValueAtTime(0.2,now+0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001,now+0.9);
+    gain.connect(audioCtx.destination);
+    [880,1175].forEach((freq,i)=>{
+      const o=audioCtx.createOscillator();
+      o.type='sine';
+      o.frequency.value=freq;
+      o.connect(gain);
+      o.start(now+i*0.15);
+      o.stop(now+0.7+i*0.15);
+    });
+  }catch(e){ console.warn('Bestellalarm Fehler',e); }
 }
 
-function enableSound(){sound=true;beep();alert('Bestellalarm ist aktiviert.')}
-
-function setEta(id,min,el){
-  document.querySelectorAll(`[data-order="${CSS.escape(String(id))}"] .time`).forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');
-  document.querySelector(`[data-order="${CSS.escape(String(id))}"]`).dataset.eta=min;
+async function enableSound(){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    await audioCtx.resume();
+    sound=true;
+    localStorage.setItem('pds_sound_enabled','1');
+    const st=document.getElementById('soundStatus');
+    if(st) st.textContent='✅ Ton ist aktiviert';
+    await beep();
+  }catch(e){
+    const st=document.getElementById('soundStatus');
+    if(st) st.textContent='❌ Ton konnte nicht aktiviert werden';
+  }
 }
 
 async function accept(id){
@@ -105,9 +141,13 @@ async function render(){
     document.getElementById('sDone').textContent=all.filter(x=>x.status==='done').length;
     document.getElementById('sRevenue').textContent=money(all.filter(x=>x.status!=='cancelled').reduce((s,x)=>s+x.total,0));
 
+    const currentNewIds=new Set(all.filter(x=>x.status==='new').map(x=>String(x.id)));
+    const hasNewArrival=[...currentNewIds].some(id=>!lastNewIds.has(id));
+    if(hasNewArrival && sound) beep();
+    lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
-    if(has&&!timer)timer=setInterval(beep,1100);
+    if(has&&sound&&!timer)timer=setInterval(beep,4500);
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
