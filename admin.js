@@ -127,6 +127,49 @@ async function expire(all){
   }
 }
 
+
+function printOrder(id){
+  PDS_BACKEND.listOrders().then(all=>{
+    const x=all.find(o=>String(o.id)===String(id));
+    if(!x)return alert('Bestellung nicht gefunden.');
+
+    const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const m=v=>Number(v||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
+    const c=x.customer||{};
+    const isDelivery=c.type==='Lieferung';
+    const items=(x.items||[]).map(i=>{
+      const details=[];
+      if(i.variant)details.push(i.variant);
+      if(i.extraName)details.push(i.extraName);
+      if(Array.isArray(i.extras)&&i.extras.length)details.push('Extras: '+i.extras.map(e=>typeof e==='string'?e:(e.name||e.label||'')).filter(Boolean).join(', '));
+      if(i.note)details.push('Wunsch: '+i.note);
+      const line=Number(i.total??i.lineTotal??(Number(i.price||i.unitPrice||0)*Number(i.qty||1)));
+      return `<tr><td class="qty">${Number(i.qty||1)}×</td><td><b>${esc(i.name)}</b>${details.length?`<div class="details">${details.map(esc).join('<br>')}</div>`:''}</td><td class="price">${m(line)}</td></tr>`;
+    }).join('');
+
+    const fee=Number(x.deliveryFee??x.delivery_fee??0);
+    const subtotal=Number(x.subtotal??Math.max(0,Number(x.total||0)-fee));
+    const html=`<!doctype html><html><head><meta charset="utf-8"><title>Bestellung ${esc(x.number)}</title>
+<style>
+@page{margin:6mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#000;margin:0;font-size:13px}.r{max-width:760px;margin:auto}
+.h{display:grid;grid-template-columns:1fr auto;gap:16px;border-bottom:2px solid #000;padding-bottom:9px}h1{font-size:22px;margin:0 0 4px}.mode{font-size:23px;font-weight:900;text-align:right}.pay{text-align:right;font-weight:800;margin-top:5px}
+.box{padding:10px 0;border-bottom:1px solid #999}.title{font-size:11px;font-weight:900;letter-spacing:.6px;margin-bottom:5px}.customer{font-size:14px;line-height:1.45}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:11px;border-bottom:1px solid #000;padding:6px 3px}td{vertical-align:top;border-bottom:1px solid #ccc;padding:8px 3px}.qty{width:45px;font-weight:900}.price{width:90px;text-align:right;font-weight:900}.details{font-size:11px;line-height:1.4;margin-top:3px}
+.totals{width:280px;margin:12px 0 0 auto}.sum{display:flex;justify-content:space-between;padding:3px 0}.grand{border-top:2px solid #000;margin-top:5px;padding-top:7px;font-size:19px;font-weight:900}.note{font-weight:700}.footer{text-align:center;font-size:10px;margin-top:14px}
+</style></head><body><div class="r">
+<div class="h"><div><h1>Pizza De Silva</h1><div>Niederstraße 76<br>47829 Krefeld-Uerdingen</div><br><b>Bestellung:</b> #${esc(x.number)}<br><b>Zeit:</b> ${new Date(x.createdAt).toLocaleString('de-DE')}</div><div><div class="mode">${esc(c.type||'')}</div><div class="pay">${esc(c.payment||'')}</div></div></div>
+<div class="box"><div class="title">KUNDENDATEN</div><div class="customer"><b>${esc(c.name||'')}</b><br>Telefon: ${esc(c.phone||'')}${isDelivery?`<br><b>Lieferadresse:</b> ${esc(c.address||'')}`:''}</div></div>
+<div class="box"><div class="title">BESTELLUNG</div><table><thead><tr><th>MENGE</th><th>PRODUKT / EXTRAS</th><th style="text-align:right">PREIS</th></tr></thead><tbody>${items}</tbody></table>
+<div class="totals"><div class="sum"><span>Zwischensumme</span><b>${m(subtotal)}</b></div>${isDelivery?`<div class="sum"><span>Liefergebühr</span><b>${m(fee)}</b></div>`:''}<div class="sum grand"><span>GESAMT</span><span>${m(x.total)}</span></div></div></div>
+${c.note?`<div class="box"><div class="title">BEMERKUNG</div><div class="note">${esc(c.note)}</div></div>`:''}
+<div class="footer">Pizza De Silva · Niederstraße 76 · 47829 Krefeld-Uerdingen<br>Bestellausdruck – keine Rechnung</div>
+</div><script>window.onload=()=>setTimeout(()=>window.print(),150)<\/script></body></html>`;
+    const w=window.open('','_blank','width=900,height=900');
+    if(!w)return alert('Popup blockiert. Bitte Popups erlauben.');
+    w.document.open();w.document.write(html);w.document.close();
+  }).catch(()=>alert('Bestellung konnte nicht zum Drucken geladen werden.'));
+}
+
 async function render(){
   if(document.getElementById('panel').style.display==='none') return;
   try{
@@ -168,6 +211,7 @@ async function render(){
         <p><b>Gesamt: ${money(x.total)}</b>${x.eta?` • ca. ${x.eta} Min.`:''}</p>
         ${x.customer.note?`<p class="meta">Hinweis: ${x.customer.note}</p>`:''}
         ${x.cancelReason?`<div class="notice">${x.cancelReason}</div>`:''}
+        <div class="actions"><button class="btn secondary" onclick="printOrder('${x.id}')">🖨️ Drucken</button></div>
         ${actions}
       </article>`;
     }).join(''):'<div class="empty">Noch keine Bestellungen.</div>';
