@@ -4,1034 +4,898 @@ window.PDS_PRODUCTS = [
     "category": "Pizza",
     "name": "Margherita",
     "description": "Tomatensauce & Käse",
-    "image": "margherita.png",
+    "image": "margherita.webp",
     "variants": {
       "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 8.0
+      "Groß · 30 cm": 8.0,
+      "Family · 50 cm": 22.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 2,
     "category": "Pizza",
     "name": "Cipolla",
     "description": "Zwiebeln",
-    "image": "margherita.png",
+    "image": "margherita.webp",
     "variants": {
       "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0
+      "Groß · 30 cm": 9.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 3,
     "category": "Pizza",
     "name": "Funghi",
     "description": "frische Champignons",
-    "image": "funghi.png",
+    "image": "funghi.webp",
     "variants": {
       "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0
+      "Groß · 30 cm": 9.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 4,
     "category": "Pizza",
     "name": "Salami",
     "description": "Salami",
-    "image": "salami.png",
+    "image": "salami.webp",
     "variants": {
       "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0
+      "Groß · 30 cm": 9.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 5,
     "category": "Pizza",
     "name": "Prosciutto",
     "description": "Schinken",
-    "image": "prosciutto.png",
+    "image": "prosciutto.webp",
     "variants": {
       "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0
+      "Groß · 30 cm": 9.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 6,
     "category": "Pizza",
     "name": "Spinaci",
     "description": "Spinat & Knoblauch",
-    "image": "spinaci.png",
+    "image": "spinaci.webp",
     "variants": {
       "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.0
+      "Groß · 30 cm": 10.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 7,
     "category": "Pizza",
     "name": "Tonno",
     "description": "Thunfisch",
-    "image": "tonno.png",
+    "image": "tonno.webp",
     "variants": {
       "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 10.0
+      "Groß · 30 cm": 10.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 8,
     "category": "Pizza",
     "name": "Diavolo",
     "description": "Scharfe Salami, Peperoni & Oliven",
-    "image": "diavolo.png",
+    "image": "diavolo.webp",
     "variants": {
       "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 10.0
+      "Groß · 30 cm": 10.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 9,
     "category": "Pizza",
     "name": "Hawaii",
     "description": "Schinken & Ananas",
-    "image": "hawaii.png",
+    "image": "hawaii.webp",
     "variants": {
       "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 10.0
+      "Groß · 30 cm": 10.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 10,
     "category": "Pizza",
     "name": "Mafiosi",
     "description": "Peperoni & Zwiebeln",
-    "image": "mafiosi.png",
+    "image": "mafiosi.webp",
     "variants": {
       "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 9.5
+      "Groß · 30 cm": 9.5,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 11,
     "category": "Pizza",
     "name": "Bolognese",
     "description": "Fleischsauce & Zwiebeln",
-    "image": "bolognese-pizza.png",
+    "image": "bolognese-pizza.webp",
     "variants": {
       "Klein · 26 cm": 8.0,
-      "Groß · 30 cm": 10.5
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 12,
     "category": "Pizza",
     "name": "Hähnchenbrust",
     "description": "Hähnchenbrustfilet, Zwiebeln & Käse",
-    "image": "haehnchen.png",
+    "image": "haehnchen.webp",
     "variants": {
       "Klein · 26 cm": 8.5,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 13,
     "category": "Pizza",
     "name": "Hähnchen Hollandaise",
     "description": "Hähnchenbrust, Sauce Hollandaise & Broccoli",
-    "image": "hollandaise.png",
+    "image": "hollandaise.webp",
     "variants": {
       "Klein · 26 cm": 10.0,
-      "Groß · 30 cm": 11.5
+      "Groß · 30 cm": 11.5,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 14,
     "category": "Pizza",
     "name": "Bella Napoli",
     "description": "Thunfisch & Zwiebeln",
-    "image": "bella-napoli.png",
+    "image": "bella-napoli.webp",
     "variants": {
       "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 15,
     "category": "Pizza",
     "name": "Quattro Stagioni",
     "description": "Schinken, Salami, Spinat & frische Champignons",
-    "image": "quattro-stagioni.png",
+    "image": "quattro-stagioni.webp",
     "variants": {
       "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 16,
     "category": "Pizza",
     "name": "Primavera",
     "description": "Schinken, Salami & frische Champignons",
-    "image": "primavera.png",
+    "image": "primavera.webp",
     "variants": {
       "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 17,
     "category": "Pizza",
     "name": "Mozzarella",
     "description": "Mozzarella",
-    "image": "mozzarella.png",
+    "image": "mozzarella.webp",
     "variants": {
       "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 18,
     "category": "Pizza",
     "name": "Calzone",
     "description": "gefüllt mit Schinken, Salami, Bolognese & frischen Champignons",
-    "image": "calzone.png",
+    "image": "calzone.webp",
     "variants": {
       "Klein · 26 cm": 10.5,
       "Groß · 30 cm": 10.5
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 19,
     "category": "Pizza",
     "name": "Michele",
     "description": "Hähnchenbrustfilet, Schinken & Zwiebeln",
-    "image": "michele.png",
+    "image": "michele.webp",
     "variants": {
       "Klein · 26 cm": 8.5,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 20,
     "category": "Pizza",
     "name": "Vegetaria",
     "description": "Broccoli, frische Champignons, Spinat, Paprika & Zwiebeln",
-    "image": "vegetaria.png",
+    "image": "vegetaria.webp",
     "variants": {
       "Klein · 26 cm": 8.5,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 25.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 21,
     "category": "Pizza",
     "name": "Speciale",
     "description": "Schafskäse, Spinat & Ei",
-    "image": "speciale.png",
+    "image": "speciale.webp",
     "variants": {
       "Klein · 26 cm": 9.0,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 22,
     "category": "Pizza",
     "name": "Capricciosa",
     "description": "Thunfisch, Schinken, Oliven & Artischocken",
-    "image": "capricciosa.png",
+    "image": "capricciosa.webp",
     "variants": {
       "Klein · 26 cm": 9.0,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 23,
     "category": "Pizza",
     "name": "Sicilia",
     "description": "Salami, Oliven, Sardellen & Kapern",
-    "image": "sicilia.png",
+    "image": "sicilia.webp",
     "variants": {
       "Klein · 26 cm": 9.5,
-      "Groß · 30 cm": 11.5
+      "Groß · 30 cm": 11.5,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 24,
     "category": "Pizza",
     "name": "Barbecue (BBQ)",
     "description": "Speck, Zwiebeln & BBQ-Sauce",
-    "image": "bbq-burger.png",
+    "image": "bbq-burger.webp",
     "variants": {
       "Klein · 26 cm": 9.0,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 25,
     "category": "Pizza",
     "name": "Quattro Formaggi",
     "description": "Vier Käsesorten",
-    "image": "quattro-formaggi.png",
+    "image": "quattro-formaggi.webp",
     "variants": {
       "Klein · 26 cm": 8.0,
-      "Groß · 30 cm": 11.0
+      "Groß · 30 cm": 11.0,
+      "Family · 50 cm": 28.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 26,
     "category": "Pizza",
     "name": "Scampi",
     "description": "Krabben & Knoblauch",
-    "image": "scampi.png",
+    "image": "scampi.webp",
     "variants": {
       "Klein · 26 cm": 10.0,
-      "Groß · 30 cm": 12.0
+      "Groß · 30 cm": 12.0,
+      "Family · 50 cm": 30.0
     },
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": "extra",
     "category": "Pizza",
     "name": "Weitere Beläge",
     "description": "außer Meeresfrüchte",
-    "image": "margherita.png",
+    "image": "margherita.webp",
     "variants": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
     },
     "isExtra": true,
-    "extras": [
-      "Salami",
+    "pizzaExtras": [
+      "Käse",
       "Schinken",
-      "Champignons",
-      "Spinat",
-      "Zwiebeln",
-      "Paprika",
-      "Brokkoli",
-      "Peperoni",
-      "Oliven",
+      "Salami",
+      "Thunfisch",
       "Ananas",
       "Mais",
-      "Thunfisch",
-      "Käse",
-      "Feta",
-      "Hähnchenbrustfilet",
-      "Fleischsauce / Bolognese",
-      "Sauce Hollandaise",
-      "Kapern",
-      "Sardellen",
-      "Artischocken"
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
     ],
-    "extraPrices": {
+    "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0
-    },
-    "extraNote": "Jeder zusätzliche Standardbelag wird einzeln berechnet."
+      "Groß · 30 cm": 1.0,
+      "Family · 50 cm": 4.0
+    }
   },
   {
     "id": 27,
     "category": "Nudelgerichte",
     "name": "Bolognese",
     "description": "mit Fleischsauce",
-    "image": "bolognese.png",
+    "image": "bolognese.webp",
     "variants": {
       "Normal": 9.5
     }
@@ -1041,7 +905,7 @@ window.PDS_PRODUCTS = [
     "category": "Nudelgerichte",
     "name": "All Tonno",
     "description": "mit Tomaten, Thunfisch, Oliven & Sahnesauce",
-    "image": "all-tonno.png",
+    "image": "all-tonno.webp",
     "variants": {
       "Normal": 9.5
     }
@@ -1051,7 +915,7 @@ window.PDS_PRODUCTS = [
     "category": "Nudelgerichte",
     "name": "Carbonara",
     "description": "Speck & Sahnesauce",
-    "image": "carbonara.png",
+    "image": "carbonara.webp",
     "variants": {
       "Normal": 9.5
     }
@@ -1061,7 +925,7 @@ window.PDS_PRODUCTS = [
     "category": "Nudelgerichte",
     "name": "Frutti di Mare",
     "description": "mit Meeresfrüchten",
-    "image": "frutti-mare.png",
+    "image": "frutti-mare.webp",
     "variants": {
       "Normal": 11.5
     }
@@ -1071,7 +935,7 @@ window.PDS_PRODUCTS = [
     "category": "Nudelgerichte",
     "name": "Alle Panna",
     "description": "Schinken, Sahnesauce",
-    "image": "ala-panna.png",
+    "image": "ala-panna.webp",
     "variants": {
       "Normal": 9.5
     }
@@ -1081,7 +945,7 @@ window.PDS_PRODUCTS = [
     "category": "Nudelgerichte",
     "name": "Lasagne",
     "description": "mit Fleischsauce",
-    "image": "lasagne.png",
+    "image": "lasagne.webp",
     "variants": {
       "Normal": 11.0
     },
@@ -1094,7 +958,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Pommes Frites",
     "description": "",
-    "image": "pommes.png",
+    "image": "pommes.webp",
     "variants": {
       "Klein": 3.0,
       "Groß": 4.0
@@ -1105,7 +969,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Cheeseburger mit Pommes",
     "description": "",
-    "image": "cheeseburger.png",
+    "image": "cheeseburger.webp",
     "variants": {
       "Normal": 8.5
     }
@@ -1115,7 +979,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Chicken Burger mit Pommes",
     "description": "",
-    "image": "chicken-burger.png",
+    "image": "chicken-burger.webp",
     "variants": {
       "Normal": 8.5
     }
@@ -1125,7 +989,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "BBQ Burger mit Pommes",
     "description": "",
-    "image": "bbq-burger.png",
+    "image": "bbq-burger.webp",
     "variants": {
       "Normal": 9.0
     }
@@ -1135,7 +999,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Chicken Wings mit Pommes & Dip",
     "description": "",
-    "image": "wings.png",
+    "image": "wings.webp",
     "variants": {
       "Normal": 11.0
     }
@@ -1145,7 +1009,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Chicken Nuggets mit Pommes & Dip",
     "description": "",
-    "image": "nuggets.png",
+    "image": "nuggets.webp",
     "variants": {
       "Normal": 11.0
     }
@@ -1155,7 +1019,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Hähnchen Wrap",
     "description": "",
-    "image": "chicken-burger.png",
+    "image": "chicken-burger.webp",
     "variants": {
       "Normal": 9.0
     }
@@ -1165,7 +1029,7 @@ window.PDS_PRODUCTS = [
     "category": "Pizzabrötchen",
     "name": "Pizzabrötchen",
     "description": "mit Kräuterbutter",
-    "image": "pizza-broetchen.png",
+    "image": "pizza-broetchen.webp",
     "variants": {
       "Normal": 4.0
     }
@@ -1175,7 +1039,7 @@ window.PDS_PRODUCTS = [
     "category": "Pizzabrötchen",
     "name": "Pizzabrötchen De Silva",
     "description": "gefüllt mit 2 Belägen nach Wahl",
-    "image": "pizza-broetchen.png",
+    "image": "pizza-broetchen.webp",
     "variants": {
       "Normal": 7.0
     },
@@ -1188,7 +1052,7 @@ window.PDS_PRODUCTS = [
     "category": "Fleischgerichte",
     "name": "Schnitzel Wiener Art",
     "description": "mit Pommes & Salat",
-    "image": "schnitzel-wiener.png",
+    "image": "schnitzel-wiener.webp",
     "variants": {
       "Normal": 10.0
     }
@@ -1198,7 +1062,7 @@ window.PDS_PRODUCTS = [
     "category": "Fleischgerichte",
     "name": "Jägerschnitzel",
     "description": "mit Pommes & Salat",
-    "image": "jaeger.png",
+    "image": "jaeger.webp",
     "variants": {
       "Normal": 11.0
     }
@@ -1208,7 +1072,7 @@ window.PDS_PRODUCTS = [
     "category": "Fleischgerichte",
     "name": "Bolognese-Schnitzel",
     "description": "mit Käse überbacken, Pommes & Salat",
-    "image": "bolognese-schnitzel.png",
+    "image": "bolognese-schnitzel.webp",
     "variants": {
       "Normal": 12.5
     }
@@ -1218,7 +1082,7 @@ window.PDS_PRODUCTS = [
     "category": "Fleischgerichte",
     "name": "Hawaii-Schnitzel",
     "description": "mit Käse überbacken, Pommes & Salat",
-    "image": "hawaii-schnitzel.png",
+    "image": "hawaii-schnitzel.webp",
     "variants": {
       "Normal": 12.5
     }
@@ -1228,7 +1092,7 @@ window.PDS_PRODUCTS = [
     "category": "Baguettes",
     "name": "mit Salami",
     "description": "Jedes Baguette mit Salat & Remoulade",
-    "image": "baguette-salami.png",
+    "image": "baguette-salami.webp",
     "variants": {
       "Normal": 7.0
     }
@@ -1238,7 +1102,7 @@ window.PDS_PRODUCTS = [
     "category": "Baguettes",
     "name": "mit Schinken",
     "description": "Jedes Baguette mit Salat & Remoulade",
-    "image": "baguette-schinken.png",
+    "image": "baguette-schinken.webp",
     "variants": {
       "Normal": 7.0
     }
@@ -1248,7 +1112,7 @@ window.PDS_PRODUCTS = [
     "category": "Baguettes",
     "name": "mit Ei",
     "description": "Jedes Baguette mit Salat & Remoulade",
-    "image": "baguette-ei.png",
+    "image": "baguette-ei.webp",
     "variants": {
       "Normal": 7.0
     }
@@ -1258,7 +1122,7 @@ window.PDS_PRODUCTS = [
     "category": "Baguettes",
     "name": "mit Thunfisch",
     "description": "Jedes Baguette mit Salat & Remoulade",
-    "image": "baguette-thunfisch.png",
+    "image": "baguette-thunfisch.webp",
     "variants": {
       "Normal": 7.5
     }
@@ -1268,7 +1132,7 @@ window.PDS_PRODUCTS = [
     "category": "Baguettes",
     "name": "mit Hähnchenbrustfilet",
     "description": "Jedes Baguette mit Salat & Remoulade",
-    "image": "baguette-haehnchen.png",
+    "image": "baguette-haehnchen.webp",
     "variants": {
       "Normal": 8.0
     },
@@ -1281,7 +1145,7 @@ window.PDS_PRODUCTS = [
     "category": "Salate",
     "name": "Mista",
     "description": "Gemischter Salat",
-    "image": "salat-mista.png",
+    "image": "salat-mista.webp",
     "variants": {
       "Normal": 5.0
     }
@@ -1291,7 +1155,7 @@ window.PDS_PRODUCTS = [
     "category": "Salate",
     "name": "Capricciosa",
     "description": "Thunfisch, Ei, Schinken, Oliven & Käse",
-    "image": "salat-capricciosa.png",
+    "image": "salat-capricciosa.webp",
     "variants": {
       "Normal": 8.0
     }
@@ -1301,7 +1165,7 @@ window.PDS_PRODUCTS = [
     "category": "Salate",
     "name": "Bauernsalat",
     "description": "mit Schafskäse, Zwiebeln, Paprika, Oliven & mehr",
-    "image": "salat-bauern.png",
+    "image": "salat-bauern.webp",
     "variants": {
       "Normal": 8.0
     }
@@ -1311,112 +1175,9 @@ window.PDS_PRODUCTS = [
     "category": "Salate",
     "name": "Di Pomodori",
     "description": "Tomatensalat mit Zwiebeln",
-    "image": "salat-pomodori.png",
+    "image": "salat-pomodori.webp",
     "variants": {
       "Normal": 6.5
-    }
-  },
-  {
-    "id": 56,
-    "category": "Getränke",
-    "name": "Cola & Zero, Fanta & Exotic, Mezzo Mix, Sprite",
-    "description": "0,33 l",
-    "image": "cola-dose.png",
-    "variants": {
-      "0,33 l": 2.0
-    }
-  },
-  {
-    "id": 57,
-    "category": "Getränke",
-    "name": "Cola & Zero, Fanta & Exotic, Mezzo Mix, Sprite",
-    "description": "1,25 l",
-    "image": "cola-flasche.png",
-    "variants": {
-      "1,25 l": 3.5
-    }
-  },
-  {
-    "id": 58,
-    "category": "Getränke",
-    "name": "Hot Blood",
-    "description": "0,25 l",
-    "image": "hotblood.png",
-    "variants": {
-      "0,25 l": 2.0
-    }
-  },
-  {
-    "id": 59,
-    "category": "Getränke",
-    "name": "Red Bull",
-    "description": "0,25 l",
-    "image": "redbull.png",
-    "variants": {
-      "0,25 l": 2.5
-    }
-  },
-  {
-    "id": 60,
-    "category": "Getränke",
-    "name": "Krombacher, Bitburger, Warsteiner",
-    "description": "0,5 l",
-    "image": "wasser.png",
-    "variants": {
-      "0,5 l": 2.5
-    },
-    "ageRestricted": true
-  },
-  {
-    "id": 61,
-    "category": "Getränke",
-    "name": "Curuba, Tyskie",
-    "description": "0,5 l",
-    "image": "wasser.png",
-    "variants": {
-      "0,5 l": 2.5
-    },
-    "ageRestricted": true
-  },
-  {
-    "id": 62,
-    "category": "Getränke",
-    "name": "Königshofer & Radler",
-    "description": "0,5 l",
-    "image": "wasser.png",
-    "variants": {
-      "0,5 l": 2.0
-    },
-    "ageRestricted": true
-  },
-  {
-    "id": 63,
-    "category": "Getränke",
-    "name": "Capri Sun",
-    "description": "200 ml",
-    "image": "capri-sun.png",
-    "variants": {
-      "200 ml": 1.0
-    }
-  },
-  {
-    "id": 64,
-    "category": "Getränke",
-    "name": "Durstlöscher",
-    "description": "500 ml",
-    "image": "durstloescher.png",
-    "variants": {
-      "500 ml": 1.5
-    }
-  },
-  {
-    "id": 65,
-    "category": "Getränke",
-    "name": "Wasser still, medium, classic",
-    "description": "0,5 l",
-    "image": "wasser.png",
-    "variants": {
-      "0,5 l": 1.5
     }
   },
   {
@@ -1424,9 +1185,169 @@ window.PDS_PRODUCTS = [
     "category": "Desserts",
     "name": "Apfelstrudel",
     "description": "mit Vanillesauce",
-    "image": "salat-pomodori.png",
+    "image": "salat-pomodori.webp",
     "variants": {
       "Normal": 4.5
+    }
+  },
+  {
+    "id": "G1",
+    "category": "Getränke",
+    "name": "Coca-Cola",
+    "description": "0,33 L",
+    "image": "cola-dose.webp",
+    "variants": {
+      "0,33 L": 2.0
+    }
+  },
+  {
+    "id": "G2",
+    "category": "Getränke",
+    "name": "Coca-Cola Zero",
+    "description": "0,33 L",
+    "image": "cola-dose.webp",
+    "variants": {
+      "0,33 L": 2.0
+    }
+  },
+  {
+    "id": "G3",
+    "category": "Getränke",
+    "name": "Fanta",
+    "description": "0,33 L",
+    "image": "fanta-dose.webp",
+    "variants": {
+      "0,33 L": 2.0
+    }
+  },
+  {
+    "id": "G4",
+    "category": "Getränke",
+    "name": "Mezzo Mix",
+    "description": "0,33 L",
+    "image": "mezzo-dose.webp",
+    "variants": {
+      "0,33 L": 2.0
+    }
+  },
+  {
+    "id": "G5",
+    "category": "Getränke",
+    "name": "Sprite",
+    "description": "0,33 L",
+    "image": "sprite-dose.webp",
+    "variants": {
+      "0,33 L": 2.0
+    }
+  },
+  {
+    "id": "G6",
+    "category": "Getränke",
+    "name": "Uludag",
+    "description": "0,33 L",
+    "image": "cola-dose.webp",
+    "variants": {
+      "0,33 L": 2.0
+    }
+  },
+  {
+    "id": "G7",
+    "category": "Getränke",
+    "name": "Coca-Cola",
+    "description": "1,25 L",
+    "image": "cola-flasche.webp",
+    "variants": {
+      "1,25 L": 3.5
+    }
+  },
+  {
+    "id": "G8",
+    "category": "Getränke",
+    "name": "Coca-Cola Zero",
+    "description": "1,25 L",
+    "image": "cola-flasche.webp",
+    "variants": {
+      "1,25 L": 3.5
+    }
+  },
+  {
+    "id": "G9",
+    "category": "Getränke",
+    "name": "Fanta",
+    "description": "1,25 L",
+    "image": "fanta-flasche.webp",
+    "variants": {
+      "1,25 L": 3.5
+    }
+  },
+  {
+    "id": "G10",
+    "category": "Getränke",
+    "name": "Mezzo Mix",
+    "description": "1,25 L",
+    "image": "mezzo-flasche.webp",
+    "variants": {
+      "1,25 L": 3.5
+    }
+  },
+  {
+    "id": "G11",
+    "category": "Getränke",
+    "name": "Sprite",
+    "description": "1,25 L",
+    "image": "sprite-flasche.webp",
+    "variants": {
+      "1,25 L": 3.5
+    }
+  },
+  {
+    "id": "G12",
+    "category": "Getränke",
+    "name": "Durstlöscher",
+    "description": "500 ml",
+    "image": "durstloescher.webp",
+    "variants": {
+      "500 ml": 1.5
+    }
+  },
+  {
+    "id": "G13",
+    "category": "Getränke",
+    "name": "Capri Sun",
+    "description": "200 ml",
+    "image": "capri-sun.webp",
+    "variants": {
+      "200 ml": 1.0
+    }
+  },
+  {
+    "id": "G14",
+    "category": "Getränke",
+    "name": "Wasser still",
+    "description": "0,5 L",
+    "image": "wasser.webp",
+    "variants": {
+      "0,5 L": 1.5
+    }
+  },
+  {
+    "id": "G15",
+    "category": "Getränke",
+    "name": "Wasser medium",
+    "description": "0,5 L",
+    "image": "wasser.webp",
+    "variants": {
+      "0,5 L": 1.5
+    }
+  },
+  {
+    "id": "G16",
+    "category": "Getränke",
+    "name": "Wasser classic",
+    "description": "0,5 L",
+    "image": "wasser.webp",
+    "variants": {
+      "0,5 L": 1.5
     }
   }
 ];

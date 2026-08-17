@@ -1,7 +1,6 @@
 
-const CACHE='pds-v11-auto-distance-customer';
-const STATIC=['./','./index.html'];
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)))});
+const CACHE='pds-render-fast-v1';
+self.addEventListener('install',e=>{self.skipWaiting();});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
   self.clients.claim(),
   caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
@@ -9,10 +8,15 @@ self.addEventListener('activate',e=>e.waitUntil(Promise.all([
 self.addEventListener('fetch',e=>{
   if(e.request.method!=='GET') return;
   const u=new URL(e.request.url);
-  const fresh=/\.(js|css|json)$/.test(u.pathname);
-  if(fresh){
-    e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));
-  }else{
-    e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
+  if(/\.(webp|png|jpg|jpeg|svg)$/i.test(u.pathname)){
+    e.respondWith(caches.open(CACHE).then(async c=>{
+      const hit=await c.match(e.request);
+      if(hit) return hit;
+      const res=await fetch(e.request);
+      if(res.ok) c.put(e.request,res.clone());
+      return res;
+    }));
+    return;
   }
+  e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));
 });

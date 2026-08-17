@@ -126,7 +126,7 @@ function renderProducts(){
   PDS_PRODUCTS.filter(p=>!p.isExtra&&(active==='Alle'||p.category===active)).forEach(p=>{
     const first=Object.values(p.variants)[0];
     const card=document.createElement('article'); card.className='product';
-    card.innerHTML=`<div class="media"><img src="assets/${p.image}" alt="${p.name}"><span class="num">${p.id}</span>${p.ageRestricted?'<span class="age">18+</span>':''}</div>
+    card.innerHTML=`<div class="media"><img src="assets/${p.image}" alt="${p.name}" loading="lazy" decoding="async"><span class="num">${p.id}</span>${p.ageRestricted?'<span class="age">18+</span>':''}</div>
       <div class="body"><h3>${p.name}</h3><div class="desc">${p.description||'&nbsp;'}</div>
       <div class="price">ab ${money(first)}</div><button class="btn primary">Auswählen</button></div>`;
     card.querySelector('button').onclick=()=>openProduct(p);
