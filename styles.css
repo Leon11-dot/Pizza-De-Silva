@@ -76,7 +76,7 @@ a{color:inherit;text-decoration:none}
   box-shadow:var(--shadow);
   background:
     linear-gradient(90deg,rgba(38,9,6,.93) 0%,rgba(73,16,10,.78) 42%,rgba(54,11,7,.20) 71%,rgba(0,0,0,.02) 100%),
-    url('assets/diavolo.png') center 44%/cover no-repeat;
+    url('diavolo.png') center 44%/cover no-repeat;
 }
 .hero:after{
   content:"";
@@ -232,7 +232,7 @@ a{color:inherit;text-decoration:none}
   border-radius:28px;padding:28px;
   background:
     linear-gradient(90deg,rgba(124,16,11,.96),rgba(187,37,22,.90)),
-    url('assets/pizza-broetchen.png') center/cover;
+    url('pizza-broetchen.png') center/cover;
   color:#fff;display:flex;justify-content:space-between;align-items:center;gap:22px;
   box-shadow:var(--shadow)
 }
