@@ -239,7 +239,7 @@ async function render(){
       if(x.status==='preparing')actions=`<div class="actions"><button class="btn secondary" onclick="status('${x.id}','ready')">${x.customer.type==='Abholung'?'Bereit zur Abholung':'Als unterwegs markieren'}</button></div>`;
       if(x.status==='ready')actions=`<div class="actions"><button class="btn green" onclick="status('${x.id}','done')">Abschließen</button></div>`;
 
-      return `<article class="order ${x.status}" data-order="${x.id}" data-eta="${selectedEtas[String(x.id)]||x.eta||''}">`
+      return `<article class="order ${x.status}" data-order="${x.id}" data-eta="${selectedEtas[String(x.id)]||x.eta||''}">
         <h3>#${x.number} • ${labels[x.status]}</h3>
         <div class="meta">${new Date(x.createdAt).toLocaleString('de-DE')} • ${x.customer.type} • ${x.customer.payment}</div>
         <p><b>${x.customer.name}</b><br>${x.customer.phone}<br>${x.customer.address||''}</p>
