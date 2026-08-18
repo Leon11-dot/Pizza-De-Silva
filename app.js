@@ -50,27 +50,117 @@ async function checkDeliveryAddress(){
     renderCart();
   }catch(e){verifiedDeliveryZone=null;info.className="notice";info.textContent="Adresse nicht gefunden. Bitte Straße, Hausnummer, PLZ und Ort vollständig eingeben.";renderCart();}
 }
-async function syncCustomerUi(){
-  const guest=document.getElementById("customerAccountGuest"),logged=document.getElementById("customerAccountLogged"),status=document.getElementById("customerAccountStatus");
-  if(!guest||!logged||!status) return;
-  if(PDS_BACKEND.isCustomerSignedIn()){
-    guest.style.display="none";logged.style.display="block";status.textContent="Angemeldet";
-    try{const p=await PDS_BACKEND.getCustomerProfile();if(p){if(p.name)name.value=p.name;if(p.phone)phone.value=p.phone;if(p.address)address.value=p.address;}}catch(e){}
-  }else{guest.style.display="block";logged.style.display="none";status.textContent="Nicht angemeldet";}
+function customerFormData(){
+  return {
+    name: document.getElementById("name")?.value.trim() || "",
+    phone: document.getElementById("phone")?.value.trim() || "",
+    address: document.getElementById("address")?.value.trim() || ""
+  };
 }
+
+function fillCustomerForm(profile){
+  if(!profile) return;
+  const nameEl=document.getElementById("name");
+  const phoneEl=document.getElementById("phone");
+  const addressEl=document.getElementById("address");
+
+  if(nameEl && profile.name) nameEl.value=profile.name;
+  if(phoneEl && profile.phone) phoneEl.value=profile.phone;
+  if(addressEl && profile.address) addressEl.value=profile.address;
+}
+
+async function saveCurrentCustomerData(){
+  if(!PDS_BACKEND.isCustomerSignedIn()) return;
+  const data=customerFormData();
+  if(!data.name && !data.phone && !data.address) return;
+  try{
+    await PDS_BACKEND.saveCustomerProfile(data);
+  }catch(e){
+    console.warn("Kundendaten konnten nicht gespeichert werden",e);
+  }
+}
+
+async function syncCustomerUi(){
+  const guest=document.getElementById("customerAccountGuest");
+  const logged=document.getElementById("customerAccountLogged");
+  const status=document.getElementById("customerAccountStatus");
+  if(!guest||!logged||!status) return;
+
+  if(PDS_BACKEND.isCustomerSignedIn()){
+    guest.style.display="none";
+    logged.style.display="block";
+    status.textContent="Angemeldet";
+
+    try{
+      const profile=await PDS_BACKEND.getCustomerProfile();
+
+      if(profile){
+        fillCustomerForm(profile);
+      }else{
+        // Wenn der Kunde sich gerade registriert hat und Name/Telefon/Adresse
+        // bereits eingetragen sind, diese Daten sofort im Konto speichern.
+        await saveCurrentCustomerData();
+      }
+    }catch(e){
+      console.warn("Kundenprofil konnte nicht geladen werden",e);
+    }
+  }else{
+    guest.style.display="block";
+    logged.style.display="none";
+    status.textContent="Nicht angemeldet";
+  }
+}
+
 async function customerLogin(){
   const msg=document.getElementById("customerAccountMessage");
-  try{await PDS_BACKEND.customerSignIn(customerEmail.value.trim(),customerPassword.value);msg.innerHTML='<div class="success">Anmeldung erfolgreich.</div>';await syncCustomerUi();}
-  catch(e){msg.innerHTML='<div class="notice">Anmeldung fehlgeschlagen.</div>';}
-}
-async function customerRegister(){
-  const msg=document.getElementById("customerAccountMessage"),email=customerEmail.value.trim(),pw=customerPassword.value;
-  if(!email||pw.length<6){msg.innerHTML='<div class="notice">Bitte E-Mail und mindestens 6 Zeichen Passwort eingeben.</div>';return;}
-  try{const d=await PDS_BACKEND.customerSignUp(email,pw);msg.innerHTML=d.access_token?'<div class="success">Konto erstellt.</div>':'<div class="success">Konto erstellt. Bitte E-Mail bestätigen und danach anmelden.</div>';await syncCustomerUi();}
-  catch(e){msg.innerHTML='<div class="notice">Registrierung nicht möglich.</div>';}
-}
-function customerLogout(){PDS_BACKEND.customerSignOut();syncCustomerUi();}
+  const email=document.getElementById("customerEmail")?.value.trim() || "";
+  const password=document.getElementById("customerPassword")?.value || "";
 
+  try{
+    await PDS_BACKEND.customerSignIn(email,password);
+
+    // Falls noch kein Profil existiert, vorhandene Formulardaten übernehmen.
+    const profile=await PDS_BACKEND.getCustomerProfile().catch(()=>null);
+    if(!profile) await saveCurrentCustomerData();
+
+    msg.innerHTML='<div class="success">Anmeldung erfolgreich. Deine gespeicherten Daten werden automatisch übernommen.</div>';
+    await syncCustomerUi();
+  }catch(e){
+    msg.innerHTML='<div class="notice">Anmeldung fehlgeschlagen.</div>';
+  }
+}
+
+async function customerRegister(){
+  const msg=document.getElementById("customerAccountMessage");
+  const email=document.getElementById("customerEmail")?.value.trim() || "";
+  const password=document.getElementById("customerPassword")?.value || "";
+
+  if(!email||password.length<6){
+    msg.innerHTML='<div class="notice">Bitte E-Mail und mindestens 6 Zeichen Passwort eingeben.</div>';
+    return;
+  }
+
+  try{
+    const d=await PDS_BACKEND.customerSignUp(email,password);
+
+    if(d.access_token){
+      // Name, Telefonnummer und Adresse, die bereits im Bestellformular stehen,
+      // werden direkt mit dem neuen Kundenkonto gespeichert.
+      await saveCurrentCustomerData();
+      msg.innerHTML='<div class="success">Konto erstellt. Deine Kundendaten wurden gespeichert.</div>';
+      await syncCustomerUi();
+    }else{
+      msg.innerHTML='<div class="success">Konto erstellt. Bitte E-Mail bestätigen und danach anmelden. Nach der Anmeldung werden deine Daten gespeichert.</div>';
+    }
+  }catch(e){
+    msg.innerHTML='<div class="notice">Registrierung nicht möglich.</div>';
+  }
+}
+
+function customerLogout(){
+  PDS_BACKEND.customerSignOut();
+  syncCustomerUi();
+}
 
 function getSelectedDeliveryZone(){ return verifiedDeliveryZone||{label:"nicht geprüft",fee:0,minimum:0,distanceKm:null}; }
 function updateDeliveryZoneInfo(){ renderCart(); }
@@ -455,7 +545,7 @@ async function placeOrder(){
   try{
     const created=await PDS_BACKEND.createOrder(order);
     if(created?.number) order.number=created.number;
-    if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address:type==='Lieferung'?address:''});}catch(e){}
+    if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
     localStorage.setItem('pds_last_order',id);localStorage.setItem(`pds_order_token_${id}`,statusToken);
     cart=[];saveCart();
     document.getElementById('checkoutResult').innerHTML='<div class="success"><b>Bestellung wurde gesendet.</b><br>Du wirst zur Statusseite weitergeleitet.</div>';
