@@ -6,8 +6,35 @@
 <title>Pizza De Silva – Online bestellen</title>
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="styles.css">
+
+<style>
+#appInstallBanner{display:none;position:sticky;top:0;z-index:9999;background:#fff4df;border-bottom:1px solid #e9c79e;padding:9px 14px;font-family:inherit}
+#appInstallBanner.show{display:block}
+#appInstallBanner .app-install-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#appInstallBanner .app-install-text{display:flex;align-items:center;gap:9px;font-weight:700;color:#6f160f}
+#appInstallBanner .app-install-actions{display:flex;gap:8px;align-items:center}
+#appInstallBanner .app-install-btn{border:0;border-radius:10px;padding:9px 14px;background:#8f160f;color:white;font-weight:800;cursor:pointer}
+#appInstallBanner .app-install-close{border:0;background:transparent;font-size:20px;cursor:pointer;color:#6f160f}
+.preorder-box{margin:12px 0;padding:12px;border:1px solid #ecd6c7;background:#fffaf5;border-radius:14px}
+.preorder-choice{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.preorder-choice button{border:1px solid #d7b29d;background:#fff;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:700}
+.preorder-choice button.active{background:#8f160f;color:#fff;border-color:#8f160f}
+.preorder-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.preorder-grid .field{margin:0}
+@media(max-width:600px){.preorder-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
+<div id="appInstallBanner">
+  <div class="app-install-inner">
+    <div class="app-install-text">📱 Pizza De Silva jetzt auch als App erhältlich</div>
+    <div class="app-install-actions">
+      <button class="app-install-btn" type="button" onclick="installPizzaApp()">App installieren</button>
+      <button class="app-install-close" type="button" aria-label="Schließen" onclick="dismissPizzaAppBanner()">×</button>
+    </div>
+  </div>
+</div>
+
 <header class="topbar"><div class="nav">
   <a class="brand brand-logo" href="#"><img loading="eager" decoding="async" src="pizza-de-silva-logo-neu.webp" alt="Pizza De Silva Logo"><div><small>Direkt bestellen • Lieferung & Abholung</small></div></a>
   <nav class="navlinks"><a href="#bestseller">Bestseller</a><a href="#menu">Speisekarte</a><a href="#how">So geht’s</a><a href="#contact">Kontakt</a></nav>
@@ -137,13 +164,19 @@
   <small>Maximal 10 km ab Niederstrasse 76, 47829 Krefeld-Uerdingen.</small>
 </div>
 <div id="zonePriceInfo" class="notice" style="display:none"></div>
-<div id="deliveryZonesOverview" class="delivery-zones-overview">
-  <b>Lieferzonen</b>
-  <div class="zone-row"><span>bis 2 km</span><span id="zone2Info">wird geladen…</span></div>
-  <div class="zone-row"><span>2–5 km</span><span id="zone5Info">wird geladen…</span></div>
-  <div class="zone-row"><span>5–7 km</span><span id="zone7Info">wird geladen…</span></div>
-  <div class="zone-row"><span>7–10 km</span><span id="zone10Info">wird geladen…</span></div>
-</div>
+
+  <div class="preorder-box" id="orderTimingBox">
+    <b>Bestellzeit</b>
+    <div id="timingHint" class="notice" style="margin-top:8px"></div>
+    <div class="preorder-choice" id="timingChoice">
+      <button type="button" id="asapBtn" onclick="setOrderTimingMode('asap')">So schnell wie möglich</button>
+      <button type="button" id="preorderBtn" onclick="setOrderTimingMode('preorder')">Vorbestellen</button>
+    </div>
+    <div class="preorder-grid" id="preorderFields" style="display:none">
+      <div class="field"><label>Datum</label><input id="preorderDate" type="date"></div>
+      <div class="field"><label>Uhrzeit</label><input id="preorderTime" type="time" step="900"></div>
+    </div>
+  </div>
   <div class="field"><label>Zahlung</label><select id="payment"><option>Barzahlung</option><option disabled>Online-Zahlung – wird verbunden</option></select></div>
   <div class="field"><label>Bemerkung</label><textarea id="note" rows="3" placeholder="Klingel, Etage, Sonderwünsche ..."></textarea></div>
   <label style="display:flex;gap:9px;align-items:flex-start;font-size:.85rem;margin:12px 0"><input type="checkbox" id="terms"><span>Ich bestätige, dass meine Angaben stimmen und die Bestellung erst nach Annahme durch Pizza De Silva verbindlich wird.</span></label>

@@ -1,4 +1,82 @@
 
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  if(localStorage.getItem('pds_install_banner_dismissed')!=='1'){
+    document.getElementById('appInstallBanner')?.classList.add('show');
+  }
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  document.getElementById('appInstallBanner')?.classList.remove('show');
+  localStorage.setItem('pds_app_installed','1');
+});
+async function installPizzaApp(){
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt=null;
+    document.getElementById('appInstallBanner')?.classList.remove('show');
+    return;
+  }
+  alert('Falls kein Installationsfenster erscheint: Öffne im Browser das Menü und wähle „App installieren“ bzw. „Zum Startbildschirm hinzufügen“.');
+}
+function dismissPizzaAppBanner(){
+  document.getElementById('appInstallBanner')?.classList.remove('show');
+  localStorage.setItem('pds_install_banner_dismissed','1');
+}
+
+let orderTimingMode='asap';
+function pdsOpeningWindowForDate(date){
+  const day=date.getDay(); // 0=So ... 6=Sa
+  // So-Do 11:00 bis 01:00 Folgetag, Fr-Sa 11:00 bis 02:00 Folgetag
+  const closeHour=(day===5||day===6)?26:25;
+  return {openMin:11*60,closeMin:closeHour*60};
+}
+function pdsIsWithinOpeningHours(date){
+  const mins=date.getHours()*60+date.getMinutes();
+  const today=pdsOpeningWindowForDate(date);
+  if(mins>=today.openMin) return mins<today.closeMin;
+  // Nach Mitternacht gehört die Zeit noch zum Vortag.
+  const prev=new Date(date); prev.setDate(prev.getDate()-1);
+  const prevWin=pdsOpeningWindowForDate(prev);
+  return mins < (prevWin.closeMin-1440);
+}
+function pdsIsPreorderTimeValid(date){
+  if(!(date instanceof Date)||Number.isNaN(date.getTime())) return false;
+  if(date.getTime()<Date.now()+15*60000) return false;
+  return pdsIsWithinOpeningHours(date);
+}
+function setOrderTimingMode(mode){
+  orderTimingMode=mode;
+  document.getElementById('asapBtn')?.classList.toggle('active',mode==='asap');
+  document.getElementById('preorderBtn')?.classList.toggle('active',mode==='preorder');
+  const fields=document.getElementById('preorderFields');
+  if(fields) fields.style.display=mode==='preorder'?'grid':'none';
+}
+function initOrderTiming(){
+  const closed=!settings?.deliveryOpen&&!settings?.pickupOpen;
+  const hint=document.getElementById('timingHint');
+  const asap=document.getElementById('asapBtn');
+  const dateEl=document.getElementById('preorderDate');
+  if(dateEl){
+    const now=new Date();
+    const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+    dateEl.min=`${y}-${m}-${d}`;
+  }
+  if(closed){
+    if(asap) asap.style.display='none';
+    if(hint) hint.textContent='Wir haben derzeit geschlossen. Du kannst trotzdem für eine spätere Öffnungszeit vorbestellen.';
+    setOrderTimingMode('preorder');
+  }else{
+    if(asap) asap.style.display='inline-block';
+    if(hint) hint.textContent='Du kannst jetzt bestellen oder eine spätere Uhrzeit vorbestellen.';
+    setOrderTimingMode('asap');
+  }
+}
+
+
 function renderDeliveryZonesOverview(){
   if(!settings) return;
   const set=(id,fee,min)=>{
@@ -508,9 +586,9 @@ function updateCheckoutTypeUI(){
 function openCheckout(){
   if(!cart.length) return alert('Bitte zuerst etwas auswählen.');
   if(!settings) return alert('Shop-Einstellungen werden noch geladen.');
-  if(!settings.deliveryOpen&&!settings.pickupOpen) return alert('Pizza De Silva ist im Moment geschlossen.');
   document.getElementById('checkoutResult').innerHTML='';
   updateCheckoutAvailability();
+  initOrderTiming();
   showModal('checkoutModal');
   syncCustomerUi();
   const a=document.getElementById('address');
@@ -523,24 +601,32 @@ async function placeOrder(){
   const phone=document.getElementById('phone').value.trim();
   const address=document.getElementById('address').value.trim();
   const terms=document.getElementById('terms').checked;
+  let requestedFor=null;
+  if(orderTimingMode==='preorder'){
+    const d=document.getElementById('preorderDate')?.value;
+    const t=document.getElementById('preorderTime')?.value;
+    if(!d||!t) return alert('Bitte Datum und Uhrzeit für die Vorbestellung auswählen.');
+    requestedFor=new Date(`${d}T${t}:00`);
+    if(!pdsIsPreorderTimeValid(requestedFor)) return alert('Bitte eine Vorbestellzeit innerhalb unserer Öffnungszeiten wählen (So–Do 11:00–01:00, Fr–Sa 11:00–02:00) und mindestens 15 Minuten im Voraus.');
+  }
 
   if(!name||!phone||!terms) return alert('Bitte Name, Telefonnummer und Bestätigung ausfüllen.');
   if(type==='Lieferung'){
-    if(!settings?.deliveryOpen) return alert('Lieferung ist im Moment geschlossen.');
+    if(orderTimingMode==='asap' && !settings?.deliveryOpen) return alert('Lieferung ist im Moment geschlossen. Bitte Vorbestellung wählen.');
     if(!address) return alert('Bitte Lieferadresse eingeben.');
     if(!verifiedDeliveryZone) return alert('Bitte zuerst die Lieferadresse prüfen.');
     const subtotalCheck=cart.reduce((s,x)=>s+x.price*x.qty,0);
     if(subtotalCheck<verifiedDeliveryZone.minimum) return alert(`Mindestbestellwert für ${verifiedDeliveryZone.label}: ${money(verifiedDeliveryZone.minimum)}.`);
   }else{
-    if(!settings?.pickupOpen) return alert('Abholung ist im Moment geschlossen.');
+    if(orderTimingMode==='asap' && !settings?.pickupOpen) return alert('Abholung ist im Moment geschlossen. Bitte Vorbestellung wählen.');
   }
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0), total=subtotal+fee;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
-  const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,
-    expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
+  const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:orderTimingMode,requestedFor:requestedFor?requestedFor.toISOString():null,
+    expiresAt:orderTimingMode==='preorder'?null:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
     customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:document.getElementById('payment').value,note:document.getElementById('note').value.trim()}};
   try{
     const created=await PDS_BACKEND.createOrder(order);
@@ -548,7 +634,7 @@ async function placeOrder(){
     if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
     localStorage.setItem('pds_last_order',id);localStorage.setItem(`pds_order_token_${id}`,statusToken);
     cart=[];saveCart();
-    document.getElementById('checkoutResult').innerHTML='<div class="success"><b>Bestellung wurde gesendet.</b><br>Du wirst zur Statusseite weitergeleitet.</div>';
+    document.getElementById('checkoutResult').innerHTML=`<div class="success"><b>${orderTimingMode==='preorder'?'Vorbestellung':'Bestellung'} wurde gesendet.</b><br>${requestedFor?'Gewünschte Zeit: '+requestedFor.toLocaleString('de-DE')+'<br>':''}Du wirst zur Statusseite weitergeleitet.</div>`;
     setTimeout(()=>location.href=`status.html?id=${encodeURIComponent(id)}`,1100);
   }catch(e){console.error(e);alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');}
 }
