@@ -981,7 +981,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Pommes Frites",
     "description": "",
-    "image": "pommes.webp",
+    "image": "pommes-frites.webp",
     "variants": {
       "Klein": 3.0,
       "Groß": 4.0
