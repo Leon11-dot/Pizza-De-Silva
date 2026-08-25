@@ -1044,7 +1044,7 @@ window.PDS_PRODUCTS = [
     "description": "mit Kräuterbutter",
     "image": "pizzabroetchen-kraeuterbutter.webp",
     "variants": {
-      "Normal": 4.0
+      "Normal": 3.5
     }
   },
   {
@@ -1056,9 +1056,26 @@ window.PDS_PRODUCTS = [
     "variants": {
       "Normal": 7.0
     },
-    "extras": {
-      "Jede extra Füllung": 0.5
-    }
+    "pizzaExtras": [
+      "Käse",
+      "Schinken",
+      "Salami",
+      "Thunfisch",
+      "Ananas",
+      "Mais",
+      "Spinat",
+      "Broccoli",
+      "Zwiebeln",
+      "Schafskäse",
+      "Sucuk",
+      "Oliven",
+      "Peperoni",
+      "Hähnchenbrust"
+    ],
+    "pizzaExtraPrices": {
+      "Normal": 0.5
+    },
+    "freePizzaExtras": 2
   },
   {
     "id": 43,
