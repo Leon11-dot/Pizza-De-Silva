@@ -1042,7 +1042,7 @@ window.PDS_PRODUCTS = [
     "category": "Pizzabrötchen",
     "name": "Pizzabrötchen",
     "description": "mit Kräuterbutter",
-    "image": "pizza-broetchen.webp",
+    "image": "pizzabroetchen-kraeuterbutter.webp",
     "variants": {
       "Normal": 4.0
     }
