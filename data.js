@@ -1078,6 +1078,16 @@ window.PDS_PRODUCTS = [
     "freePizzaExtras": 2
   },
   {
+    "id": 67,
+    "category": "Pizzabrötchen",
+    "name": "Kräuterbutter",
+    "description": "Portion Kräuterbutter",
+    "image": "kraeuterbutter.webp",
+    "variants": {
+      "Normal": 0.5
+    }
+  },
+  {
     "id": 43,
     "category": "Fleischgerichte",
     "name": "Schnitzel Wiener Art",
