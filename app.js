@@ -478,25 +478,73 @@ function renderCart(){
 }
 
 
+
+let orderTimingMode='asap';
+
+function setOrderTimingMode(mode){
+  orderTimingMode=mode==='preorder'?'preorder':'asap';
+  const asap=document.getElementById('asapBtn');
+  const preorder=document.getElementById('preorderBtn');
+  const fields=document.getElementById('preorderFields');
+  const hint=document.getElementById('timingHint');
+  if(asap) asap.classList.toggle('active',orderTimingMode==='asap');
+  if(preorder) preorder.classList.toggle('active',orderTimingMode==='preorder');
+  if(fields) fields.style.display=orderTimingMode==='preorder'?'grid':'none';
+
+  if(orderTimingMode==='preorder'){
+    const d=document.getElementById('preorderDate');
+    const t=document.getElementById('preorderTime');
+    const now=new Date();
+    if(d){
+      const local=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      d.min=local;
+      if(!d.value) d.value=local;
+    }
+    if(t && !t.value){
+      const future=new Date(now.getTime()+60*60000);
+      future.setMinutes(Math.ceil(future.getMinutes()/15)*15,0,0);
+      t.value=String(future.getHours()).padStart(2,'0')+':'+String(future.getMinutes()).padStart(2,'0');
+    }
+    if(hint) hint.textContent='Du kannst für einen späteren Zeitpunkt vorbestellen – auch außerhalb der aktuellen Öffnungszeit.';
+  }else{
+    if(hint) hint.textContent=(settings?.deliveryOpen||settings?.pickupOpen)
+      ? 'Wir bereiten deine Bestellung so schnell wie möglich zu.'
+      : 'So schnell wie möglich ist aktuell nicht verfügbar. Bitte Vorbestellen wählen.';
+  }
+  updateCheckoutAvailability();
+}
+
+function getOrderTiming(){
+  if(orderTimingMode!=='preorder') return {mode:'asap',requestedFor:null};
+  const date=document.getElementById('preorderDate')?.value||'';
+  const time=document.getElementById('preorderTime')?.value||'';
+  if(!date||!time) return null;
+  const requested=new Date(`${date}T${time}:00`);
+  if(Number.isNaN(requested.getTime()) || requested.getTime() < Date.now()+10*60000) return false;
+  return {mode:'preorder',requestedFor:requested.toISOString(),requestedDate:date,requestedTime:time};
+}
+
 function updateCheckoutAvailability(){
   const type=document.getElementById('type');
   if(!type || !settings) return;
 
+  const isPreorder=orderTimingMode==='preorder';
   const deliveryOption=[...type.options].find(o=>o.value==='Lieferung');
   const pickupOption=[...type.options].find(o=>o.value==='Abholung');
 
   if(deliveryOption){
-    deliveryOption.disabled=!settings.deliveryOpen;
-    deliveryOption.textContent=settings.deliveryOpen?'Lieferung':'Lieferung – geschlossen';
+    deliveryOption.disabled=!isPreorder&&!settings.deliveryOpen;
+    deliveryOption.textContent=(isPreorder||settings.deliveryOpen)?'Lieferung':'Lieferung – geschlossen';
   }
   if(pickupOption){
-    pickupOption.disabled=!settings.pickupOpen;
-    pickupOption.textContent=settings.pickupOpen?'Abholung':'Abholung – geschlossen';
+    pickupOption.disabled=!isPreorder&&!settings.pickupOpen;
+    pickupOption.textContent=(isPreorder||settings.pickupOpen)?'Abholung':'Abholung – geschlossen';
   }
 
-  if(type.value==='Lieferung' && !settings.deliveryOpen && settings.pickupOpen) type.value='Abholung';
-  if(type.value==='Abholung' && !settings.pickupOpen && settings.deliveryOpen) type.value='Lieferung';
-
+  if(!isPreorder){
+    if(type.value==='Lieferung' && !settings.deliveryOpen && settings.pickupOpen) type.value='Abholung';
+    if(type.value==='Abholung' && !settings.pickupOpen && settings.deliveryOpen) type.value='Lieferung';
+  }
   updateCheckoutTypeUI();
 }
 
@@ -514,10 +562,10 @@ function updateCheckoutTypeUI(){
 function openCheckout(){
   if(!cart.length) return alert('Bitte zuerst etwas auswählen.');
   if(!settings) return alert('Shop-Einstellungen werden noch geladen.');
-  if(!settings.deliveryOpen&&!settings.pickupOpen) return alert('Pizza De Silva ist im Moment geschlossen.');
   document.getElementById('checkoutResult').innerHTML='';
-  updateCheckoutAvailability();
+  orderTimingMode=(settings.deliveryOpen||settings.pickupOpen)?'asap':'preorder';
   showModal('checkoutModal');
+  setOrderTimingMode(orderTimingMode);
   syncCustomerUi();
   const a=document.getElementById('address');
   if(a&&!a.dataset.zoneReset){a.addEventListener('input',()=>{verifiedDeliveryZone=null;const z=document.getElementById('zonePriceInfo');if(z)z.style.display='none';renderCart();});a.dataset.zoneReset='1';}
@@ -529,23 +577,27 @@ async function placeOrder(){
   const phone=document.getElementById('phone').value.trim();
   const address=document.getElementById('address').value.trim();
   const terms=document.getElementById('terms').checked;
+  const timing=getOrderTiming();
+  if(timing===null) return alert('Bitte Datum und Uhrzeit für die Vorbestellung auswählen.');
+  if(timing===false) return alert('Bitte eine Vorbestellzeit wählen, die mindestens 10 Minuten in der Zukunft liegt.');
+  if(orderTimingMode==='asap' && !settings?.deliveryOpen && !settings?.pickupOpen) return alert('Wir haben aktuell geschlossen. Bitte Vorbestellen wählen.');
 
   if(!name||!phone||!terms) return alert('Bitte Name, Telefonnummer und Bestätigung ausfüllen.');
   if(type==='Lieferung'){
-    if(!settings?.deliveryOpen) return alert('Lieferung ist im Moment geschlossen.');
+    if(orderTimingMode==='asap' && !settings?.deliveryOpen) return alert('Lieferung ist im Moment geschlossen. Bitte Vorbestellen wählen.');
     if(!address) return alert('Bitte Lieferadresse eingeben.');
     if(!verifiedDeliveryZone) return alert('Bitte zuerst die Lieferadresse prüfen.');
     const subtotalCheck=cart.reduce((s,x)=>s+x.price*x.qty,0);
     if(subtotalCheck<verifiedDeliveryZone.minimum) return alert(`Mindestbestellwert für ${verifiedDeliveryZone.label}: ${money(verifiedDeliveryZone.minimum)}.`);
   }else{
-    if(!settings?.pickupOpen) return alert('Abholung ist im Moment geschlossen.');
+    if(orderTimingMode==='asap' && !settings?.pickupOpen) return alert('Abholung ist im Moment geschlossen. Bitte Vorbestellen wählen.');
   }
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0), total=subtotal+fee;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
-  const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,
+  const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
     expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
     customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:document.getElementById('payment').value,note:document.getElementById('note').value.trim()}};
   try{
