@@ -261,3 +261,18 @@ async function render(){
 document.getElementById('pw')?.addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 setInterval(()=>{if(document.getElementById('panel').style.display!=='none')render()},1500);
 initAdmin();
+
+
+let adminHistoryView=false;
+function historyStatus(o){return ['done','completed','finished','cancelled','canceled','rejected','storniert','abgelehnt'].includes(String(o?.status||'').toLowerCase())}
+function showCurrentOrders(){adminHistoryView=false;document.getElementById('orders').style.display='';document.getElementById('historyPanel').style.display='none'}
+function showOrderHistory(){adminHistoryView=true;document.getElementById('orders').style.display='none';document.getElementById('historyPanel').style.display='';renderOrderHistory()}
+function renderOrderHistory(){
+ const box=document.getElementById('historyOrders'); if(!box)return;
+ const src=(typeof orders!=='undefined'&&Array.isArray(orders))?orders:[];
+ const list=src.filter(historyStatus).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+ const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ if(!list.length){box.innerHTML='<div class="notice">Noch keine fertigen oder stornierten Bestellungen.</div>';return}
+ box.innerHTML=list.map(o=>`<article class="order done"><h3>Bestellung #${e(o.number||o.id||'')}</h3><div class="meta">${o.createdAt?new Date(o.createdAt).toLocaleString('de-DE'):''} • ${e(o.customer?.name||o.name||'')}</div><ul class="items">${(o.items||[]).map(i=>`<li>${e(i.qty||i.quantity||1)}× ${e(i.name||i.productName||'Artikel')}</li>`).join('')}</ul><b>Gesamt: ${Number(o.total||o.totalPrice||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'})}</b><div class="meta">Status: ${e(o.status||'Erledigt')}</div></article>`).join('')
+}
+setInterval(()=>{if(adminHistoryView)renderOrderHistory()},1500);
