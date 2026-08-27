@@ -1,3 +1,23 @@
+
+let adminView='current';
+
+function showCurrentOrders(){
+  adminView='current';
+  const current=document.getElementById('orders');
+  const history=document.getElementById('historyPanel');
+  if(current) current.style.display='';
+  if(history) history.style.display='none';
+}
+
+function showOrderHistory(){
+  adminView='history';
+  const current=document.getElementById('orders');
+  const history=document.getElementById('historyPanel');
+  if(current) current.style.display='none';
+  if(history) history.style.display='';
+  load();
+}
+
 async function resumeAudioOnInteraction(){
   if(!sound) return;
   try{
@@ -227,17 +247,20 @@ async function render(){
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
 
-    document.getElementById('orders').innerHTML=all.length?all.map(x=>{
+    const currentOrders=all.filter(x=>x.status!=='done' && x.status!=='cancelled');
+    const historyOrders=all.filter(x=>x.status==='done' || x.status==='cancelled');
+
+    const renderOrderCard=(x,isHistory=false)=>{
       const items=(x.items||[]).map(i=>`<li>${i.qty}× ${i.name} (${i.variant})${i.extraName?' + '+i.extraName:''}${i.note?' – '+i.note:''}</li>`).join('');
       let actions='';
-      if(x.status==='new'){
+      if(!isHistory && x.status==='new'){
         const chosen=Number(selectedEtas[String(x.id)]||0);
         const timeBtn=(m)=>`<button class="time ${chosen===m?'sel':''}" data-minutes="${m}" onclick="setEta('${x.id}',${m},this)">${m} Min</button>`;
         actions=`<div class="actions">${[20,30,40,50,60,90].map(timeBtn).join('')}</div><div class="actions"><button class="btn green" onclick="accept('${x.id}')">✓ Annehmen</button><button class="btn danger" onclick="reject('${x.id}')">✕ Ablehnen</button></div>`;
       }
-      if(x.status==='accepted')actions=`<div class="actions"><button class="btn blue" onclick="status('${x.id}','preparing')">In Zubereitung</button></div>`;
-      if(x.status==='preparing')actions=`<div class="actions"><button class="btn secondary" onclick="status('${x.id}','ready')">${x.customer.type==='Abholung'?'Bereit zur Abholung':'Als unterwegs markieren'}</button></div>`;
-      if(x.status==='ready')actions=`<div class="actions"><button class="btn green" onclick="status('${x.id}','done')">Abschließen</button></div>`;
+      if(!isHistory && x.status==='accepted')actions=`<div class="actions"><button class="btn blue" onclick="status('${x.id}','preparing')">In Zubereitung</button></div>`;
+      if(!isHistory && x.status==='preparing')actions=`<div class="actions"><button class="btn secondary" onclick="status('${x.id}','ready')">${x.customer.type==='Abholung'?'Bereit zur Abholung':'Als unterwegs markieren'}</button></div>`;
+      if(!isHistory && x.status==='ready')actions=`<div class="actions"><button class="btn green" onclick="status('${x.id}','done')">Abschließen</button></div>`;
 
       return `<article class="order ${x.status}" data-order="${x.id}" data-eta="${selectedEtas[String(x.id)]||x.eta||''}">
         <h3>#${x.number} • ${labels[x.status]}</h3>
@@ -250,7 +273,17 @@ async function render(){
         <div class="actions"><button class="btn secondary" onclick="printOrder('${x.id}')">🖨️ Drucken</button></div>
         ${actions}
       </article>`;
-    }).join(''):'<div class="empty">Noch keine Bestellungen.</div>';
+    };
+
+    const ordersBox=document.getElementById('orders');
+    if(ordersBox) ordersBox.innerHTML=currentOrders.length
+      ? currentOrders.map(x=>renderOrderCard(x,false)).join('')
+      : '<div class="empty">Keine aktuellen Bestellungen.</div>';
+
+    const historyBox=document.getElementById('historyOrders');
+    if(historyBox) historyBox.innerHTML=historyOrders.length
+      ? historyOrders.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(x=>renderOrderCard(x,true)).join('')
+      : '<div class="empty">Noch keine abgeschlossenen oder stornierten Bestellungen.</div>';
   }catch(e){
     console.error(e);
     PDS_BACKEND.signOut();
@@ -261,18 +294,3 @@ async function render(){
 document.getElementById('pw')?.addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 setInterval(()=>{if(document.getElementById('panel').style.display!=='none')render()},1500);
 initAdmin();
-
-
-let adminHistoryView=false;
-function historyStatus(o){return ['done','completed','finished','cancelled','canceled','rejected','storniert','abgelehnt'].includes(String(o?.status||'').toLowerCase())}
-function showCurrentOrders(){adminHistoryView=false;document.getElementById('orders').style.display='';document.getElementById('historyPanel').style.display='none'}
-function showOrderHistory(){adminHistoryView=true;document.getElementById('orders').style.display='none';document.getElementById('historyPanel').style.display='';renderOrderHistory()}
-function renderOrderHistory(){
- const box=document.getElementById('historyOrders'); if(!box)return;
- const src=(typeof orders!=='undefined'&&Array.isArray(orders))?orders:[];
- const list=src.filter(historyStatus).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
- const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- if(!list.length){box.innerHTML='<div class="notice">Noch keine fertigen oder stornierten Bestellungen.</div>';return}
- box.innerHTML=list.map(o=>`<article class="order done"><h3>Bestellung #${e(o.number||o.id||'')}</h3><div class="meta">${o.createdAt?new Date(o.createdAt).toLocaleString('de-DE'):''} • ${e(o.customer?.name||o.name||'')}</div><ul class="items">${(o.items||[]).map(i=>`<li>${e(i.qty||i.quantity||1)}× ${e(i.name||i.productName||'Artikel')}</li>`).join('')}</ul><b>Gesamt: ${Number(o.total||o.totalPrice||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'})}</b><div class="meta">Status: ${e(o.status||'Erledigt')}</div></article>`).join('')
-}
-setInterval(()=>{if(adminHistoryView)renderOrderHistory()},1500);

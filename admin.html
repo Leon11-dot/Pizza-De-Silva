@@ -14,8 +14,16 @@
   <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm läuft bis zur Annahme oder Ablehnung.</div><button class="btn secondary" style="margin-left:auto" onclick="enableSound()">🔊 Ton aktivieren</button></div>
   <div class="stats"><div class="stat"><span>Neu</span><strong id="sNew">0</strong></div><div class="stat"><span>Angenommen</span><strong id="sAccepted">0</strong></div><div class="stat"><span>In Zubereitung</span><strong id="sPrep">0</strong></div><div class="stat"><span>Erledigt</span><strong id="sDone">0</strong></div><div class="stat"><span>Bestellwert</span><strong id="sRevenue">0 €</strong></div></div>
   <div class="notice" style="margin-bottom:14px">🔒 Diese Bestellzentrale ist nur für freigeschaltete Pizza-De-Silva-Admins erreichbar.</div>
-  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><button class="btn secondary" onclick="showCurrentOrders()">🛎️ Aktuelle Bestellungen</button><button class="btn secondary" onclick="showOrderHistory()">📋 Bestellverlauf</button></div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+  <button class="btn secondary" id="currentOrdersBtn" onclick="showCurrentOrders()">🛎️ Aktuelle Bestellungen</button>
+  <button class="btn secondary" id="historyBtn" onclick="showOrderHistory()">📋 Bestellverlauf</button>
+</div>
 <section class="orders" id="orders"></section>
-<section id="historyPanel" style="display:none"><h2>📋 Bestellverlauf</h2><section class="orders" id="historyOrders"></section></section>
+<section id="historyPanel" style="display:none">
+  <div class="admin-hero" style="padding:16px 20px;margin-top:0">
+    <div><h1 style="font-size:1.55rem">Bestellverlauf</h1><p>Abgeschlossene und stornierte Bestellungen.</p></div>
+  </div>
+  <section class="orders" id="historyOrders"></section>
+</section>
 </main>
 <script src="config.js"></script><script src="backend.js"></script><script src="admin.js"></script></body></html>
