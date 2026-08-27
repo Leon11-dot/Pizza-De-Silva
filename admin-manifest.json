@@ -1,0 +1,24 @@
+{
+  "name": "Pizza De Silva Admin",
+  "short_name": "De Silva Admin",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff9f3",
+  "theme_color": "#7f100b",
+  "description": "Pizza De Silva Bestellzentrale",
+  "icons": [
+    {
+      "src": "admin-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "admin-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

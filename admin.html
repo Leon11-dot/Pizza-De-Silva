@@ -1,6 +1,14 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pizza De Silva – Admin</title><link rel="stylesheet" href="styles.css"></head>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pizza De Silva – Admin</title><link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="admin-manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="admin-icon-192.png">
+<link rel="apple-touch-icon" href="admin-icon-192.png">
+<meta name="theme-color" content="#7f100b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="De Silva Admin">
+</head>
 <body>
-<header class="topbar"><div class="nav"><div class="brand"><div class="logo">🔐</div><div><b>PIZZA DE SILVA ADMIN</b><small>Bestellzentrale</small></div></div><div class="navright"><a class="btn secondary" href="settings.html">⚙️ Einstellungen</a><button class="btn secondary" id="logoutBtn" style="display:none" onclick="logout()">Abmelden</button></div></div></header>
+<header class="topbar"><div class="nav"><div class="brand"><div class="logo">🔐</div><div><b>PIZZA DE SILVA ADMIN</b><small>Bestellzentrale</small></div></div><div class="navright"><button class="btn secondary" id="installAdminBtn" type="button" style="display:none" onclick="installAdminApp()">📲 Admin-App installieren</button><a class="btn secondary" href="settings.html">⚙️ Einstellungen</a><button class="btn secondary" id="logoutBtn" style="display:none" onclick="logout()">Abmelden</button></div></div></header>
 <div id="login" class="admin-login"><div class="login-card">
       <h1>Admin-Anmeldung</h1>
       <p>Mit deinem Pizza-De-Silva-Admin-Konto anmelden.</p>
@@ -26,4 +34,28 @@
   <section class="orders" id="historyOrders"></section>
 </section>
 </main>
-<script src="config.js"></script><script src="backend.js"></script><script src="admin.js"></script></body></html>
+<script src="config.js"></script><script src="backend.js"></script><script src="admin.js"></script>
+<script>
+let adminInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  adminInstallPrompt=e;
+  const b=document.getElementById('installAdminBtn');
+  if(b) b.style.display='';
+});
+async function installAdminApp(){
+  if(adminInstallPrompt){
+    adminInstallPrompt.prompt();
+    await adminInstallPrompt.userChoice;
+    adminInstallPrompt=null;
+    const b=document.getElementById('installAdminBtn');
+    if(b) b.style.display='none';
+  }else{
+    alert('Auf iPhone/iPad: Teilen → Zum Home-Bildschirm. Auf Android/Windows: Browser-Menü → App installieren / Zum Startbildschirm hinzufügen.');
+  }
+}
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  navigator.serviceWorker.register('./admin-sw.js').catch(()=>{});
+}
+</script>
+</body></html>
