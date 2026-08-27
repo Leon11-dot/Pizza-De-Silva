@@ -493,10 +493,3 @@ select option:disabled{color:#999}
   .delivery-zones-overview .zone-row span{display:block}
   .delivery-zones-overview .zone-row span:last-child{text-align:left;margin-top:2px}
 }
-
-/* Logo-Anpassung: De Silva in Weiß auf der Website */
-.brand-logo img,
-.hero-logo{
-  /* Das vorhandene Logo bleibt transparent; dunkle Schrift wird für den dunklen Bereich aufgehellt. */
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.28));
-}
