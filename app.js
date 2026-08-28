@@ -571,6 +571,22 @@ function openCheckout(){
   if(a&&!a.dataset.zoneReset){a.addEventListener('input',()=>{verifiedDeliveryZone=null;const z=document.getElementById('zonePriceInfo');if(z)z.style.display='none';renderCart();});a.dataset.zoneReset='1';}
 }
 
+async function createSumupCheckout(amount, orderId){
+  const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/create-sumup-checkout';
+  const response=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({amount:Number(amount),orderId:String(orderId)})
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok||!data.checkout_url){
+    console.error('Kartenzahlung konnte nicht gestartet werden:',data);
+    throw new Error(data?.error||'Kartenzahlung konnte nicht gestartet werden.');
+  }
+  return data;
+}
+
 async function placeOrder(){
   const type=document.getElementById('type').value;
   const name=document.getElementById('name').value.trim();
@@ -605,6 +621,23 @@ async function placeOrder(){
     if(created?.number) order.number=created.number;
     if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
     localStorage.setItem('pds_last_order',id);localStorage.setItem(`pds_order_token_${id}`,statusToken);
+
+    const paymentMethod=document.getElementById('payment').value;
+    if(paymentMethod==='Mit Karte zahlen'){
+      document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Bestellung gespeichert.</b><br>Sichere Kartenzahlung wird geöffnet …</div>';
+      try{
+        const checkout=await createSumupCheckout(total,id);
+        localStorage.setItem(`pds_sumup_checkout_${id}`,checkout.checkout_id||'');
+        cart=[];saveCart();
+        location.href=checkout.checkout_url;
+        return;
+      }catch(paymentError){
+        console.error(paymentError);
+        document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Bestellung wurde gespeichert, aber die Kartenzahlung konnte nicht geöffnet werden.</b><br>Bitte rufe Pizza De Silva an und nenne deine Bestellnummer '+String(order.number||'')+'.</div>';
+        return;
+      }
+    }
+
     cart=[];saveCart();
     document.getElementById('checkoutResult').innerHTML='<div class="success"><b>Bestellung wurde gesendet.</b><br>Du wirst zur Statusseite weitergeleitet.</div>';
     setTimeout(()=>location.href=`status.html?id=${encodeURIComponent(id)}`,1100);
