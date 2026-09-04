@@ -571,20 +571,82 @@ function openCheckout(){
   if(a&&!a.dataset.zoneReset){a.addEventListener('input',()=>{verifiedDeliveryZone=null;const z=document.getElementById('zonePriceInfo');if(z)z.style.display='none';renderCart();});a.dataset.zoneReset='1';}
 }
 
-async function createSumupCheckout(amount, orderId){
+async function createSumupCheckout(order){
   const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/create-sumup-checkout';
   const response=await fetch(endpoint,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({amount:Number(amount),orderId:String(orderId)})
+    body:JSON.stringify({order})
   });
   let data={};
   try{data=await response.json();}catch(e){}
-  if(!response.ok||!data.checkout_url){
+  if(!response.ok||!data.checkout_url||!data.checkout_id){
     console.error('Kartenzahlung konnte nicht gestartet werden:',data);
     throw new Error(data?.error||'Kartenzahlung konnte nicht gestartet werden.');
   }
   return data;
+}
+
+async function verifySumupCheckout(checkoutId){
+  const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/verify-sumup-payment';
+  const response=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({checkout_id:String(checkoutId)})
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok||data?.ok===false){
+    console.error('SumUp-Zahlung konnte nicht geprüft werden:',data);
+    throw new Error(data?.error||'Zahlung konnte nicht geprüft werden.');
+  }
+  return data;
+}
+
+async function resumeSumupPayment(){
+  const params=new URLSearchParams(location.search);
+  if(params.get('sumup_return')!=='1') return;
+
+  let pending=null;
+  try{pending=JSON.parse(localStorage.getItem('pds_pending_sumup')||'null');}catch(e){}
+  if(!pending?.checkoutId||!pending?.orderId||!pending?.statusToken){
+    alert('Die Kartenzahlung konnte nicht zugeordnet werden. Bitte rufe Pizza De Silva an, falls dein Konto belastet wurde.');
+    history.replaceState({},'',location.pathname);
+    return;
+  }
+
+  let result=null;
+  try{
+    for(let i=0;i<5;i++){
+      result=await verifySumupCheckout(pending.checkoutId);
+      if(result?.status!=='PENDING') break;
+      if(i<4) await new Promise(r=>setTimeout(r,1500));
+    }
+  }catch(e){
+    console.error(e);
+    alert('Die Zahlungsbestätigung konnte gerade nicht geprüft werden. Deine Bestellung wird erst bei bestätigter Zahlung an Pizza De Silva gesendet.');
+    return;
+  }
+
+  if(result?.paid===true && result?.status==='PAID'){
+    localStorage.setItem('pds_last_order',pending.orderId);
+    localStorage.setItem(`pds_order_token_${pending.orderId}`,pending.statusToken);
+    localStorage.removeItem('pds_pending_sumup');
+    cart=[];saveCart();
+    history.replaceState({},'',location.pathname);
+    location.href=`status.html?id=${encodeURIComponent(pending.orderId)}`;
+    return;
+  }
+
+  if(result?.status==='FAILED'||result?.status==='EXPIRED'){
+    localStorage.removeItem('pds_pending_sumup');
+    history.replaceState({},'',location.pathname);
+    alert('Die Kartenzahlung wurde nicht abgeschlossen. Es wurde keine Bestellung an Pizza De Silva gesendet. Dein Warenkorb bleibt erhalten.');
+    return;
+  }
+
+  history.replaceState({},'',location.pathname);
+  alert('SumUp hat die Zahlung noch nicht als vollständig bezahlt bestätigt. Die Bestellung wird deshalb noch nicht an Pizza De Silva gesendet.');
 }
 
 async function placeOrder(){
@@ -613,35 +675,45 @@ async function placeOrder(){
   const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0), total=subtotal+fee;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
+  const paymentMethod=document.getElementById('payment').value;
   const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
     expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
-    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:document.getElementById('payment').value,note:document.getElementById('note').value.trim()}};
-  try{
-    const created=await PDS_BACKEND.createOrder(order);
-    if(created?.number) order.number=created.number;
-    if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
-    localStorage.setItem('pds_last_order',id);localStorage.setItem(`pds_order_token_${id}`,statusToken);
+    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim()}};
 
-    const paymentMethod=document.getElementById('payment').value;
+  try{
+    if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
+
     if(paymentMethod==='Mit Karte zahlen'){
-      document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Bestellung gespeichert.</b><br>Sichere Kartenzahlung wird geöffnet …</div>';
+      document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Kartenzahlung wird vorbereitet.</b><br>Die Bestellung wird erst nach vollständiger SumUp-Bestätigung an Pizza De Silva gesendet.</div>';
       try{
-        const checkout=await createSumupCheckout(total,id);
-        localStorage.setItem(`pds_sumup_checkout_${id}`,checkout.checkout_id||'');
-        cart=[];saveCart();
+        const checkout=await createSumupCheckout(order);
+        localStorage.setItem('pds_pending_sumup',JSON.stringify({
+          checkoutId:checkout.checkout_id,
+          orderId:id,
+          statusToken,
+          createdAt:Date.now()
+        }));
         location.href=checkout.checkout_url;
         return;
       }catch(paymentError){
         console.error(paymentError);
-        document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Bestellung wurde gespeichert, aber die Kartenzahlung konnte nicht geöffnet werden.</b><br>Bitte rufe Pizza De Silva an und nenne deine Bestellnummer '+String(order.number||'')+'.</div>';
+        document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Kartenzahlung konnte nicht gestartet werden.</b><br>Es wurde keine Bestellung an Pizza De Silva gesendet. Bitte versuche es erneut oder wähle Barzahlung.</div>';
         return;
       }
     }
 
+    const created=await PDS_BACKEND.createOrder(order);
+    if(created?.number) order.number=created.number;
+    localStorage.setItem('pds_last_order',id);
+    localStorage.setItem(`pds_order_token_${id}`,statusToken);
     cart=[];saveCart();
     document.getElementById('checkoutResult').innerHTML='<div class="success"><b>Bestellung wurde gesendet.</b><br>Du wirst zur Statusseite weitergeleitet.</div>';
     setTimeout(()=>location.href=`status.html?id=${encodeURIComponent(id)}`,1100);
-  }catch(e){console.error(e);alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');}
+  }catch(e){
+    console.error(e);
+    alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');
+  }
 }
 
 document.getElementById('type')?.addEventListener('change',()=>{updateCheckoutTypeUI();updateDeliveryZoneInfo()}); renderCats();renderProducts();renderCart();loadSettings();
+resumeSumupPayment();
