@@ -1,22 +1,23 @@
 {
   "name": "Pizza De Silva",
-  "short_name": "De Silva",
-  "start_url": "./index.html",
+  "short_name": "Pizza De Silva",
+  "description": "Pizza De Silva – direkt online bestellen",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#fff9f3",
-  "theme_color": "#9e1c12",
+  "background_color": "#ffffff",
+  "theme_color": "#7f100b",
+  "lang": "de",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     }
   ]
 }

@@ -47,6 +47,47 @@ function showPanel(){
   document.getElementById('logoutBtn').style.display='inline-flex';
 }
 
+
+// Pizza De Silva: Alarm automatisch scharf schalten.
+// Browser erlauben Ton zuverlässig erst nach einer Benutzeraktion.
+// Deshalb wird der Alarm beim Anmelden bzw. beim ersten Klick/Tipp automatisch freigeschaltet.
+function armOrderAlarm(){
+  try{
+    sound = true;
+    if(!window.pdsOrderAlarm){
+      window.pdsOrderAlarm = new Audio('./Pizza-De-Silva-ALARM-Neue-Bestellung.wav?v=20260910-auto');
+      window.pdsOrderAlarm.preload = 'auto';
+      window.pdsOrderAlarm.volume = 1.0;
+    }
+    // Direkt innerhalb einer Benutzeraktion kurz stumm starten, damit spätere Alarme automatisch spielen dürfen.
+    const a = window.pdsOrderAlarm;
+    const oldVol = a.volume;
+    a.volume = 0;
+    const p = a.play();
+    if(p && typeof p.then === 'function'){
+      p.then(()=>{
+        a.pause();
+        a.currentTime = 0;
+        a.volume = oldVol;
+      }).catch(()=>{
+        a.volume = oldVol;
+      });
+    }else{
+      a.pause();
+      a.currentTime = 0;
+      a.volume = oldVol;
+    }
+  }catch(e){
+    console.warn('Alarm konnte noch nicht freigeschaltet werden', e);
+  }
+}
+
+// Schon der erste Klick/Tipp irgendwo im Adminpanel schaltet den Alarm frei.
+// Der Benutzer muss nicht mehr extra auf "Ton aktivieren" drücken.
+['pointerdown','touchstart','keydown'].forEach(evt=>{
+  window.addEventListener(evt, armOrderAlarm, {once:true, passive:true});
+});
+
 async function login(){
   const email=document.getElementById('email').value.trim();
   const password=document.getElementById('pw').value;
@@ -118,18 +159,8 @@ async function beep(){
 }
 
 async function enableSound(){
-  try{
-    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    await audioCtx.resume();
-    sound=true;
-    localStorage.setItem('pds_sound_enabled','1');
-    const st=document.getElementById('soundStatus');
-    if(st) st.textContent='✅ Ton ist aktiviert';
-    await beep();
-  }catch(e){
-    const st=document.getElementById('soundStatus');
-    if(st) st.textContent='❌ Ton konnte nicht aktiviert werden';
-  }
+  armOrderAlarm();
+  try{ await beep(); }catch(e){}
 }
 
 
@@ -242,7 +273,7 @@ async function render(){
     lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
-    if(has&&sound&&!timer)timer=setInterval(beep,5000);
+    if(has&&sound&&!timer)timer=setInterval(beep,9000);
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};

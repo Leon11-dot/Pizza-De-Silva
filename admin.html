@@ -19,7 +19,7 @@
     </div></div>
 <main class="admin" id="panel" style="display:none">
   <section class="admin-hero"><div><h1>Bestellzentrale</h1><p>Neue Bestellungen annehmen, Zeit festlegen und Status verwalten.</p></div><div><span class="sys">System aktiv</span><div class="meta" id="modeLabel" style="color:#ffe8df;text-align:right;margin-top:5px"></div></div></section>
-  <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm läuft bis zur Annahme oder Ablehnung.</div><button class="btn secondary" style="margin-left:auto" onclick="enableSound()">🔊 Ton aktivieren</button></div>
+  <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm startet automatisch bei einer neuen Bestellung und läuft bis zur Annahme oder Ablehnung.</div></div>
   <div class="stats"><div class="stat"><span>Neu</span><strong id="sNew">0</strong></div><div class="stat"><span>Angenommen</span><strong id="sAccepted">0</strong></div><div class="stat"><span>In Zubereitung</span><strong id="sPrep">0</strong></div><div class="stat"><span>Erledigt</span><strong id="sDone">0</strong></div><div class="stat"><span>Bestellwert</span><strong id="sRevenue">0 €</strong></div></div>
   <div class="notice" style="margin-bottom:14px">🔒 Diese Bestellzentrale ist nur für freigeschaltete Pizza-De-Silva-Admins erreichbar.</div>
   <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
@@ -34,7 +34,7 @@
   <section class="orders" id="historyOrders"></section>
 </section>
 </main>
-<script src="config.js"></script><script src="backend.js"></script><script src="admin.js"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20260910-autoalarm"></script>
 <script>
 let adminInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{

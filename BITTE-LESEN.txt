@@ -1,0 +1,22 @@
+PIZZA DE SILVA – JETZT DOWNLOADEN
+
+Eingebaut:
+- Oben auf der Homepage ein auffälliger Button:
+  „⬇️ JETZT DOWNLOADEN!“
+- Der Button erscheint beim Öffnen der Homepage.
+- Android/Windows: öffnet die App-Installation direkt, wenn der Browser sie anbietet.
+- iPhone/iPad: zeigt die kurze Anleitung „Teilen → Zum Home-Bildschirm“.
+- Installierter App-Name: „Pizza De Silva“.
+- Wenn die App schon installiert ist, wird der Download-Balken automatisch ausgeblendet.
+- Der 10-%-Neukunden-Hinweis bleibt auf der Homepage erhalten.
+
+GitHub:
+index.html
+app.js
+manifest.json
+
+in das Hauptverzeichnis hochladen und bestehende Dateien ersetzen.
+
+HINWEIS:
+manifest.json verweist auf icon-192.png und icon-512.png.
+Diese beiden Icon-Dateien müssen im GitHub-Hauptverzeichnis vorhanden sein.
