@@ -176,7 +176,7 @@
   </div>
   <div class="field"><label>Lieferart</label><select id="type"><option value="Lieferung">Lieferung</option><option value="Abholung">Abholung</option></select></div><div id="deliveryMinimumInfo" class="notice" style="display:none"></div>
   <div class="field"><label>Name</label><input id="name"></div>
-  <div class="field"><label>Telefonnummer</label><input id="phone" inputmode="tel"></div>
+  <div class="field"><label>Telefonnummer</label><input id="phone" inputmode="tel"><div id="newCustomerDiscountStatus" class="notice" style="display:none;margin-top:7px"></div></div>
   <div class="field"><label>Adresse</label><input id="address" placeholder="Straße, Hausnummer, PLZ Ort"></div>
 <div class="field" id="distanceField">
   <label>Lieferadresse prüfen</label>
@@ -205,7 +205,7 @@
   <div id="checkoutResult" style="margin-top:12px"></div>
 </div></div>
 
-<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app.js?v=20260912-rabatt-echt-v1"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app-rabatt-v2-20260912.js"></script>
 <script>
 let pdsDirectInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pdsDirectInstallPrompt=e;const b=document.getElementById('appInstallBanner');if(b)b.classList.add('show');});
@@ -277,5 +277,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js');</script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js?v=20260912-rabatt-v2',{updateViaCache:'none'});</script>
 </body></html>

@@ -1,21 +1,25 @@
-PIZZA DE SILVA – 10 % NEUKUNDENRABATT AUTOMATISCH
+PIZZA DE SILVA – RABATT FIX V2
 
-Jetzt funktioniert der Rabatt wirklich:
+Dieser Fix behebt vor allem das Problem mit der alten PWA-/Browser-Version.
 
-- Kunde gibt seine Telefonnummer ein.
-- Die Website prüft in Supabase, ob diese Telefonnummer schon einmal bestellt hat.
-- Keine frühere Bestellung = 10 % Rabatt auf die Speisen-Zwischensumme.
-- Der Rabatt wird sichtbar im Warenkorb abgezogen.
-- Vor dem Absenden wird die Berechtigung noch einmal geprüft.
-- Bei Kartenzahlung wird der reduzierte Gesamtbetrag an den vorhandenen SumUp-Ablauf übergeben.
-- Bei Barzahlung wird ebenfalls der reduzierte Gesamtbetrag gespeichert.
-- Der 10-%-Werbebalken und der App-Installationsbutton bleiben erhalten.
-- Apple-Anleitung bleibt erhalten.
+WICHTIG: diesmal bitte ALLE 3 Dateien hochladen:
+1. index.html
+2. app-rabatt-v2-20260912.js
+3. sw.js
 
-Zusätzlich wurde in Supabase die Edge Function
-check-new-customer-discount
-eingerichtet.
+Die alte app.js bitte NICHT löschen. Sie wird von dieser index.html einfach nicht mehr benutzt.
 
-GitHub:
-Bitte index.html und app.js hochladen und die vorhandenen Dateien ersetzen.
-manifest.json muss für diesen Rabatt-Fix nicht erneut hochgeladen werden.
+Was neu ist:
+- Die Website lädt eine komplett neue JavaScript-Datei mit neuem Namen.
+  Dadurch kann der alte Service-Worker nicht mehr die alte Rabatt-Version zeigen.
+- sw.js wurde aktualisiert und löscht alte Caches.
+- Nach Eingabe der Telefonnummer erscheint direkt:
+  „Neukunde erkannt: 10 % Rabatt werden automatisch abgezogen.“
+  oder
+  „Diese Telefonnummer hat bereits bestellt.“
+- Bei einem echten Neukunden erscheint im Warenkorb:
+  „Neukunden-Rabatt (10 %)“
+- 10-%-Werbebalken und App-Installationsbutton bleiben erhalten.
+
+Zum Test bitte eine Telefonnummer verwenden, mit der wirklich noch NIE eine
+Bestellung in Pizza De Silva gespeichert wurde.
