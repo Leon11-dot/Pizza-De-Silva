@@ -38,6 +38,12 @@
 #appInstallBanner .app-install-btn{border:0;border-radius:12px;padding:11px 18px;background:#ffd54a;color:#4b130d;font-weight:1000;cursor:pointer;font-size:15px;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 #appInstallBanner .app-install-close{border:0;background:transparent;font-size:20px;cursor:pointer;color:white}
 
+
+.pds-shop-closed .cart .btn.primary{opacity:.55;filter:grayscale(.35)}
+#shopClosedNotice{display:none;background:#fff0f0;color:#8b1111;border:2px solid #d7a0a0;
+padding:12px 14px;text-align:center;font-weight:900}
+.pds-shop-closed #shopClosedNotice{display:block}
+
 </style>
 </head>
 <body>
@@ -60,6 +66,7 @@
   <div class="navright"><button class="btn secondary" onclick="document.querySelector('.cart').scrollIntoView({behavior:'smooth'})">🛒 <span id="cartCount">0</span></button></div>
 </div></header>
 
+<div id="shopClosedNotice">🔴 Momentan geschlossen – Online-Bestellungen sind nur während unserer Öffnungszeiten möglich. <br>So–Do 11:00–01:00 Uhr · Fr–Sa 11:00–02:00 Uhr</div>
 <section class="hero">
   <div class="hero-inner">
     <img loading="eager" decoding="async" class="hero-logo" src="pizza-de-silva-logo-weiss.webp" alt="Pizza De Silva">
@@ -205,7 +212,7 @@
   <div id="checkoutResult" style="margin-top:12px"></div>
 </div></div>
 
-<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app-rabatt-v2-20260912.js"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app-rabatt-oeffnungszeiten-v3-20260912.js"></script>
 <script>
 let pdsDirectInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pdsDirectInstallPrompt=e;const b=document.getElementById('appInstallBanner');if(b)b.classList.add('show');});
@@ -277,5 +284,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js?v=20260912-rabatt-v2',{updateViaCache:'none'});</script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js?v=20260912-hours-v3',{updateViaCache:'none'});</script>
 </body></html>
