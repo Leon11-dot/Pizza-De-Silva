@@ -22,6 +22,13 @@
   <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm startet automatisch bei einer neuen Bestellung und läuft bis zur Annahme oder Ablehnung.</div></div>
   <div class="stats"><div class="stat"><span>Neu</span><strong id="sNew">0</strong></div><div class="stat"><span>Angenommen</span><strong id="sAccepted">0</strong></div><div class="stat"><span>In Zubereitung</span><strong id="sPrep">0</strong></div><div class="stat"><span>Erledigt</span><strong id="sDone">0</strong></div><div class="stat"><span>Bestellwert</span><strong id="sRevenue">0 €</strong></div></div>
   <div class="notice" style="margin-bottom:14px">🔒 Diese Bestellzentrale ist nur für freigeschaltete Pizza-De-Silva-Admins erreichbar.</div>
+
+  <div id="pushBox" class="notice" style="margin-bottom:14px">
+    <b>📳 Handy-Bestellalarm</b><br>
+    <span id="pushStatus">Noch nicht aktiviert.</span><br>
+    <button class="btn primary" id="pushEnableBtn" type="button" style="margin-top:9px" onclick="enableAdminPush()">🔔 Handy-Alarm aktivieren</button>
+  </div>
+
   <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
   <button class="btn secondary" id="currentOrdersBtn" onclick="showCurrentOrders()">🛎️ Aktuelle Bestellungen</button>
   <button class="btn secondary" id="historyBtn" onclick="showOrderHistory()">📋 Bestellverlauf</button>
@@ -34,7 +41,7 @@
   <section class="orders" id="historyOrders"></section>
 </section>
 </main>
-<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20260910-autoalarm"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20260912-push-v1"></script>
 <script>
 let adminInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{
@@ -55,7 +62,7 @@ async function installAdminApp(){
   }
 }
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  navigator.serviceWorker.register('./admin-sw.js').catch(()=>{});
+  navigator.serviceWorker.register('./admin-sw.js?v=20260912-push-v1',{updateViaCache:'none'}).catch(()=>{});
 }
 </script>
 </body></html>

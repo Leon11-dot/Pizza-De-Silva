@@ -1,4 +1,79 @@
 
+// === Pizza De Silva: Handy-Push für neue Bestellungen ===
+const PDS_VAPID_PUBLIC_KEY='BB2RAC97nR5edcRLB9Tq-XKg_ioHyCE2WZcvyT4d9z1PPrhJ2CryYoc-h4FoqEIJ3e4-tYqdGlwh8ufRhSvArs0';
+
+function pdsUrlBase64ToUint8Array(base64String){
+  const padding='='.repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');
+  const rawData=atob(base64);
+  return Uint8Array.from([...rawData].map(c=>c.charCodeAt(0)));
+}
+
+async function updatePushStatus(){
+  const st=document.getElementById('pushStatus');
+  const btn=document.getElementById('pushEnableBtn');
+  if(!st||!btn) return;
+  if(!('serviceWorker' in navigator) || !('PushManager' in window)){
+    st.textContent='Push-Benachrichtigungen werden auf diesem Gerät/Browser nicht unterstützt.';
+    btn.style.display='none';
+    return;
+  }
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    const sub=await reg.pushManager.getSubscription();
+    if(sub && Notification.permission==='granted'){
+      st.textContent='✅ Aktiv – neue Bestellungen melden sich auch wenn die Admin-App nicht geöffnet ist.';
+      btn.textContent='✅ Handy-Alarm ist aktiv';
+    }else{
+      st.textContent='Noch nicht aktiviert.';
+      btn.textContent='🔔 Handy-Alarm aktivieren';
+    }
+  }catch(e){
+    st.textContent='Handy-Alarm konnte noch nicht geprüft werden.';
+  }
+}
+
+async function enableAdminPush(){
+  try{
+    if(!PDS_BACKEND.isSignedIn()) throw new Error('Bitte zuerst als Admin anmelden.');
+    if(!('serviceWorker' in navigator) || !('PushManager' in window)) throw new Error('Push wird von diesem Browser nicht unterstützt.');
+
+    const permission=await Notification.requestPermission();
+    if(permission!=='granted') throw new Error('Benachrichtigungen wurden nicht erlaubt.');
+
+    const reg=await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub){
+      sub=await reg.pushManager.subscribe({
+        userVisibleOnly:true,
+        applicationServerKey:pdsUrlBase64ToUint8Array(PDS_VAPID_PUBLIC_KEY)
+      });
+    }
+
+    const token=sessionStorage.getItem('pds_access_token')||'';
+    const res=await fetch('https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/admin-push-subscribe',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+token
+      },
+      body:JSON.stringify({
+        subscription:sub.toJSON(),
+        userAgent:navigator.userAgent
+      })
+    });
+    let data={};
+    try{ data=await res.json(); }catch(e){}
+    if(!res.ok) throw new Error(data?.error||'Push-Anmeldung fehlgeschlagen.');
+
+    await updatePushStatus();
+    alert('✅ Handy-Bestellalarm ist aktiviert. Neue Bestellungen können jetzt als Push-Benachrichtigung mit Ton/Vibration erscheinen.');
+  }catch(e){
+    alert(e?.message||'Handy-Alarm konnte nicht aktiviert werden.');
+  }
+}
+
+
 let adminView='current';
 
 function showCurrentOrders(){
@@ -45,6 +120,7 @@ function showPanel(){
   document.getElementById('login').style.display='none';
   document.getElementById('panel').style.display='block';
   document.getElementById('logoutBtn').style.display='inline-flex';
+  setTimeout(updatePushStatus,300);
 }
 
 
