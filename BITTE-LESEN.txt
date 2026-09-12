@@ -1,20 +1,21 @@
-PIZZA DE SILVA – DIREKT INSTALLIEREN + APPLE-ANLEITUNG
+PIZZA DE SILVA – FIX
 
-- Android/Windows/Chrome/Edge:
-  Der Button „JETZT INSTALLIEREN!“ öffnet direkt den nativen Installationsdialog,
-  wenn der Browser die Installation unterstützt.
+Jetzt bleibt beides sichtbar:
+1. Oben: „NEUKUNDEN-RABATT: 10 % auf deine erste Bestellung!“
+2. Direkt darunter: „JETZT INSTALLIEREN!“
 
-- iPhone/iPad:
-  Beim Klick auf den Button erscheint wieder eine kurze Anleitung:
-  1. Teilen-Symbol antippen
-  2. „Zum Home-Bildschirm“ auswählen
-  3. „Hinzufügen“ antippen
+Android/Windows:
+- Button öffnet direkt den nativen Installationsdialog, wenn Chrome/Edge ihn anbietet.
 
-- App-Name: Pizza De Silva
-- Wenn die App bereits installiert ist, wird der Installationsbalken ausgeblendet.
+iPhone/iPad:
+- Beim Klick erscheint die Anleitung:
+  Teilen → Zum Home-Bildschirm → Hinzufügen.
 
-GitHub:
-index.html
-app.js
-manifest.json
-hochladen und vorhandene Dateien ersetzen.
+WICHTIG:
+Wenn auf der Website noch die alte Version erscheint, liegt es meist am Browser-/PWA-Cache.
+Die Dateien haben deshalb neue Versionsnummern bekommen.
+
+GitHub hochladen und vorhandene Dateien ersetzen:
+- index.html
+- app.js
+- manifest.json
