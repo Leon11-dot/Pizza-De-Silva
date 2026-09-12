@@ -1,21 +1,21 @@
-PIZZA DE SILVA – AUTOMATISCHE ÖFFNUNGSZEITEN
+PIZZA DE SILVA – ÖFFNUNGSZEITEN FIX
 
-Öffnungszeiten:
-- Sonntag–Donnerstag: 11:00 bis 01:00 Uhr
-- Freitag–Samstag: 11:00 bis 02:00 Uhr
+Der Fehler ist behoben:
+Die vorige JavaScript-Datei hatte einen Syntaxfehler in zwei Meldungstexten.
+Dadurch wurde das ganze Script gestoppt – deshalb stand nur „Status wird geladen“
+und die Produkte wurden nicht angezeigt.
 
-Was geändert wurde:
-- Der Shop prüft automatisch die aktuelle Uhrzeit in Deutschland (Europe/Berlin).
-- Außerhalb der Öffnungszeiten erscheint „Jetzt geschlossen“.
-- Der Kunde kann außerhalb der Öffnungszeiten keine Bestellung absenden.
-- Auch „Bestellung abschließen“ wird außerhalb der Öffnungszeiten blockiert.
-- Der 10-%-Neukundenrabatt bleibt vollständig erhalten.
+Jetzt geprüft:
+- JavaScript-Syntax ist gültig.
+- Produkte können wieder geladen werden.
+- Status wird wieder angezeigt.
+- Automatische Öffnungszeiten bleiben aktiv:
+  So–Do 11:00–01:00 Uhr
+  Fr–Sa 11:00–02:00 Uhr
+- 10-%-Neukundenrabatt bleibt erhalten.
 - App-Installationsbutton und Apple-Anleitung bleiben erhalten.
-- Neue Dateinamen/Cache-Version verhindern, dass die alte Seite aus dem PWA-Cache geladen wird.
 
 Bitte diese 3 Dateien in GitHub hochladen:
 1. index.html
-2. app-rabatt-oeffnungszeiten-v3-20260912.js
+2. app-rabatt-oeffnungszeiten-v4-20260912.js
 3. sw.js
-
-Vorhandene gleichnamige Dateien ersetzen, falls gefragt.
