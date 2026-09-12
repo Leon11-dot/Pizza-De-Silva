@@ -1,0 +1,7 @@
+<resources>
+    <!-- Diese Werte werden später aus Firebase eingetragen. -->
+    <string name="firebase_api_key"></string>
+    <string name="firebase_app_id"></string>
+    <string name="firebase_project_id"></string>
+    <string name="firebase_sender_id"></string>
+</resources>

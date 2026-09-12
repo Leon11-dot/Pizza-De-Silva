@@ -1,29 +1,29 @@
-PIZZA DE SILVA – HANDY PUSH-ALARM
+PIZZA DE SILVA ADMIN – ECHTE ANDROID-APP
 
-Was diese Version macht:
-- Admin kann auf dem Handy „Handy-Alarm aktivieren“ drücken.
-- Neue Bestellungen können als Push-Benachrichtigung erscheinen, auch wenn die Admin-Seite nicht geöffnet ist.
-- Die Push-Meldung verlangt Aufmerksamkeit und nutzt Ton/Vibration des Handys.
-- Tippen auf die Meldung öffnet direkt admin.html.
-- Der bisherige starke Pizza-De-Silva-Alarm bleibt in der geöffneten Admin-App erhalten.
+Diese Version ist als echte Android-App vorbereitet.
+
+Schon eingebaut:
+- Name: Pizza De Silva Admin
+- öffnet direkt https://www.pizzadesilva.de/admin.html
+- eigenes App-Symbol
+- Android-Benachrichtigungskanal „Neue Bestellungen“
+- eigener Pizza-De-Silva-Alarmton pds_alarm.wav
+- starke Vibration
+- FCM/Firebase-Push-Unterstützung vorbereitet
+- GitHub-Actions-Datei, die automatisch eine APK baut
 
 WICHTIG:
-Im Hintergrund erlaubt eine Web-App keinen frei wählbaren WAV-Alarmton.
-Android/iPhone spielen den Benachrichtigungston des Systems/der App-Einstellungen.
-Für einen garantiert eigenen Alarmton auch bei komplett geschlossener App wäre eine native Android-App nötig.
+Für echte Push-Benachrichtigungen bei komplett geschlossener App fehlen noch die 4 Firebase-Werte
+(API Key, App ID, Project ID, Sender ID) und der Firebase-Serverzugang.
+Ohne diese Werte kann die App bereits gebaut/installiert werden und die Adminseite öffnen,
+aber Push bei komplett geschlossener App ist noch nicht aktiv.
 
-GitHub-Dateien:
-admin.html
-admin.js
-admin-sw.js
-admin-manifest.json
-admin-icon-192.png
-admin-icon-512.png
-Pizza-De-Silva-ALARM-Neue-Bestellung.wav
+APK über GitHub bauen:
+1. Projektdateien in ein GitHub-Repository hochladen.
+2. GitHub → Actions → „Build Pizza De Silva Admin APK“.
+3. „Run workflow“ anklicken.
+4. Nach dem Build unten „Pizza-De-Silva-Admin-APK“ herunterladen.
+5. Darin liegt app-debug.apk.
+6. APK auf dem Redmi installieren.
 
-Server-Dateien im Paket:
-SUPABASE-PUSH-SETUP.sql
-supabase-functions/admin-push-subscribe-index.ts
-supabase-functions/send-admin-order-push-index.ts
-
-Die Serverteile müssen einmal in Supabase eingerichtet/deployed werden, damit Push im Hintergrund funktioniert.
+Der Server-Ordner „supabase“ enthält die vorbereitete Registrierung für Android-Push.
