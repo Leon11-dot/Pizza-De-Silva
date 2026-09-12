@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
@@ -97,28 +95,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFirebaseIfConfigured() {
-        String apiKey = getString(R.string.firebase_api_key);
-        String appId = getString(R.string.firebase_app_id);
-        String projectId = getString(R.string.firebase_project_id);
-        String senderId = getString(R.string.firebase_sender_id);
-
-        if (apiKey.isEmpty() || appId.isEmpty() || projectId.isEmpty() || senderId.isEmpty()) {
-            Toast.makeText(this,
-                    "Admin-App ist bereit. Push wird nach Firebase-Einrichtung aktiviert.",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (FirebaseApp.getApps(this).isEmpty()) {
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setApiKey(apiKey)
-                    .setApplicationId(appId)
-                    .setProjectId(projectId)
-                    .setGcmSenderId(senderId)
-                    .build();
-            FirebaseApp.initializeApp(this, options);
-        }
-
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 AndroidPushRegistration.registerToken(this, task.getResult());

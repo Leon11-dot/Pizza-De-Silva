@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "507318217856",
+    "project_id": "pizza-de-silva-admin",
+    "storage_bucket": "pizza-de-silva-admin.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507318217856:android:ea9de508020e96b7c40a65",
+        "android_client_info": {
+          "package_name": "de.pizzadesilva.admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu1ivoxj4ZtDXW30YMQRfaSggn4xGSsYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

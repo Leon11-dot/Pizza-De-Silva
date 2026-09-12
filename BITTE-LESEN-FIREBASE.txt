@@ -1,0 +1,21 @@
+PIZZA DE SILVA ADMIN – FIREBASE EINGEBAUT
+
+Die hochgeladene google-services.json wurde geprüft und eingebaut.
+Paketname stimmt: de.pizzadesilva.admin
+
+Jetzt enthalten:
+- echte Firebase-Android-Konfiguration
+- Firebase Cloud Messaging Bibliothek
+- FCM-Gerätetoken wird beim Start abgerufen
+- Android-Benachrichtigungskanal mit Pizza-De-Silva-Alarmton
+- GitHub Actions baut daraus eine APK
+
+NÄCHSTER SCHRITT:
+Für Push bei komplett geschlossener App brauchen wir noch den serverseitigen Firebase-Zugang.
+In Firebase:
+Projekt → Einstellungen (Zahnrad) → Projekteinstellungen → Dienstkonten
+→ „Neuen privaten Schlüssel generieren“
+Die heruntergeladene JSON-Datei NICHT öffentlich in GitHub hochladen.
+Sie wird nur serverseitig als Supabase Secret verwendet.
+
+Wichtig: google-services.json ist die Android-App-Konfiguration und ist bereits im Projekt.
