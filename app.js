@@ -1,13 +1,4 @@
 
-// Neukunden-Rabatt: Die Anzeige ist vorbereitet.
-// Die echte Berechtigung muss serverseitig anhand früherer Bestellungen geprüft werden,
-// damit derselbe Kunde den Rabatt nicht durch Browserwechsel mehrfach nutzen kann.
-let newCustomerDiscountEligible=false;
-function getNewCustomerDiscount(subtotal){
-  return newCustomerDiscountEligible ? Math.round((Number(subtotal)||0)*10)/100 : 0;
-}
-
-
 function renderDeliveryZonesOverview(){
   if(!settings) return;
   const set=(id,fee,min)=>{
@@ -481,14 +472,9 @@ function renderCart(){
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const fee=(document.getElementById('type')?.value==='Lieferung'&&verifiedDeliveryZone?verifiedDeliveryZone.fee:0);
-  const newCustomerDiscount=getNewCustomerDiscount(subtotal);
   document.getElementById('subtotal').textContent=money(subtotal);
   document.getElementById('deliveryFee').textContent=money(fee);
-  const discountRow=document.getElementById('newCustomerDiscountRow');
-  const discountValue=document.getElementById('newCustomerDiscount');
-  if(discountRow) discountRow.style.display=newCustomerDiscount>0?'flex':'none';
-  if(discountValue) discountValue.textContent='−'+money(newCustomerDiscount);
-  document.getElementById('total').textContent=money(subtotal+fee-newCustomerDiscount);
+  document.getElementById('total').textContent=money(subtotal+fee);
 }
 
 
@@ -686,15 +672,12 @@ async function placeOrder(){
   }
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0);
-  const newCustomerDiscount=getNewCustomerDiscount(subtotal);
-  const total=subtotal+fee-newCustomerDiscount;
+  const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0), total=subtotal+fee;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
   const paymentMethod=document.getElementById('payment').value;
   const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
     expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
-    discount:{type:newCustomerDiscount>0?'new_customer_10':null,amount:newCustomerDiscount},
     customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim()}};
 
   try{

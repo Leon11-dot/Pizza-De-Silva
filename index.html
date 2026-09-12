@@ -4,19 +4,19 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#7f100b">
 <title>Pizza De Silva – Online bestellen</title>
-<link rel="manifest" href="manifest.json?v=20260910-download">
+<link rel="manifest" href="manifest.json?v=20260912-direct">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="styles.css">
 
 <style>
-#appInstallBanner{display:block;position:sticky;top:0;z-index:10001;background:#7f100b;border-bottom:2px solid #ffd54a;padding:10px 14px;font-family:inherit;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+#appInstallBanner{display:block;position:sticky;top:0;z-index:9999;background:#fff4df;border-bottom:1px solid #e9c79e;padding:9px 14px;font-family:inherit}
 #appInstallBanner.show{display:block}
 #appInstallBanner .app-install-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-#appInstallBanner .app-install-text{display:flex;align-items:center;gap:9px;font-weight:900;color:white;font-size:clamp(14px,2.3vw,18px)}
+#appInstallBanner .app-install-text{display:flex;align-items:center;gap:9px;font-weight:700;color:#6f160f}
 #appInstallBanner .app-install-actions{display:flex;gap:8px;align-items:center}
-#appInstallBanner .app-install-btn{border:0;border-radius:12px;padding:11px 18px;background:#ffd54a;color:#4b130d;font-weight:1000;cursor:pointer;font-size:15px;box-shadow:0 2px 6px rgba(0,0,0,.18)}
-#appInstallBanner .app-install-close{border:0;background:transparent;font-size:20px;cursor:pointer;color:white}
+#appInstallBanner .app-install-btn{border:0;border-radius:10px;padding:9px 14px;background:#8f160f;color:white;font-weight:800;cursor:pointer}
+#appInstallBanner .app-install-close{border:0;background:transparent;font-size:20px;cursor:pointer;color:#6f160f}
 .preorder-box{margin:12px 0;padding:12px;border:1px solid #ecd6c7;background:#fffaf5;border-radius:14px}
 .preorder-choice{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 .preorder-choice button{border:1px solid #d7b29d;background:#fff;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:700}
@@ -24,22 +24,14 @@
 .preorder-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .preorder-grid .field{margin:0}
 @media(max-width:600px){.preorder-grid{grid-template-columns:1fr}}
-
-#newCustomerPromo{position:relative;z-index:10000;background:#ffd54a;color:#4b130d;text-align:center;
-padding:11px 14px;font-weight:900;font-size:clamp(15px,2.5vw,20px);letter-spacing:.2px;
-box-shadow:0 2px 8px rgba(0,0,0,.18)}
-#newCustomerPromo small{display:block;font-size:12px;font-weight:700;margin-top:2px}
 </style>
 </head>
 <body>
-<div id="newCustomerPromo">🎉 NEUKUNDEN-RABATT: 10 % auf deine erste Bestellung!
-<small>Der Rabatt wird bei deiner ersten Online-Bestellung berücksichtigt.</small></div>
-
 <div id="appInstallBanner">
   <div class="app-install-inner">
     <div class="app-install-text">📱 Pizza De Silva direkt auf deinen Bildschirm</div>
     <div class="app-install-actions">
-      <button class="app-install-btn" type="button" onclick="installPizzaApp()">⬇️ JETZT DOWNLOADEN!</button>
+      <button class="app-install-btn" type="button" onclick="installPizzaApp()">JETZT INSTALLIEREN!</button>
       <button class="app-install-close" type="button" aria-label="Schließen" onclick="dismissPizzaAppBanner()">×</button>
     </div>
   </div>
@@ -122,7 +114,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.18)}
       <div class="totals">
         <div class="total-line"><span>Zwischensumme</span><span id="subtotal">0,00 €</span></div>
         <div class="total-line"><span>Liefergebühr</span><span id="deliveryFee">0,00 €</span></div>
-<div class="total-line" id="newCustomerDiscountRow" style="display:none"><span>🎉 Neukunden-Rabatt (10 %)</span><span id="newCustomerDiscount">−0,00 €</span></div>
         <div class="grand"><span>Gesamt</span><span id="total">0,00 €</span></div>
       </div>
       <button class="btn primary" style="width:100%" onclick="openCheckout()">Bestellung abschließen</button>
@@ -196,61 +187,19 @@ box-shadow:0 2px 8px rgba(0,0,0,.18)}
   <div id="checkoutResult" style="margin-top:12px"></div>
 </div></div>
 
-<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app.js?v=20260910-download"></script>
-
+<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app.js?v=20260912-direct"></script>
 <script>
-let pizzaInstallPrompt = null;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  pizzaInstallPrompt = e;
-  const banner = document.getElementById('appInstallBanner');
-  if (banner) banner.style.display = 'block';
-});
-
-window.addEventListener('appinstalled', () => {
-  pizzaInstallPrompt = null;
-  const banner = document.getElementById('appInstallBanner');
-  if (banner) banner.style.display = 'none';
-});
-
-function isPizzaAppInstalled(){
-  return window.matchMedia('(display-mode: standalone)').matches ||
-         window.navigator.standalone === true;
-}
-
-async function installPizzaApp(){
-  if(isPizzaAppInstalled()){
-    alert('Pizza De Silva ist bereits auf deinem Bildschirm installiert.');
-    return;
-  }
-
-  if(pizzaInstallPrompt){
-    pizzaInstallPrompt.prompt();
-    await pizzaInstallPrompt.userChoice;
-    pizzaInstallPrompt = null;
-    return;
-  }
-
-  const ua = navigator.userAgent || '';
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  if(isIOS){
-    alert('iPhone/iPad: Unten auf „Teilen“ tippen und dann „Zum Home-Bildschirm“ wählen. Der Name lautet „Pizza De Silva“.');
-  }else{
-    alert('Bitte im Browser-Menü „App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen. Der Name lautet „Pizza De Silva“.');
-  }
-}
-
-function dismissPizzaAppBanner(){
-  const banner = document.getElementById('appInstallBanner');
-  if(banner) banner.style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const banner = document.getElementById('appInstallBanner');
-  if(banner && isPizzaAppInstalled()) banner.style.display = 'none';
-});
+let pdsDirectInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pdsDirectInstallPrompt=e;const b=document.getElementById('appInstallBanner');if(b)b.classList.add('show');});
+window.addEventListener('appinstalled',()=>{pdsDirectInstallPrompt=null;const b=document.getElementById('appInstallBanner');if(b)b.style.display='none';});
+window.installPizzaApp=async function(){
+  if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true)return;
+  if(pdsDirectInstallPrompt){const e=pdsDirectInstallPrompt;pdsDirectInstallPrompt=null;e.prompt();await e.userChoice;return;}
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent||'');
+  if(isIOS){alert('Auf iPhone/iPad erlaubt Apple keine direkte Installation per Webseiten-Button.');}
+  else{alert('Dein Browser bietet die direkte Installation gerade nicht an.');}
+};
+window.dismissPizzaAppBanner=function(){const b=document.getElementById('appInstallBanner');if(b)b.style.display='none';};
 </script>
-
 <script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js');</script>
 </body></html>
