@@ -1,5 +1,5 @@
 
-const CACHE='pizza-de-silva-admin-push-v1';
+const CACHE='pizza-de-silva-admin-install-v2';
 const ASSETS=[
   './admin.html','./styles.css','./admin.js','./config.js','./backend.js',
   './admin-manifest.json','./admin-icon-192.png','./admin-icon-512.png'

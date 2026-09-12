@@ -23,7 +23,14 @@
   <div class="stats"><div class="stat"><span>Neu</span><strong id="sNew">0</strong></div><div class="stat"><span>Angenommen</span><strong id="sAccepted">0</strong></div><div class="stat"><span>In Zubereitung</span><strong id="sPrep">0</strong></div><div class="stat"><span>Erledigt</span><strong id="sDone">0</strong></div><div class="stat"><span>Bestellwert</span><strong id="sRevenue">0 €</strong></div></div>
   <div class="notice" style="margin-bottom:14px">🔒 Diese Bestellzentrale ist nur für freigeschaltete Pizza-De-Silva-Admins erreichbar.</div>
 
-  <div id="pushBox" class="notice" style="margin-bottom:14px">
+  
+  <div id="adminInstallBox" class="notice" style="margin-bottom:14px">
+    <b>📲 Pizza De Silva Admin-App</b><br>
+    <span id="adminInstallStatus">Du kannst diese Adminseite als App auf deinem Handy installieren.</span><br>
+    <button class="btn primary" id="adminInstallBtn" type="button" style="margin-top:9px" onclick="installAdminApp()">📲 ADMIN-APP INSTALLIEREN</button>
+  </div>
+
+<div id="pushBox" class="notice" style="margin-bottom:14px">
     <b>📳 Handy-Bestellalarm</b><br>
     <span id="pushStatus">Noch nicht aktiviert.</span><br>
     <button class="btn primary" id="pushEnableBtn" type="button" style="margin-top:9px" onclick="enableAdminPush()">🔔 Handy-Alarm aktivieren</button>
@@ -41,7 +48,7 @@
   <section class="orders" id="historyOrders"></section>
 </section>
 </main>
-<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20260912-push-v1"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20260912-install-v2"></script>
 <script>
 let adminInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{
@@ -62,7 +69,7 @@ async function installAdminApp(){
   }
 }
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  navigator.serviceWorker.register('./admin-sw.js?v=20260912-push-v1',{updateViaCache:'none'}).catch(()=>{});
+  navigator.serviceWorker.register('./admin-sw.js?v=20260912-install-v2',{updateViaCache:'none'}).catch(()=>{});
 }
 </script>
 </body></html>

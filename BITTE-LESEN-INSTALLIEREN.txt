@@ -1,0 +1,17 @@
+PIZZA DE SILVA ADMIN – INSTALLIEREN-BUTTON
+
+Geändert wurde NUR die Installationsfunktion:
+- Großer Button: „📲 ADMIN-APP INSTALLIEREN“
+- Android/Chrome kann damit den nativen Installationsdialog öffnen.
+- Falls Android den Dialog noch nicht freigibt, zeigt der Button die exakten Chrome-Schritte.
+- Der vorhandene „Handy-Alarm aktivieren“-Button bleibt unverändert.
+- Push/Alarm-Funktionen wurden nicht entfernt.
+
+Bitte in GitHub hochladen:
+1. admin.html
+2. admin-sw.js
+3. admin-manifest.json
+4. admin-icon-192.png
+5. admin-icon-512.png
+
+admin.js kann unverändert bleiben, ist aber im ZIP enthalten.
