@@ -1,21 +1,21 @@
-PIZZA DE SILVA – FIX
+PIZZA DE SILVA – 10 % NEUKUNDENRABATT AUTOMATISCH
 
-Jetzt bleibt beides sichtbar:
-1. Oben: „NEUKUNDEN-RABATT: 10 % auf deine erste Bestellung!“
-2. Direkt darunter: „JETZT INSTALLIEREN!“
+Jetzt funktioniert der Rabatt wirklich:
 
-Android/Windows:
-- Button öffnet direkt den nativen Installationsdialog, wenn Chrome/Edge ihn anbietet.
+- Kunde gibt seine Telefonnummer ein.
+- Die Website prüft in Supabase, ob diese Telefonnummer schon einmal bestellt hat.
+- Keine frühere Bestellung = 10 % Rabatt auf die Speisen-Zwischensumme.
+- Der Rabatt wird sichtbar im Warenkorb abgezogen.
+- Vor dem Absenden wird die Berechtigung noch einmal geprüft.
+- Bei Kartenzahlung wird der reduzierte Gesamtbetrag an den vorhandenen SumUp-Ablauf übergeben.
+- Bei Barzahlung wird ebenfalls der reduzierte Gesamtbetrag gespeichert.
+- Der 10-%-Werbebalken und der App-Installationsbutton bleiben erhalten.
+- Apple-Anleitung bleibt erhalten.
 
-iPhone/iPad:
-- Beim Klick erscheint die Anleitung:
-  Teilen → Zum Home-Bildschirm → Hinzufügen.
+Zusätzlich wurde in Supabase die Edge Function
+check-new-customer-discount
+eingerichtet.
 
-WICHTIG:
-Wenn auf der Website noch die alte Version erscheint, liegt es meist am Browser-/PWA-Cache.
-Die Dateien haben deshalb neue Versionsnummern bekommen.
-
-GitHub hochladen und vorhandene Dateien ersetzen:
-- index.html
-- app.js
-- manifest.json
+GitHub:
+Bitte index.html und app.js hochladen und die vorhandenen Dateien ersetzen.
+manifest.json muss für diesen Rabatt-Fix nicht erneut hochgeladen werden.

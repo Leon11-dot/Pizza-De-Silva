@@ -131,6 +131,7 @@
       <div class="totals">
         <div class="total-line"><span>Zwischensumme</span><span id="subtotal">0,00 €</span></div>
         <div class="total-line"><span>Liefergebühr</span><span id="deliveryFee">0,00 €</span></div>
+<div class="total-line" id="newCustomerDiscountRow" style="display:none;color:#198754;font-weight:900"><span>🎉 Neukunden-Rabatt (10 %)</span><span id="newCustomerDiscount">−0,00 €</span></div>
         <div class="grand"><span>Gesamt</span><span id="total">0,00 €</span></div>
       </div>
       <button class="btn primary" style="width:100%" onclick="openCheckout()">Bestellung abschließen</button>
@@ -204,7 +205,7 @@
   <div id="checkoutResult" style="margin-top:12px"></div>
 </div></div>
 
-<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app.js?v=20260912-fix2"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="data.js"></script><script src="app.js?v=20260912-rabatt-echt-v1"></script>
 <script>
 let pdsDirectInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pdsDirectInstallPrompt=e;const b=document.getElementById('appInstallBanner');if(b)b.classList.add('show');});

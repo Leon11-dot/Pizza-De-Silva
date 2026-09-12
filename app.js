@@ -1,4 +1,55 @@
 
+// === Pizza De Silva: automatischer 10-%-Neukundenrabatt ===
+let newCustomerDiscountEligible=false;
+let newCustomerDiscountCheckedPhone='';
+
+function normalizeDiscountPhone(v){
+  return String(v||'').replace(/\D/g,'');
+}
+
+async function checkNewCustomerDiscount(phone){
+  const normalized=normalizeDiscountPhone(phone);
+  if(normalized.length<7){
+    newCustomerDiscountEligible=false;
+    newCustomerDiscountCheckedPhone='';
+    renderCart();
+    return false;
+  }
+  const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/check-new-customer-discount';
+  const response=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({phone:String(phone||'')})
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok) throw new Error(data?.error||'Neukundenrabatt konnte nicht geprüft werden.');
+  newCustomerDiscountEligible=data?.eligible===true;
+  newCustomerDiscountCheckedPhone=normalized;
+  renderCart();
+  return newCustomerDiscountEligible;
+}
+
+function newCustomerDiscountAmount(subtotal){
+  return newCustomerDiscountEligible
+    ? Math.round((Number(subtotal)||0)*10)/100
+    : 0;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const phone=document.getElementById('phone');
+  if(phone){
+    let t=null;
+    const run=()=>{
+      clearTimeout(t);
+      t=setTimeout(()=>checkNewCustomerDiscount(phone.value).catch(console.error),350);
+    };
+    phone.addEventListener('input',run);
+    phone.addEventListener('blur',run);
+  }
+});
+
+
 function renderDeliveryZonesOverview(){
   if(!settings) return;
   const set=(id,fee,min)=>{
@@ -472,9 +523,14 @@ function renderCart(){
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const fee=(document.getElementById('type')?.value==='Lieferung'&&verifiedDeliveryZone?verifiedDeliveryZone.fee:0);
+  const discount=newCustomerDiscountAmount(subtotal);
   document.getElementById('subtotal').textContent=money(subtotal);
   document.getElementById('deliveryFee').textContent=money(fee);
-  document.getElementById('total').textContent=money(subtotal+fee);
+  const discountRow=document.getElementById('newCustomerDiscountRow');
+  const discountValue=document.getElementById('newCustomerDiscount');
+  if(discountRow) discountRow.style.display=discount>0?'flex':'none';
+  if(discountValue) discountValue.textContent='−'+money(discount);
+  document.getElementById('total').textContent=money(subtotal+fee-discount);
 }
 
 
@@ -672,15 +728,32 @@ async function placeOrder(){
   }
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0), total=subtotal+fee;
+
+  // Vor dem Absenden immer erneut in Supabase prüfen, ob diese Telefonnummer
+  // bereits bestellt hat. Nur echte Neukunden erhalten 10 %.
+  try{
+    await checkNewCustomerDiscount(phone);
+  }catch(discountError){
+    console.error(discountError);
+    return alert('Der Neukundenrabatt konnte gerade nicht geprüft werden. Bitte versuche es noch einmal.');
+  }
+
+  const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0);
+  const discount=newCustomerDiscountAmount(subtotal);
+  const total=Math.round((subtotal+fee-discount)*100)/100;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
   const paymentMethod=document.getElementById('payment').value;
   const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
     expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
-    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim()}};
+    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim(),
+      newCustomerDiscount:discount,discountLabel:discount>0?'Neukunden-Rabatt 10 %':''}};
 
   try{
+    if(discount>0){
+      document.getElementById('checkoutResult').innerHTML=
+        '<div class="success"><b>🎉 10 % Neukunden-Rabatt wurde abgezogen.</b><br>Du sparst '+money(discount)+'. Neuer Gesamtpreis: <b>'+money(total)+'</b></div>';
+    }
     if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
 
     if(paymentMethod==='Mit Karte zahlen'){
