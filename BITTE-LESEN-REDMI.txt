@@ -1,0 +1,26 @@
+PIZZA DE SILVA ADMIN – REDMI / ANDROID PWA FIX
+
+Geändert:
+- Manifest mit eindeutiger App-ID und absoluter Start-URL
+- Scope auf die komplette Domain gesetzt
+- Android-kompatible Icons
+- Service Worker komplett vereinfacht und zuverlässiger gemacht
+- Alte/mehrfache Installationsskripte entfernt
+- Installationsbutton bleibt sichtbar
+- Handy-Push und Alarm bleiben erhalten
+- neue Cache-Version, damit Redmi/Chrome keine alte Admin-Version weiter benutzt
+
+Bitte in GitHub hochladen:
+1. admin.html
+2. admin-manifest.json
+3. admin-sw.js
+4. admin-icon-192.png
+5. admin-icon-512.png
+
+Danach auf dem Redmi:
+1. Adminseite öffnen
+2. Seite einmal neu laden
+3. 5–10 Sekunden warten
+4. Auf „ADMIN-APP INSTALLIEREN“ tippen
+
+Wenn Chrome die PWA erkannt hat, erscheint der echte Android-Installationsdialog.
