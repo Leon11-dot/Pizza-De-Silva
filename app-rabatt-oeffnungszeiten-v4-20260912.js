@@ -2,39 +2,865 @@
 // === Pizza De Silva: automatische Öffnungszeiten ===
 // So–Do: 11:00–01:00, Fr–Sa: 11:00–02:00
 function pdsBerlinNow(){
-  const parts = new Intl.DateTimeFormat('de-DE',{timeZone:'Europe/Berlin',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
-  const get=t=>parts.find(p=>p.type===t)?.value||''; const wd=get('weekday').replace('.','').toLowerCase(); const map={so:0,mo:1,di:2,mi:3,do:4,fr:5,sa:6};
-  return {day:map[wd],minutes:Number(get('hour'))*60+Number(get('minute'))};
+  const parts = new Intl.DateTimeFormat('de-DE',{
+    timeZone:'Europe/Berlin',
+    weekday:'short', hour:'2-digit', minute:'2-digit', hour12:false
+  }).formatToParts(new Date());
+  const get=t=>parts.find(p=>p.type===t)?.value||'';
+  const wd=get('weekday').replace('.','').toLowerCase();
+  const map={so:0,mo:1,di:2,mi:3,do:4,fr:5,sa:6};
+  return {day:map[wd], minutes:Number(get('hour'))*60+Number(get('minute'))};
 }
-function pdsIsOpenNow(){const {day,minutes}=pdsBerlinNow();if(minutes<60){const prev=(day+6)%7;return prev>=0&&prev<=4;}if(minutes<120){const prev=(day+6)%7;return prev===5||prev===6;}return minutes>=11*60;}
-function pdsOpeningHoursText(){return 'So–Do 11:00–01:00 Uhr · Fr–Sa 11:00–02:00 Uhr';}
-function pdsApplyOpenState(){const open=pdsIsOpenNow(),badge=document.getElementById('openBadge'),opening=document.getElementById('openingText'),footer=document.getElementById('openingTextFooter');if(badge){badge.textContent=open?'🟢 Jetzt geöffnet':'🔴 Jetzt geschlossen';badge.style.fontWeight='900';}if(opening)opening.textContent=(open?'Jetzt geöffnet · ':'Jetzt geschlossen · ')+pdsOpeningHoursText();if(footer)footer.textContent=pdsOpeningHoursText();document.body.classList.toggle('pds-shop-closed',!open);}
-setInterval(pdsApplyOpenState,60000);document.addEventListener('DOMContentLoaded',pdsApplyOpenState);
 
-let newCustomerDiscountEligible=false,newCustomerDiscountCheckedPhone='';
-function normalizeDiscountPhone(v){return String(v||'').replace(/\D/g,'');}
-async function checkNewCustomerDiscount(phone){const normalized=normalizeDiscountPhone(phone);if(normalized.length<7){newCustomerDiscountEligible=false;newCustomerDiscountCheckedPhone='';renderCart();return false;}const r=await fetch('https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/check-new-customer-discount',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:String(phone||'')})});let d={};try{d=await r.json();}catch(e){}if(!r.ok)throw new Error(d?.error||'Rabattprüfung fehlgeschlagen');newCustomerDiscountEligible=d?.eligible===true;newCustomerDiscountCheckedPhone=normalized;const s=document.getElementById('newCustomerDiscountStatus');if(s){s.style.display='block';s.innerHTML=newCustomerDiscountEligible?'<b>🎉 Neukunde erkannt: 10 % Rabatt werden automatisch abgezogen.</b>':'<b>Der Neukundenrabatt gilt nur für die erste Bestellung.</b>';}renderCart();return newCustomerDiscountEligible;}
-function newCustomerDiscountAmount(subtotal){return newCustomerDiscountEligible?Math.round((Number(subtotal)||0)*10)/100:0;}
+function pdsIsOpenNow(){
+  const {day,minutes}=pdsBerlinNow();
 
-const PDS_RESTAURANT={lat:51.357857,lon:6.648934};let verifiedDeliveryZone=null;
-function haversineKm(a,b,c,d){const R=6371,toRad=x=>x*Math.PI/180,x=toRad(c-a),y=toRad(d-b),q=Math.sin(x/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(y/2)**2;return R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));}
-async function geocodeAddress(address){const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=de&q=${encodeURIComponent(address)}`);if(!r.ok)throw new Error('Adresse nicht gefunden');const x=await r.json();if(!x.length)throw new Error('Adresse nicht gefunden');return {lat:Number(x[0].lat),lon:Number(x[0].lon)};}
-function zoneForDistance(km){km=Number(km);if(km<=2)return {label:'bis 2 km',fee:1,minimum:15,distanceKm:km};if(km<=5)return {label:'2–5 km',fee:2,minimum:25,distanceKm:km};if(km<=7)return {label:'5–7 km',fee:3,minimum:35,distanceKm:km};if(km<=10)return {label:'7–10 km',fee:3.5,minimum:45,distanceKm:km};return null;}
-async function checkDeliveryAddress(){const addr=document.getElementById('address')?.value.trim(),info=document.getElementById('zonePriceInfo');if(!addr)return alert('Bitte zuerst die Lieferadresse eingeben.');if(info){info.style.display='block';info.textContent='Adresse wird geprüft…';}try{const g=await geocodeAddress(addr),km=haversineKm(PDS_RESTAURANT.lat,PDS_RESTAURANT.lon,g.lat,g.lon),z=zoneForDistance(km);if(!z){verifiedDeliveryZone=null;if(info)info.innerHTML=`Entfernung ca. <b>${km.toFixed(1)} km</b>. Lieferung ist nur bis 10 km möglich.`;renderCart();return;}verifiedDeliveryZone=z;if(info){info.className='success';info.innerHTML=`Entfernung ca. <b>${km.toFixed(1)} km</b> • ${z.label}<br>Liefergebühr: <b>${money(z.fee)}</b> • Mindestbestellwert: <b>${money(z.minimum)}</b>`;}renderCart();}catch(e){verifiedDeliveryZone=null;if(info){info.className='notice';info.textContent='Adresse nicht gefunden. Bitte Straße, Hausnummer, PLZ und Ort vollständig eingeben.';}renderCart();}}
+  // Nach Mitternacht gehört die Öffnung noch zum Vortag.
+  if(minutes < 60){
+    const prev=(day+6)%7;
+    return prev>=0 && prev<=4; // So–Do bis 01:00
+  }
+  if(minutes < 120){
+    const prev=(day+6)%7;
+    return prev===5 || prev===6; // Fr–Sa bis 02:00
+  }
 
-const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});let cart=JSON.parse(localStorage.getItem('pds_cart')||'[]'),active='Alle',selected=null,settings=null;const cats=['Alle',...new Set(PDS_PRODUCTS.filter(p=>!p.isExtra).map(p=>p.category))];
-function saveCart(){localStorage.setItem('pds_cart',JSON.stringify(cart));renderCart();}function closeModal(id){document.getElementById(id)?.classList.remove('show');}function showModal(id){document.getElementById(id)?.classList.add('show');}
-const CATEGORY_META={Alle:{icon:'🍽️',title:'Alle Gerichte'},Pizza:{icon:'🍕',title:'Pizza'},Nudelgerichte:{icon:'🍝',title:'Nudelgerichte'},'Finger Food':{icon:'🍟',title:'Finger Food'},Pizzabrötchen:{icon:'🥖',title:'Pizzabrötchen'},Fleischgerichte:{icon:'🍗',title:'Fleischgerichte'},Baguettes:{icon:'🥖',title:'Baguettes'},Salate:{icon:'🥗',title:'Salate'},Desserts:{icon:'🍰',title:'Desserts'},Getränke:{icon:'🥤',title:'Getränke'}};
-function renderCats(){const el=document.getElementById('categories');if(!el)return;el.innerHTML='';cats.forEach(c=>{const b=document.createElement('button'),m=CATEGORY_META[c]||{icon:'•'};b.className='chip'+(c===active?' active':'');b.innerHTML=`<span class="cat-icon">${m.icon}</span><span>${c}</span>`;b.onclick=()=>{active=c;renderCats();renderProducts();};el.appendChild(b);});}
-function renderProducts(){const el=document.getElementById('products');if(!el)return;el.innerHTML='';const list=PDS_PRODUCTS.filter(p=>!p.isExtra&&(active==='Alle'||p.category===active));list.forEach(p=>{const first=Object.values(p.variants||{})[0]||0,card=document.createElement('article');card.className='product';card.innerHTML=`<div class="media"><img src="${p.image}" alt="${p.name}" loading="lazy"><span class="num">${p.id}</span></div><div class="body"><h3>${p.name}</h3><div class="desc">${p.description||'&nbsp;'}</div><div class="price">ab ${money(first)}</div><button class="btn primary">Auswählen</button></div>`;card.querySelector('button').onclick=()=>openProduct(p);el.appendChild(card);});}
-function openProduct(p){selected=p;document.getElementById('pName').textContent=p.name;document.getElementById('pDesc').textContent=p.description||'';const v=document.getElementById('pVariant');v.innerHTML='';Object.entries(p.variants||{}).forEach(([k,val])=>v.add(new Option(`${k} – ${money(val)}`,k)));const ef=document.getElementById('extraField');if(ef){ef.style.display='none';ef.innerHTML='';}document.getElementById('pNote').value='';showModal('productModal');}
-function addProduct(){if(!selected)return;const variant=document.getElementById('pVariant').value,note=document.getElementById('pNote').value.trim();let price=Number(selected.variants[variant]||0);cart.push({productId:selected.id,name:selected.name,variant,note,extraName:'',extraItems:[],price,qty:1});saveCart();closeModal('productModal');}
-function removeItem(i){cart.splice(i,1);saveCart();}
-function renderCart(){const count=cart.reduce((s,x)=>s+x.qty,0);if(document.getElementById('cartCount'))document.getElementById('cartCount').textContent=count;if(document.getElementById('cartCount2'))document.getElementById('cartCount2').textContent=count;const rows=document.getElementById('cartRows');if(rows)rows.innerHTML=cart.length?cart.map((x,i)=>`<div class="cart-row"><div><b>${x.qty}× ${x.name}</b><small>${x.variant}${x.note?' • '+x.note:''}</small></div><div><b>${money(x.price*x.qty)}</b><br><button class="linkbtn" onclick="removeItem(${i})">entfernen</button></div></div>`).join(''):'Dein Warenkorb ist noch leer.';const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),fee=(document.getElementById('type')?.value==='Lieferung'&&verifiedDeliveryZone?Number(verifiedDeliveryZone.fee):0),discount=newCustomerDiscountAmount(subtotal);if(document.getElementById('subtotal'))document.getElementById('subtotal').textContent=money(subtotal);if(document.getElementById('deliveryFee'))document.getElementById('deliveryFee').textContent=money(fee);const dr=document.getElementById('newCustomerDiscountRow'),dv=document.getElementById('newCustomerDiscount');if(dr)dr.style.display=discount>0?'flex':'none';if(dv)dv.textContent='−'+money(discount);if(document.getElementById('total'))document.getElementById('total').textContent=money(subtotal+fee-discount);}
-async function loadSettings(){try{settings=await PDS_BACKEND.getSettings();}catch(e){settings={deliveryOpen:true,pickupOpen:true,autoCancelMinutes:5};}renderCart();pdsApplyOpenState();}
-function updateCheckoutTypeUI(){const isDelivery=document.getElementById('type')?.value==='Lieferung';const a=document.getElementById('address');if(a?.closest('.field'))a.closest('.field').style.display=isDelivery?'grid':'none';const d=document.getElementById('distanceField');if(d)d.style.display=isDelivery?'grid':'none';renderCart();}
-function openCheckout(){if(!cart.length)return alert('Bitte zuerst etwas auswählen.');showModal('checkoutModal');updateCheckoutTypeUI();const a=document.getElementById('address');if(a&&!a.dataset.zoneReset){a.addEventListener('input',()=>{verifiedDeliveryZone=null;renderCart();});a.dataset.zoneReset='1';}}
-let orderTimingMode='asap';function setOrderTimingMode(mode){orderTimingMode=mode==='preorder'?'preorder':'asap';const f=document.getElementById('preorderFields');if(f)f.style.display=orderTimingMode==='preorder'?'grid':'none';}
-function getOrderTiming(){if(orderTimingMode!=='preorder')return {mode:'asap',requestedFor:null};const date=document.getElementById('preorderDate')?.value,time=document.getElementById('preorderTime')?.value;if(!date||!time)return null;return {mode:'preorder',requestedFor:new Date(`${date}T${time}:00`).toISOString(),requestedDate:date,requestedTime:time};}
-async function placeOrder(){const type=document.getElementById('type').value,name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),address=document.getElementById('address').value.trim(),terms=document.getElementById('terms').checked;if(!name||!phone||!terms)return alert('Bitte Name, Telefonnummer und Bestätigung ausfüllen.');const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);if(type==='Lieferung'){if(!address)return alert('Bitte Lieferadresse eingeben.');if(!verifiedDeliveryZone)return alert('Bitte zuerst die Lieferadresse prüfen.');if(subtotal<verifiedDeliveryZone.minimum)return alert(`Mindestbestellwert für ${verifiedDeliveryZone.label}: ${money(verifiedDeliveryZone.minimum)}.`);}try{await checkNewCustomerDiscount(phone);}catch(e){}const fee=type==='Lieferung'?Number(verifiedDeliveryZone.fee):0,discount=newCustomerDiscountAmount(subtotal),total=Math.round((subtotal+fee-discount)*100)/100,id=crypto.randomUUID?crypto.randomUUID():String(Date.now()),statusToken=crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random(),timing=getOrderTiming();const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:document.getElementById('payment').value,note:document.getElementById('note').value.trim(),newCustomerDiscount:discount,discountLabel:discount>0?'Neukunden-Rabatt 10 %':''}};try{const created=await PDS_BACKEND.createOrder(order);if(created?.number)order.number=created.number;localStorage.setItem('pds_last_order',id);localStorage.setItem(`pds_order_token_${id}`,statusToken);cart=[];saveCart();location.href=`status.html?id=${encodeURIComponent(id)}`;}catch(e){console.error(e);alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');}}
-document.getElementById('type')?.addEventListener('change',updateCheckoutTypeUI);renderCats();renderProducts();renderCart();loadSettings();
+  // Tagesöffnung ab 11:00.
+  if(minutes < 11*60) return false;
+  return true;
+}
+
+function pdsOpeningHoursText(){
+  return 'So–Do 11:00–01:00 Uhr · Fr–Sa 11:00–02:00 Uhr';
+}
+
+function pdsApplyOpenState(){
+  const open=pdsIsOpenNow();
+  const badge=document.getElementById('openBadge');
+  const opening=document.getElementById('openingText');
+  const openingFooter=document.getElementById('openingTextFooter');
+
+  if(badge){
+    badge.textContent=open ? '🟢 Jetzt geöffnet' : '🔴 Jetzt geschlossen';
+    badge.style.fontWeight='900';
+  }
+  const txt=(open?'Jetzt geöffnet · ':'Jetzt geschlossen · ')+pdsOpeningHoursText();
+  if(opening) opening.textContent=txt;
+  if(openingFooter) openingFooter.textContent=pdsOpeningHoursText();
+
+  document.body.classList.toggle('pds-shop-closed',!open);
+}
+
+setInterval(pdsApplyOpenState,60000);
+document.addEventListener('DOMContentLoaded',pdsApplyOpenState);
+
+
+// === Pizza De Silva: automatischer 10-%-Neukundenrabatt ===
+let newCustomerDiscountEligible=false;
+let newCustomerDiscountCheckedPhone='';
+
+function normalizeDiscountPhone(v){
+  return String(v||'').replace(/\D/g,'');
+}
+
+async function checkNewCustomerDiscount(phone){
+  const normalized=normalizeDiscountPhone(phone);
+  if(normalized.length<7){
+    newCustomerDiscountEligible=false;
+    newCustomerDiscountCheckedPhone='';
+    const status=document.getElementById('newCustomerDiscountStatus');
+    if(status){status.style.display='none';status.innerHTML='';}
+    renderCart();
+    return false;
+  }
+  const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/check-new-customer-discount';
+  const response=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({phone:String(phone||'')})
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok) throw new Error(data?.error||'Neukundenrabatt konnte nicht geprüft werden.');
+  newCustomerDiscountEligible=data?.eligible===true;
+  newCustomerDiscountCheckedPhone=normalized;
+  const status=document.getElementById('newCustomerDiscountStatus');
+  if(status){
+    status.style.display='block';
+    status.innerHTML=newCustomerDiscountEligible
+      ? '<b>🎉 Neukunde erkannt: 10 % Rabatt werden automatisch abgezogen.</b>'
+      : '<b>Diese Telefonnummer hat bereits bestellt. Der Neukundenrabatt gilt nur für die erste Bestellung.</b>';
+  }
+  renderCart();
+  return newCustomerDiscountEligible;
+}
+
+function newCustomerDiscountAmount(subtotal){
+  return newCustomerDiscountEligible
+    ? Math.round((Number(subtotal)||0)*10)/100
+    : 0;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const phone=document.getElementById('phone');
+  if(phone){
+    let t=null;
+    const run=()=>{
+      clearTimeout(t);
+      t=setTimeout(()=>checkNewCustomerDiscount(phone.value).catch(console.error),350);
+    };
+    phone.addEventListener('input',run);
+    phone.addEventListener('blur',run);
+  }
+});
+
+
+function renderDeliveryZonesOverview(){
+  if(!settings) return;
+  const set=(id,fee,min)=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=`Liefergebühr ${money(fee)} · Mindestbestellwert ${money(min)}`;
+  };
+  set('zone2Info',settings.deliveryFee2km,settings.deliveryMinimum2km);
+  set('zone5Info',settings.deliveryFee5km,settings.deliveryMinimum5km);
+  set('zone7Info',settings.deliveryFee7km,settings.deliveryMinimum7km);
+  set('zone10Info',settings.deliveryFee10km,settings.deliveryMinimum10km);
+}
+
+
+const PDS_RESTAURANT={lat:51.357857,lon:6.648934};
+let verifiedDeliveryZone=null;
+
+function haversineKm(a,b,c,d){
+  const R=6371,toRad=x=>x*Math.PI/180;
+  const x=toRad(c-a),y=toRad(d-b);
+  const q=Math.sin(x/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(y/2)**2;
+  return R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));
+}
+async function geocodeAddress(address){
+  const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=de&q=${encodeURIComponent(address)}`);
+  if(!r.ok) throw new Error("Adresse nicht gefunden");
+  const x=await r.json();
+  if(!x.length) throw new Error("Adresse nicht gefunden");
+  return {lat:Number(x[0].lat),lon:Number(x[0].lon)};
+}
+function zoneForDistance(km){
+  km=Number(km);
+  if(km<=2) return {label:"bis 2 km",fee:1.00,minimum:15.00,distanceKm:km};
+  if(km<=5) return {label:"2–5 km",fee:2.00,minimum:25.00,distanceKm:km};
+  if(km<=7) return {label:"5–7 km",fee:3.00,minimum:35.00,distanceKm:km};
+  if(km<=10) return {label:"7–10 km",fee:3.50,minimum:45.00,distanceKm:km};
+  return null;
+}
+async function checkDeliveryAddress(){
+  const addr=document.getElementById("address")?.value.trim();
+  const info=document.getElementById("zonePriceInfo");
+  if(!addr) return alert("Bitte zuerst die Lieferadresse eingeben.");
+  info.style.display="block"; info.className="notice"; info.textContent="Adresse wird geprüft…";
+  try{
+    const g=await geocodeAddress(addr);
+    const km=haversineKm(PDS_RESTAURANT.lat,PDS_RESTAURANT.lon,g.lat,g.lon);
+    const z=zoneForDistance(km);
+    if(!z){verifiedDeliveryZone=null;info.innerHTML=`Entfernung ca. <b>${km.toFixed(1)} km</b>. Lieferung ist nur bis 10 km möglich.`;renderCart();return;}
+    verifiedDeliveryZone=z; info.className="success";
+    info.innerHTML=`Entfernung ca. <b>${km.toFixed(1)} km</b> • ${z.label}<br>Liefergebühr: <b>${money(z.fee)}</b> • Mindestbestellwert: <b>${money(z.minimum)}</b>`;
+    renderCart();
+  }catch(e){verifiedDeliveryZone=null;info.className="notice";info.textContent="Adresse nicht gefunden. Bitte Straße, Hausnummer, PLZ und Ort vollständig eingeben.";renderCart();}
+}
+function customerFormData(){
+  return {
+    name: document.getElementById("name")?.value.trim() || "",
+    phone: document.getElementById("phone")?.value.trim() || "",
+    address: document.getElementById("address")?.value.trim() || ""
+  };
+}
+
+function fillCustomerForm(profile){
+  if(!profile) return;
+  const nameEl=document.getElementById("name");
+  const phoneEl=document.getElementById("phone");
+  const addressEl=document.getElementById("address");
+
+  if(nameEl && profile.name) nameEl.value=profile.name;
+  if(phoneEl && profile.phone) phoneEl.value=profile.phone;
+  if(addressEl && profile.address) addressEl.value=profile.address;
+}
+
+async function saveCurrentCustomerData(){
+  if(!PDS_BACKEND.isCustomerSignedIn()) return;
+  const data=customerFormData();
+  if(!data.name && !data.phone && !data.address) return;
+  try{
+    await PDS_BACKEND.saveCustomerProfile(data);
+  }catch(e){
+    console.warn("Kundendaten konnten nicht gespeichert werden",e);
+  }
+}
+
+async function syncCustomerUi(){
+  const guest=document.getElementById("customerAccountGuest");
+  const logged=document.getElementById("customerAccountLogged");
+  const status=document.getElementById("customerAccountStatus");
+  if(!guest||!logged||!status) return;
+
+  if(PDS_BACKEND.isCustomerSignedIn()){
+    guest.style.display="none";
+    logged.style.display="block";
+    status.textContent="Angemeldet";
+
+    try{
+      const profile=await PDS_BACKEND.getCustomerProfile();
+
+      if(profile){
+        fillCustomerForm(profile);
+      }else{
+        // Wenn der Kunde sich gerade registriert hat und Name/Telefon/Adresse
+        // bereits eingetragen sind, diese Daten sofort im Konto speichern.
+        await saveCurrentCustomerData();
+      }
+    }catch(e){
+      console.warn("Kundenprofil konnte nicht geladen werden",e);
+    }
+  }else{
+    guest.style.display="block";
+    logged.style.display="none";
+    status.textContent="Nicht angemeldet";
+  }
+}
+
+async function customerLogin(){
+  const msg=document.getElementById("customerAccountMessage");
+  const email=document.getElementById("customerEmail")?.value.trim() || "";
+  const password=document.getElementById("customerPassword")?.value || "";
+
+  try{
+    await PDS_BACKEND.customerSignIn(email,password);
+
+    // Falls noch kein Profil existiert, vorhandene Formulardaten übernehmen.
+    const profile=await PDS_BACKEND.getCustomerProfile().catch(()=>null);
+    if(!profile) await saveCurrentCustomerData();
+
+    msg.innerHTML='<div class="success">Anmeldung erfolgreich. Deine gespeicherten Daten werden automatisch übernommen.</div>';
+    await syncCustomerUi();
+  }catch(e){
+    msg.innerHTML='<div class="notice">Anmeldung fehlgeschlagen.</div>';
+  }
+}
+
+async function customerRegister(){
+  const msg=document.getElementById("customerAccountMessage");
+  const email=document.getElementById("customerEmail")?.value.trim() || "";
+  const password=document.getElementById("customerPassword")?.value || "";
+
+  if(!email||password.length<6){
+    msg.innerHTML='<div class="notice">Bitte E-Mail und mindestens 6 Zeichen Passwort eingeben.</div>';
+    return;
+  }
+
+  try{
+    const d=await PDS_BACKEND.customerSignUp(email,password);
+
+    if(d.access_token){
+      // Name, Telefonnummer und Adresse, die bereits im Bestellformular stehen,
+      // werden direkt mit dem neuen Kundenkonto gespeichert.
+      await saveCurrentCustomerData();
+      msg.innerHTML='<div class="success">Konto erstellt. Deine Kundendaten wurden gespeichert.</div>';
+      await syncCustomerUi();
+    }else{
+      msg.innerHTML='<div class="success">Konto erstellt. Bitte E-Mail bestätigen und danach anmelden. Nach der Anmeldung werden deine Daten gespeichert.</div>';
+    }
+  }catch(e){
+    msg.innerHTML='<div class="notice">Registrierung nicht möglich.</div>';
+  }
+}
+
+function customerLogout(){
+  PDS_BACKEND.customerSignOut();
+  syncCustomerUi();
+}
+
+function getSelectedDeliveryZone(){ return verifiedDeliveryZone||{label:"nicht geprüft",fee:0,minimum:0,distanceKm:null}; }
+function updateDeliveryZoneInfo(){ renderCart(); }
+
+
+const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
+let cart=JSON.parse(localStorage.getItem('pds_cart')||'[]'),active='Alle',selected=null,settings=null;
+const cats=['Alle',...new Set(PDS_PRODUCTS.filter(p=>!p.isExtra).map(p=>p.category))];
+
+function saveCart(){localStorage.setItem('pds_cart',JSON.stringify(cart));renderCart()}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function showModal(id){document.getElementById(id).classList.add('show')}
+
+async function loadSettings(){
+  settings=await PDS_BACKEND.getSettings();
+  renderDeliveryZonesOverview();
+
+  const deliveryOpen=!!settings.deliveryOpen;
+  const pickupOpen=!!settings.pickupOpen;
+  const badge=document.getElementById('openBadge');
+
+  if(badge){
+    if(deliveryOpen && pickupOpen){
+      badge.textContent='🟢 Geöffnet';
+      badge.style.background='#eaf8ee';
+      badge.style.color='#175d32';
+    }else if(!deliveryOpen && !pickupOpen){
+      badge.textContent='🔴 Geschlossen';
+      badge.style.background='#fff0ec';
+      badge.style.color='#8d2118';
+    }else if(deliveryOpen){
+      badge.textContent='🟢 Nur Lieferung geöffnet';
+      badge.style.background='#eaf8ee';
+      badge.style.color='#175d32';
+    }else{
+      badge.textContent='🟢 Nur Abholung geöffnet';
+      badge.style.background='#eaf8ee';
+      badge.style.color='#175d32';
+    }
+  }
+
+  const deliveryStatus=document.getElementById('deliveryStatusText');
+  if(deliveryStatus) deliveryStatus.textContent=deliveryOpen?'Lieferung geöffnet':'Lieferung geschlossen';
+
+  const pickupStatus=document.getElementById('pickupStatusText');
+  if(pickupStatus) pickupStatus.textContent=pickupOpen?'Abholung geöffnet':'Abholung geschlossen';
+
+  const oh=document.getElementById('openingText'); if(oh) oh.textContent=settings.openingHoursText||'Öffnungszeiten folgen';
+  const ohf=document.getElementById('openingTextFooter'); if(ohf) ohf.textContent=settings.openingHoursText||'';
+  const da=document.getElementById('deliveryAreaText'); if(da) da.textContent=settings.deliveryAreaText||'Liefergebiet folgt';
+
+  updateCheckoutAvailability();
+  renderCart();
+}
+
+
+const CATEGORY_META={
+  "Alle":{icon:"🍽️",title:"Alle Gerichte",sub:"Unsere komplette Speisekarte auf einen Blick."},
+  "Pizza":{icon:"🍕",title:"Pizza",sub:"Frisch aus dem Ofen – Größen und mehrere Extra-Zutaten auswählbar."},
+  "Nudelgerichte":{icon:"🍝",title:"Nudelgerichte",sub:"Wähle Spaghetti, Penne, Maccheroni, Tortellini oder Gnocchi. Käse überbacken +2,00 €."},
+  "Finger Food":{icon:"🍟",title:"Finger Food",sub:"Knusprige Klassiker und Beilagen."},
+  "Pizzabrötchen":{icon:"🥖",title:"Pizzabrötchen",sub:"Warm, frisch und ideal zum Teilen."},
+  "Fleischgerichte":{icon:"🍗",title:"Fleischgerichte",sub:"Herzhafte Gerichte frisch zubereitet."},
+  "Baguettes":{icon:"🥖",title:"Baguettes",sub:"Knusprig belegt und frisch zubereitet."},
+  "Salate":{icon:"🥗",title:"Salate",sub:"Frisch, knackig und leicht."},
+  "Desserts":{icon:"🍰",title:"Desserts",sub:"Etwas Süßes zum Abschluss."},
+  "Getränke":{icon:"🥤",title:"Getränke",sub:"Kalt und passend zu deiner Bestellung."}
+};
+
+function renderCats(){
+  const el=document.getElementById('categories'); el.innerHTML='';
+  cats.forEach(c=>{
+    const meta=CATEGORY_META[c]||{icon:"•",title:c};
+    const b=document.createElement('button');
+    b.className='chip'+(c===active?' active':'');
+    b.innerHTML=`<span class="cat-icon">${meta.icon}</span><span>${c}</span>`;
+    b.onclick=()=>{active=c;renderCats();renderProducts()};
+    el.appendChild(b);
+  });
+}
+
+function renderProducts(){
+  const el=document.getElementById('products'); el.innerHTML='';
+  const meta=CATEGORY_META[active]||{icon:"🍽️",title:active,sub:"Wähle dein Lieblingsgericht."};
+  const title=document.getElementById('categoryTitle');
+  const sub=document.getElementById('categorySubtitle');
+  if(title) title.textContent=`${meta.icon} ${meta.title}`;
+  if(sub) sub.textContent=meta.sub||'';
+
+  const list=PDS_PRODUCTS.filter(p=>!p.isExtra&&(active==='Alle'||p.category===active));
+  list.forEach(p=>{
+    const first=Object.values(p.variants)[0];
+    const card=document.createElement('article'); card.className='product';
+    const pasta=p.category==='Nudelgerichte';
+    const pastaControls=pasta ? `
+      <div class="inline-options">
+        <label>1. Nudelsorte wählen</label>
+        <select class="pasta-variant">
+          ${Object.entries(p.variants).map(([k,v])=>`<option value="${k}">${k}</option>`).join('')}
+        </select>
+        <label>2. Optionen</label>
+        <label class="cheese-toggle">
+          <input type="checkbox" class="pasta-cheese">
+          <span>Mit Käse überbacken</span><b>+ ${money(Number(p.pastaCheeseExtra||2))}</b>
+        </label>
+      </div>` : '';
+    card.innerHTML=`<div class="media"><img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async"><span class="num">${p.id}</span>${p.ageRestricted?'<span class="age">18+</span>':''}</div>
+      <div class="body"><h3>${p.name}</h3><div class="desc">${p.description||'&nbsp;'}</div>
+      <div class="price">ab ${money(first)}</div>${pastaControls}
+      <button class="btn primary">${pasta?'In den Warenkorb':'Auswählen'}</button></div>`;
+    card.querySelector('button').onclick=()=>pasta?addPastaFromCard(p,card):openProduct(p);
+    el.appendChild(card);
+  });
+}
+
+function pizzaExtraUnitPrice(){
+  if(!selected?.pizzaExtraPrices) return 0;
+  const variant=document.getElementById('pVariant')?.value || '';
+  return Number(selected.pizzaExtraPrices[variant]||0);
+}
+
+function selectedPizzaExtras(){
+  return [...document.querySelectorAll('#pizzaExtras input[type="checkbox"]:checked')].map(x=>x.value);
+}
+
+function updatePizzaExtraPrices(){
+  const unit=pizzaExtraUnitPrice();
+  document.querySelectorAll('#pizzaExtras [data-price]').forEach(el=>el.textContent=`+ ${money(unit)}`);
+  updateProductModalTotal();
+}
+
+function updateProductModalTotal(){
+  if(!selected) return;
+  const variant=document.getElementById('pVariant')?.value || '';
+  let total=Number(selected.variants?.[variant]||0);
+  if(selected.category==='Nudelgerichte' && selected.pastaCheeseExtra){
+    if(document.getElementById('pPastaCheese')?.checked){
+      const extra=Number(selected.pastaCheeseExtra||2);
+      price+=extra;
+      extraName='Mit Käse überbacken';
+      extraItems=[{name:'Mit Käse überbacken',price:extra}];
+    }
+  }else if(selected.pizzaExtras){
+    total += Math.max(0, selectedPizzaExtras().length-Number(selected.freePizzaExtras||0))*pizzaExtraUnitPrice();
+  }
+  if(selected.category==='Nudelgerichte' && document.getElementById('pPastaCheese')?.checked){
+    total += Number(selected.pastaCheeseExtra||2);
+  }
+  const target=document.getElementById('pCurrentTotal');
+  if(target) target.textContent=money(total);
+}
+
+
+function addPastaFromCard(p,card){
+  const variant=card.querySelector('.pasta-variant')?.value || Object.keys(p.variants)[0];
+  const cheese=!!card.querySelector('.pasta-cheese')?.checked;
+  let price=Number(p.variants[variant]||0);
+  const extraItems=[];
+  let extraName='';
+  if(cheese){
+    const extra=Number(p.pastaCheeseExtra||2);
+    price+=extra;
+    extraName='Mit Käse überbacken';
+    extraItems.push({name:'Mit Käse überbacken',price:extra});
+  }
+  cart.push({
+    productId:p.id,name:p.name,variant,note:'',extraName,extraItems,price,qty:1
+  });
+  saveCart();
+  const btn=card.querySelector('.btn.primary');
+  if(btn){
+    const old=btn.textContent; btn.textContent='✓ Hinzugefügt';
+    setTimeout(()=>btn.textContent=old,900);
+  }
+}
+
+function openProduct(p){
+  selected=p;
+  document.getElementById('pName').textContent=p.name;
+  document.getElementById('pDesc').textContent=p.description||'';
+  const variantLabel=document.getElementById('pVariantLabel');
+  if(variantLabel) variantLabel.textContent=p.category==='Nudelgerichte'?'Nudelsorte':'Größe / Variante';
+
+  const v=document.getElementById('pVariant');
+  v.innerHTML='';
+  Object.entries(p.variants).forEach(([k,val])=>v.add(new Option(`${k} – ${money(val)}`,k)));
+  v.onchange=()=>{
+    if(p.pizzaExtras) updatePizzaExtraPrices();
+    else updateProductModalTotal();
+  };
+
+  const ef=document.getElementById('extraField');
+  if(p.category==='Nudelgerichte' && p.pastaCheeseExtra){
+    ef.style.display='grid';
+    ef.innerHTML=`
+      <label>Option</label>
+      <label class="cheese-toggle modal-cheese">
+        <input type="checkbox" id="pPastaCheese">
+        <span>Mit Käse überbacken</span>
+        <b>+ ${money(Number(p.pastaCheeseExtra||2))}</b>
+      </label>`;
+    ef.querySelector('#pPastaCheese').onchange=updateProductModalTotal;
+  }else if(p.pizzaExtras && p.pizzaExtras.length){
+    ef.style.display='grid';
+    ef.innerHTML=`
+      <label>Extra-Zutaten</label>
+      <div class="extras-info">${Number(p.freePizzaExtras||0)>0
+          ? `Wähle bis zu ${Number(p.freePizzaExtras)} Füllungen inklusive. Jede weitere Füllung + ${money(pizzaExtraUnitPrice())}.`
+          : 'Mehrere Extras möglich. Jede Zutat wird einzeln berechnet.'
+        }</div>
+      <div id="noExtraBox" class="no-extra active">Ohne Extra-Zutat <span>+ 0,00 €</span></div>
+      <div id="pizzaExtras" class="extras-grid">
+        ${p.pizzaExtras.map(x=>`
+          <label class="extra-check">
+            <input type="checkbox" value="${x}">
+            <span>+ ${x}</span>
+            <b data-price></b>
+          </label>`).join('')}
+      </div>`;
+    ef.querySelectorAll('#pizzaExtras input').forEach(cb=>{
+      cb.addEventListener('change',()=>{
+        const chosen=selectedPizzaExtras();
+        document.getElementById('noExtraBox')?.classList.toggle('active', chosen.length===0);
+        updatePizzaExtraPrices();
+      });
+    });
+  }else if(p.extras && !Array.isArray(p.extras)){
+    ef.style.display='grid';
+    ef.innerHTML='<label>Extra</label><select id="pExtra"><option value="">Kein Extra</option></select>';
+    const ex=ef.querySelector('#pExtra');
+    Object.entries(p.extras).forEach(([k,val])=>{
+      const o=new Option(`${k} + ${money(val)}`,k); o.dataset.price=val; ex.add(o);
+    });
+    ex.onchange=updateProductModalTotal;
+  }else{
+    ef.style.display='none';
+    ef.innerHTML='';
+  }
+
+  document.getElementById('pNote').value='';
+  let totalBox=document.getElementById('pCurrentTotal');
+  if(!totalBox){
+    totalBox=document.createElement('div');
+    totalBox.id='pTotalBox';
+    totalBox.className='modal-total';
+    totalBox.innerHTML='Aktueller Preis: <strong id="pCurrentTotal"></strong>';
+    document.getElementById('pNote').closest('.field').after(totalBox);
+  }
+  showModal('productModal');
+  if(p.pizzaExtras) updatePizzaExtraPrices(); else updateProductModalTotal();
+}
+
+function addProduct(){
+  const variant=document.getElementById('pVariant').value;
+  const note=document.getElementById('pNote').value.trim();
+  let price=Number(selected.variants[variant]||0);
+  let extraName='';
+  let extraItems=[];
+
+  if(selected.pizzaExtras){
+    const extras=selectedPizzaExtras();
+    const unit=pizzaExtraUnitPrice();
+    price += Math.max(0, extras.length-Number(selected.freePizzaExtras||0))*unit;
+    extraName = extras.length ? extras.join(', ') : 'Ohne Extra-Zutat';
+    {
+      const freeCount=Number(selected.freePizzaExtras||0);
+      extraItems = extras.map((name,i)=>({name, price:i<freeCount?0:unit}));
+    }
+  }else{
+    const ex=document.getElementById('pExtra');
+    if(ex && ex.value){
+      extraName=ex.value;
+      const extraPrice=Number(ex.selectedOptions[0].dataset.price||0);
+      price += extraPrice;
+      extraItems=[{name:extraName,price:extraPrice}];
+    }
+  }
+
+  cart.push({
+    productId:selected.id,
+    name:selected.name,
+    variant,
+    note,
+    extraName,
+    extraItems,
+    price,
+    qty:1
+  });
+  saveCart();
+  closeModal('productModal');
+}
+
+function removeItem(i){cart.splice(i,1);saveCart()}
+
+function renderCart(){
+  const count=cart.reduce((s,x)=>s+x.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  document.getElementById('cartCount2').textContent=count;
+  const rows=document.getElementById('cartRows');
+
+  if(!cart.length){
+    rows.className='empty'; rows.innerHTML='Dein Warenkorb ist noch leer.';
+  }else{
+    rows.className='';
+    rows.innerHTML=cart.map((x,i)=>`<div class="cart-row"><div><b>${x.qty}× ${x.name}</b>
+      <small>${x.variant}${x.extraName?' • Extras: '+x.extraName:''}${x.note?' • '+x.note:''}</small></div>
+      <div style="text-align:right"><b>${money(x.price*x.qty)}</b><br><button class="linkbtn" onclick="removeItem(${i})">entfernen</button></div></div>`).join('');
+  }
+
+  const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const fee=(document.getElementById('type')?.value==='Lieferung'&&verifiedDeliveryZone?verifiedDeliveryZone.fee:0);
+  const discount=newCustomerDiscountAmount(subtotal);
+  document.getElementById('subtotal').textContent=money(subtotal);
+  document.getElementById('deliveryFee').textContent=money(fee);
+  const discountRow=document.getElementById('newCustomerDiscountRow');
+  const discountValue=document.getElementById('newCustomerDiscount');
+  if(discountRow) discountRow.style.display=discount>0?'flex':'none';
+  if(discountValue) discountValue.textContent='−'+money(discount);
+  document.getElementById('total').textContent=money(subtotal+fee-discount);
+}
+
+
+
+let orderTimingMode='asap';
+
+function setOrderTimingMode(mode){
+  orderTimingMode=mode==='preorder'?'preorder':'asap';
+  const asap=document.getElementById('asapBtn');
+  const preorder=document.getElementById('preorderBtn');
+  const fields=document.getElementById('preorderFields');
+  const hint=document.getElementById('timingHint');
+  if(asap) asap.classList.toggle('active',orderTimingMode==='asap');
+  if(preorder) preorder.classList.toggle('active',orderTimingMode==='preorder');
+  if(fields) fields.style.display=orderTimingMode==='preorder'?'grid':'none';
+
+  if(orderTimingMode==='preorder'){
+    const d=document.getElementById('preorderDate');
+    const t=document.getElementById('preorderTime');
+    const now=new Date();
+    if(d){
+      const local=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      d.min=local;
+      if(!d.value) d.value=local;
+    }
+    if(t && !t.value){
+      const future=new Date(now.getTime()+60*60000);
+      future.setMinutes(Math.ceil(future.getMinutes()/15)*15,0,0);
+      t.value=String(future.getHours()).padStart(2,'0')+':'+String(future.getMinutes()).padStart(2,'0');
+    }
+    if(hint) hint.textContent='Du kannst für einen späteren Zeitpunkt vorbestellen – auch außerhalb der aktuellen Öffnungszeit.';
+  }else{
+    if(hint) hint.textContent=(settings?.deliveryOpen||settings?.pickupOpen)
+      ? 'Wir bereiten deine Bestellung so schnell wie möglich zu.'
+      : 'So schnell wie möglich ist aktuell nicht verfügbar. Bitte Vorbestellen wählen.';
+  }
+  updateCheckoutAvailability();
+}
+
+function getOrderTiming(){
+  if(orderTimingMode!=='preorder') return {mode:'asap',requestedFor:null};
+  const date=document.getElementById('preorderDate')?.value||'';
+  const time=document.getElementById('preorderTime')?.value||'';
+  if(!date||!time) return null;
+  const requested=new Date(`${date}T${time}:00`);
+  if(Number.isNaN(requested.getTime()) || requested.getTime() < Date.now()+10*60000) return false;
+  return {mode:'preorder',requestedFor:requested.toISOString(),requestedDate:date,requestedTime:time};
+}
+
+function updateCheckoutAvailability(){
+  const type=document.getElementById('type');
+  if(!type || !settings) return;
+
+  const isPreorder=orderTimingMode==='preorder';
+  const deliveryOption=[...type.options].find(o=>o.value==='Lieferung');
+  const pickupOption=[...type.options].find(o=>o.value==='Abholung');
+
+  if(deliveryOption){
+    deliveryOption.disabled=!isPreorder&&!settings.deliveryOpen;
+    deliveryOption.textContent=(isPreorder||settings.deliveryOpen)?'Lieferung':'Lieferung – geschlossen';
+  }
+  if(pickupOption){
+    pickupOption.disabled=!isPreorder&&!settings.pickupOpen;
+    pickupOption.textContent=(isPreorder||settings.pickupOpen)?'Abholung':'Abholung – geschlossen';
+  }
+
+  if(!isPreorder){
+    if(type.value==='Lieferung' && !settings.deliveryOpen && settings.pickupOpen) type.value='Abholung';
+    if(type.value==='Abholung' && !settings.pickupOpen && settings.deliveryOpen) type.value='Lieferung';
+  }
+  updateCheckoutTypeUI();
+}
+
+function updateCheckoutTypeUI(){
+  const type=document.getElementById('type'); if(!type) return;
+  const isDelivery=type.value==='Lieferung';
+  const address=document.getElementById('address');
+  if(address) address.closest('.field').style.display=isDelivery?'grid':'none';
+  const df=document.getElementById('distanceField'); if(df) df.style.display=isDelivery?'grid':'none';
+  const zi=document.getElementById('zonePriceInfo'); if(zi&&!isDelivery) zi.style.display='none';
+  const minimumInfo=document.getElementById('deliveryMinimumInfo'); if(minimumInfo) minimumInfo.style.display='none';
+  renderCart();
+}
+
+function openCheckout(){
+  if(!pdsIsOpenNow()){
+    alert('Pizza De Silva ist momentan geschlossen.\n\nÖffnungszeiten:\nSo–Do 11:00–01:00 Uhr\nFr–Sa 11:00–02:00 Uhr');
+    return;
+  }
+  if(!cart.length) return alert('Bitte zuerst etwas auswählen.');
+  if(!settings) return alert('Shop-Einstellungen werden noch geladen.');
+  document.getElementById('checkoutResult').innerHTML='';
+  orderTimingMode=(settings.deliveryOpen||settings.pickupOpen)?'asap':'preorder';
+  showModal('checkoutModal');
+  setOrderTimingMode(orderTimingMode);
+  syncCustomerUi();
+  const a=document.getElementById('address');
+  if(a&&!a.dataset.zoneReset){a.addEventListener('input',()=>{verifiedDeliveryZone=null;const z=document.getElementById('zonePriceInfo');if(z)z.style.display='none';renderCart();});a.dataset.zoneReset='1';}
+}
+
+async function createSumupCheckout(order){
+  const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/create-sumup-checkout';
+  const response=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({order})
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok||!data.checkout_url||!data.checkout_id){
+    console.error('Kartenzahlung konnte nicht gestartet werden:',data);
+    throw new Error(data?.error||'Kartenzahlung konnte nicht gestartet werden.');
+  }
+  return data;
+}
+
+async function verifySumupCheckout(checkoutId){
+  const endpoint='https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/verify-sumup-payment';
+  const response=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({checkout_id:String(checkoutId)})
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok||data?.ok===false){
+    console.error('SumUp-Zahlung konnte nicht geprüft werden:',data);
+    throw new Error(data?.error||'Zahlung konnte nicht geprüft werden.');
+  }
+  return data;
+}
+
+async function resumeSumupPayment(){
+  const params=new URLSearchParams(location.search);
+  if(params.get('sumup_return')!=='1') return;
+
+  let pending=null;
+  try{pending=JSON.parse(localStorage.getItem('pds_pending_sumup')||'null');}catch(e){}
+  if(!pending?.checkoutId||!pending?.orderId||!pending?.statusToken){
+    alert('Die Kartenzahlung konnte nicht zugeordnet werden. Bitte rufe Pizza De Silva an, falls dein Konto belastet wurde.');
+    history.replaceState({},'',location.pathname);
+    return;
+  }
+
+  let result=null;
+  try{
+    for(let i=0;i<5;i++){
+      result=await verifySumupCheckout(pending.checkoutId);
+      if(result?.status!=='PENDING') break;
+      if(i<4) await new Promise(r=>setTimeout(r,1500));
+    }
+  }catch(e){
+    console.error(e);
+    alert('Die Zahlungsbestätigung konnte gerade nicht geprüft werden. Deine Bestellung wird erst bei bestätigter Zahlung an Pizza De Silva gesendet.');
+    return;
+  }
+
+  if(result?.paid===true && result?.status==='PAID'){
+    localStorage.setItem('pds_last_order',pending.orderId);
+    localStorage.setItem(`pds_order_token_${pending.orderId}`,pending.statusToken);
+    localStorage.removeItem('pds_pending_sumup');
+    cart=[];saveCart();
+    history.replaceState({},'',location.pathname);
+    location.href=`status.html?id=${encodeURIComponent(pending.orderId)}`;
+    return;
+  }
+
+  if(result?.status==='FAILED'||result?.status==='EXPIRED'){
+    localStorage.removeItem('pds_pending_sumup');
+    history.replaceState({},'',location.pathname);
+    alert('Die Kartenzahlung wurde nicht abgeschlossen. Es wurde keine Bestellung an Pizza De Silva gesendet. Dein Warenkorb bleibt erhalten.');
+    return;
+  }
+
+  history.replaceState({},'',location.pathname);
+  alert('SumUp hat die Zahlung noch nicht als vollständig bezahlt bestätigt. Die Bestellung wird deshalb noch nicht an Pizza De Silva gesendet.');
+}
+
+async function placeOrder(){
+  if(!pdsIsOpenNow()){
+    alert('Bestellungen sind außerhalb unserer Öffnungszeiten nicht möglich.\n\nSo–Do 11:00–01:00 Uhr\nFr–Sa 11:00–02:00 Uhr');
+    return;
+  }
+  const type=document.getElementById('type').value;
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const address=document.getElementById('address').value.trim();
+  const terms=document.getElementById('terms').checked;
+  const timing=getOrderTiming();
+  if(timing===null) return alert('Bitte Datum und Uhrzeit für die Vorbestellung auswählen.');
+  if(timing===false) return alert('Bitte eine Vorbestellzeit wählen, die mindestens 10 Minuten in der Zukunft liegt.');
+  if(orderTimingMode==='asap' && !settings?.deliveryOpen && !settings?.pickupOpen) return alert('Wir haben aktuell geschlossen. Bitte Vorbestellen wählen.');
+
+  if(!name||!phone||!terms) return alert('Bitte Name, Telefonnummer und Bestätigung ausfüllen.');
+  if(type==='Lieferung'){
+    if(orderTimingMode==='asap' && !settings?.deliveryOpen) return alert('Lieferung ist im Moment geschlossen. Bitte Vorbestellen wählen.');
+    if(!address) return alert('Bitte Lieferadresse eingeben.');
+    if(!verifiedDeliveryZone) return alert('Bitte zuerst die Lieferadresse prüfen.');
+    const subtotalCheck=cart.reduce((s,x)=>s+x.price*x.qty,0);
+    if(subtotalCheck<verifiedDeliveryZone.minimum) return alert(`Mindestbestellwert für ${verifiedDeliveryZone.label}: ${money(verifiedDeliveryZone.minimum)}.`);
+  }else{
+    if(orderTimingMode==='asap' && !settings?.pickupOpen) return alert('Abholung ist im Moment geschlossen. Bitte Vorbestellen wählen.');
+  }
+
+  const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
+
+  // Vor dem Absenden immer erneut in Supabase prüfen, ob diese Telefonnummer
+  // bereits bestellt hat. Nur echte Neukunden erhalten 10 %.
+  try{
+    await checkNewCustomerDiscount(phone);
+  }catch(discountError){
+    console.error(discountError);
+    return alert('Der Neukundenrabatt konnte gerade nicht geprüft werden. Bitte versuche es noch einmal.');
+  }
+
+  const fee=(type==='Lieferung'?verifiedDeliveryZone.fee:0);
+  const discount=newCustomerDiscountAmount(subtotal);
+  const total=Math.round((subtotal+fee-discount)*100)/100;
+  const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
+  const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
+  const paymentMethod=document.getElementById('payment').value;
+  const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
+    expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
+    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim(),
+      newCustomerDiscount:discount,discountLabel:discount>0?'Neukunden-Rabatt 10 %':''}};
+
+  try{
+    if(discount>0){
+      document.getElementById('checkoutResult').innerHTML=
+        '<div class="success"><b>🎉 10 % Neukunden-Rabatt wurde abgezogen.</b><br>Du sparst '+money(discount)+'. Neuer Gesamtpreis: <b>'+money(total)+'</b></div>';
+    }
+    if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
+
+    if(paymentMethod==='Mit Karte zahlen'){
+      document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Kartenzahlung wird vorbereitet.</b><br>Die Bestellung wird erst nach vollständiger SumUp-Bestätigung an Pizza De Silva gesendet.</div>';
+      try{
+        const checkout=await createSumupCheckout(order);
+        localStorage.setItem('pds_pending_sumup',JSON.stringify({
+          checkoutId:checkout.checkout_id,
+          orderId:id,
+          statusToken,
+          createdAt:Date.now()
+        }));
+        location.href=checkout.checkout_url;
+        return;
+      }catch(paymentError){
+        console.error(paymentError);
+        document.getElementById('checkoutResult').innerHTML='<div class="notice"><b>Kartenzahlung konnte nicht gestartet werden.</b><br>Es wurde keine Bestellung an Pizza De Silva gesendet. Bitte versuche es erneut oder wähle Barzahlung.</div>';
+        return;
+      }
+    }
+
+    const created=await PDS_BACKEND.createOrder(order);
+    if(created?.number) order.number=created.number;
+    localStorage.setItem('pds_last_order',id);
+    localStorage.setItem(`pds_order_token_${id}`,statusToken);
+    cart=[];saveCart();
+    document.getElementById('checkoutResult').innerHTML='<div class="success"><b>Bestellung wurde gesendet.</b><br>Du wirst zur Statusseite weitergeleitet.</div>';
+    setTimeout(()=>location.href=`status.html?id=${encodeURIComponent(id)}`,1100);
+  }catch(e){
+    console.error(e);
+    alert('Die Bestellung konnte nicht gesendet werden. Bitte erneut versuchen.');
+  }
+}
+
+document.getElementById('type')?.addEventListener('change',()=>{updateCheckoutTypeUI();updateDeliveryZoneInfo()}); renderCats();renderProducts();renderCart();loadSettings();
+resumeSumupPayment();
