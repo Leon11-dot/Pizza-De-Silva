@@ -280,6 +280,13 @@ function customerLogout(){
 }
 
 function getSelectedDeliveryZone(){ return verifiedDeliveryZone||{label:"nicht geprüft",fee:0,minimum:0,distanceKm:null}; }
+
+function currentDeliveryFee(){
+  const type=document.getElementById('type')?.value;
+  if(type!=='Lieferung'||!verifiedDeliveryZone) return 0;
+  const z=zoneForDistance(Number(verifiedDeliveryZone.distanceKm));
+  return Number(z?.fee ?? verifiedDeliveryZone.fee ?? 0);
+}
 function updateDeliveryZoneInfo(){ renderCart(); }
 
 
@@ -589,7 +596,7 @@ function renderCart(){
 
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const isDelivery=document.getElementById('type')?.value==='Lieferung';
-  const fee=(isDelivery&&verifiedDeliveryZone?Number(zoneForDistance(verifiedDeliveryZone.distanceKm)?.fee||verifiedDeliveryZone.fee||0):0);
+  const fee=isDelivery?currentDeliveryFee():0;
   const discount=newCustomerDiscountAmount(subtotal);
   document.getElementById('subtotal').textContent=money(subtotal);
   document.getElementById('deliveryFee').textContent=money(fee);
@@ -813,7 +820,7 @@ async function placeOrder(){
     return alert('Der Neukundenrabatt konnte gerade nicht geprüft werden. Bitte versuche es noch einmal.');
   }
 
-  const fee=(type==='Lieferung'?Number(zoneForDistance(verifiedDeliveryZone.distanceKm)?.fee||verifiedDeliveryZone.fee||0):0);
+  const fee=(type==='Lieferung'?currentDeliveryFee():0);
   const discount=newCustomerDiscountAmount(subtotal);
   const total=Math.round((subtotal+fee-discount)*100)/100;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
