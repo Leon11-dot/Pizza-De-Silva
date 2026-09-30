@@ -1,5 +1,5 @@
 
-const CACHE='pizza-de-silva-admin-redmi-v3';
+const CACHE='pizza-de-silva-admin-shop-switch-v1';
 
 self.addEventListener('install', event => {
   self.skipWaiting();
