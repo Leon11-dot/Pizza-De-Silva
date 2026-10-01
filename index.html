@@ -47,6 +47,7 @@ padding:12px 14px;text-align:center;font-weight:900}
 </style>
 </head>
 <body>
+<div style="background:#b51212;color:white;text-align:center;padding:12px 10px;font-weight:900;font-size:1.05rem">🍕 NUR HEUTE: 15 % RABATT AUF ALLE PIZZEN!</div>
 <div id="newCustomerPromo">🎉 NEUKUNDEN-RABATT: 10 % auf deine erste Bestellung!
 <small>Gilt für deine erste Online-Bestellung bei Pizza De Silva.</small></div>
 
@@ -138,6 +139,7 @@ padding:12px 14px;text-align:center;font-weight:900}
       <div class="totals">
         <div class="total-line"><span>Zwischensumme</span><span id="subtotal">0,00 €</span></div>
         <div class="total-line"><span>Liefergebühr</span><span id="deliveryFee">0,00 €</span></div>
+<div class="total-line" id="pizzaPromoDiscountRow" style="display:none;color:#198754;font-weight:900"><span>🍕 HEUTE: 15 % auf alle Pizzen</span><span id="pizzaPromoDiscount">−0,00 €</span></div>
 <div class="total-line" id="newCustomerDiscountRow" style="display:none;color:#198754;font-weight:900"><span>🎉 Neukunden-Rabatt (10 %)</span><span id="newCustomerDiscount">−0,00 €</span></div>
         <div class="grand"><span>Gesamt</span><span id="total">0,00 €</span></div>
       </div>
@@ -212,7 +214,7 @@ padding:12px 14px;text-align:center;font-weight:900}
   <div id="checkoutResult" style="margin-top:12px"></div>
 </div></div>
 
-<script src="config.js?v=20260918-products"></script><script src="backend.js?v=20260918-products"></script><script src="data.js?v=20260918-products"></script><script src="app-rabatt-oeffnungszeiten-v4-20260912.js?v=20260923-fee-final"></script>
+<script src="config.js?v=20260918-products"></script><script src="backend.js?v=20260918-products"></script><script src="data.js?v=20260918-products"></script><script src="app-rabatt-oeffnungszeiten-v4-20260912.js?v=20261001-pizza15"></script>
 <script>
 let pdsDirectInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pdsDirectInstallPrompt=e;const b=document.getElementById('appInstallBanner');if(b)b.classList.add('show');});
