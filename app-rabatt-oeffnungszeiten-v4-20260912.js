@@ -95,6 +95,32 @@ async function checkNewCustomerDiscount(phone){
   return newCustomerDiscountEligible;
 }
 
+function pizzaPromoActive(){
+  // Nur am 01.10.2026 bis zum regulären Donnerstagsschluss um 01:00 Uhr am 02.10. (Europe/Berlin).
+  const parts=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  const o=Object.fromEntries(parts.map(p=>[p.type,p.value]));
+  const stamp=`${o.year}-${o.month}-${o.day}T${o.hour}:${o.minute}:${o.second}`;
+  return stamp>='2026-10-01T00:00:00' && stamp<'2026-10-02T01:00:00';
+}
+function isPizzaCartItem(x){
+  const p=(window.PDS_PRODUCTS||[]).find(p=>String(p.id)===String(x.productId));
+  return p?.category==='Pizza';
+}
+function pizzaPromoDiscountAmount(){
+  if(!pizzaPromoActive()) return 0;
+  const pizzaSubtotal=cart.filter(isPizzaCartItem).reduce((s,x)=>s+Number(x.price||0)*Number(x.qty||1),0);
+  return Math.round(pizzaSubtotal*15)/100;
+}
+function combinedDiscounts(subtotal){
+  const pizzaDiscount=pizzaPromoDiscountAmount();
+  if(!newCustomerDiscountEligible) return {pizzaDiscount,newCustomerDiscount:0,total:pizzaDiscount};
+  // Kein doppelter Rabatt auf Pizza: 10 % Neukundenrabatt nur auf übrige Artikel.
+  const pizzaSubtotal=cart.filter(isPizzaCartItem).reduce((s,x)=>s+Number(x.price||0)*Number(x.qty||1),0);
+  const otherSubtotal=Math.max(0,Number(subtotal||0)-pizzaSubtotal);
+  const newCustomerDiscount=Math.round(otherSubtotal*10)/100;
+  return {pizzaDiscount,newCustomerDiscount,total:pizzaDiscount+newCustomerDiscount};
+}
+
 function newCustomerDiscountAmount(subtotal){
   return newCustomerDiscountEligible
     ? Math.round((Number(subtotal)||0)*10)/100
@@ -597,13 +623,18 @@ function renderCart(){
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const isDelivery=document.getElementById('type')?.value==='Lieferung';
   const fee=isDelivery?currentDeliveryFee():0;
-  const discount=newCustomerDiscountAmount(subtotal);
+  const discounts=combinedDiscounts(subtotal);
+  const discount=discounts.total;
+  const promoRow=document.getElementById('pizzaPromoDiscountRow');
+  const promoValue=document.getElementById('pizzaPromoDiscount');
+  if(promoRow) promoRow.style.display=discounts.pizzaDiscount>0?'flex':'none';
+  if(promoValue) promoValue.textContent='−'+money(discounts.pizzaDiscount);
   document.getElementById('subtotal').textContent=money(subtotal);
   document.getElementById('deliveryFee').textContent=money(fee);
   const discountRow=document.getElementById('newCustomerDiscountRow');
   const discountValue=document.getElementById('newCustomerDiscount');
-  if(discountRow) discountRow.style.display=discount>0?'flex':'none';
-  if(discountValue) discountValue.textContent='−'+money(discount);
+  if(discountRow) discountRow.style.display=discounts.newCustomerDiscount>0?'flex':'none';
+  if(discountValue) discountValue.textContent='−'+money(discounts.newCustomerDiscount);
   document.getElementById('total').textContent=money(subtotal+fee-discount);
 }
 
@@ -821,7 +852,8 @@ async function placeOrder(){
   }
 
   const fee=(type==='Lieferung'?currentDeliveryFee():0);
-  const discount=newCustomerDiscountAmount(subtotal);
+  const discounts=combinedDiscounts(subtotal);
+  const discount=discounts.total;
   const total=Math.round((subtotal+fee-discount)*100)/100;
   const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
   const statusToken=crypto.randomUUID?crypto.randomUUID():(String(Date.now())+'-'+Math.random());
@@ -829,12 +861,12 @@ async function placeOrder(){
   const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
     expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
     customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim(),
-      newCustomerDiscount:discount,discountLabel:discount>0?'Neukunden-Rabatt 10 %':''}};
+      newCustomerDiscount:discounts.newCustomerDiscount,pizzaPromoDiscount:discounts.pizzaDiscount,discountTotal:discount,discountLabel:discounts.pizzaDiscount>0?'15 % Pizza-Rabatt (nur heute)':(discounts.newCustomerDiscount>0?'Neukunden-Rabatt 10 %':'')}};
 
   try{
     if(discount>0){
       document.getElementById('checkoutResult').innerHTML=
-        '<div class="success"><b>🎉 10 % Neukunden-Rabatt wurde abgezogen.</b><br>Du sparst '+money(discount)+'. Neuer Gesamtpreis: <b>'+money(total)+'</b></div>';
+        '<div class="success"><b>🎉 Rabatt wurde abgezogen.</b><br>Du sparst '+money(discount)+'. Neuer Gesamtpreis: <b>'+money(total)+'</b></div>';
     }
     if(PDS_BACKEND.isCustomerSignedIn()) try{await PDS_BACKEND.saveCustomerProfile({name,phone,address});}catch(e){}
 
