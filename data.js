@@ -6,9 +6,9 @@ window.PDS_PRODUCTS = [
     "description": "Tomatensauce & Käse",
     "image": "margherita.webp",
     "variants": {
-      "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 8.0,
-      "Family · 50 cm": 22.0
+      "Klein · 26 cm": 6,
+      "Groß · 30 cm": 7.5,
+      "Family · 50 cm": 22
     },
     "pizzaExtras": [
       "Käse",
@@ -28,8 +28,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -39,9 +39,9 @@ window.PDS_PRODUCTS = [
     "description": "Zwiebeln",
     "image": "margherita.webp",
     "variants": {
-      "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6,
+      "Groß · 30 cm": 8.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -61,8 +61,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -72,9 +72,9 @@ window.PDS_PRODUCTS = [
     "description": "frische Champignons",
     "image": "funghi.webp",
     "variants": {
-      "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6,
+      "Groß · 30 cm": 8.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -94,8 +94,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -105,9 +105,9 @@ window.PDS_PRODUCTS = [
     "description": "Salami",
     "image": "salami.webp",
     "variants": {
-      "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6,
+      "Groß · 30 cm": 8.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -127,8 +127,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -138,9 +138,9 @@ window.PDS_PRODUCTS = [
     "description": "Schinken",
     "image": "prosciutto.webp",
     "variants": {
-      "Klein · 26 cm": 6.5,
-      "Groß · 30 cm": 9.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6,
+      "Groß · 30 cm": 8.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -160,8 +160,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -171,9 +171,9 @@ window.PDS_PRODUCTS = [
     "description": "Spinat & Knoblauch",
     "image": "spinaci.webp",
     "variants": {
-      "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 7,
+      "Groß · 30 cm": 9.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -193,8 +193,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -204,9 +204,9 @@ window.PDS_PRODUCTS = [
     "description": "Thunfisch",
     "image": "tonno.webp",
     "variants": {
-      "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 10.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -226,8 +226,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -237,9 +237,9 @@ window.PDS_PRODUCTS = [
     "description": "Scharfe Salami, Peperoni & Oliven",
     "image": "diavolo.webp",
     "variants": {
-      "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 10.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -259,8 +259,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -270,9 +270,9 @@ window.PDS_PRODUCTS = [
     "description": "Schinken & Ananas",
     "image": "hawaii.webp",
     "variants": {
-      "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 10.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -292,8 +292,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -303,9 +303,9 @@ window.PDS_PRODUCTS = [
     "description": "Peperoni & Zwiebeln",
     "image": "mafiosi.webp",
     "variants": {
-      "Klein · 26 cm": 7.0,
-      "Groß · 30 cm": 9.5,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 6.5,
+      "Groß · 30 cm": 9,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -325,8 +325,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -336,9 +336,9 @@ window.PDS_PRODUCTS = [
     "description": "Fleischsauce & Zwiebeln",
     "image": "bolognese-pizza.webp",
     "variants": {
-      "Klein · 26 cm": 8.0,
-      "Groß · 30 cm": 10.5,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 7.5,
+      "Groß · 30 cm": 10,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -358,8 +358,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -369,9 +369,9 @@ window.PDS_PRODUCTS = [
     "description": "Hähnchenbrustfilet, Zwiebeln & Käse",
     "image": "haehnchen.webp",
     "variants": {
-      "Klein · 26 cm": 8.5,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 8,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -391,8 +391,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -402,9 +402,9 @@ window.PDS_PRODUCTS = [
     "description": "Hähnchenbrust, Sauce Hollandaise & Broccoli",
     "image": "hollandaise.webp",
     "variants": {
-      "Klein · 26 cm": 10.0,
-      "Groß · 30 cm": 11.5,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 10,
+      "Groß · 30 cm": 11,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -424,8 +424,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -435,9 +435,9 @@ window.PDS_PRODUCTS = [
     "description": "Thunfisch & Zwiebeln",
     "image": "bella-napoli.webp",
     "variants": {
-      "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 7,
+      "Groß · 30 cm": 10,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -457,8 +457,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -468,9 +468,9 @@ window.PDS_PRODUCTS = [
     "description": "Schinken, Salami, Spinat & frische Champignons",
     "image": "quattro-stagioni.webp",
     "variants": {
-      "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 7,
+      "Groß · 30 cm": 10,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -490,8 +490,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -501,9 +501,9 @@ window.PDS_PRODUCTS = [
     "description": "Schinken, Salami & frische Champignons",
     "image": "primavera.webp",
     "variants": {
-      "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 7,
+      "Groß · 30 cm": 10,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -523,8 +523,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -534,9 +534,9 @@ window.PDS_PRODUCTS = [
     "description": "Mozzarella",
     "image": "mozzarella.webp",
     "variants": {
-      "Klein · 26 cm": 7.5,
-      "Groß · 30 cm": 10.5,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 7,
+      "Groß · 30 cm": 10,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -556,8 +556,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -567,8 +567,8 @@ window.PDS_PRODUCTS = [
     "description": "gefüllt mit Schinken, Salami, Bolognese & frischen Champignons",
     "image": "calzone.webp",
     "variants": {
-      "Klein · 26 cm": 10.5,
-      "Groß · 30 cm": 10.5
+      "Klein · 26 cm": 10,
+      "Groß · 30 cm": 10
     },
     "pizzaExtras": [
       "Käse",
@@ -588,8 +588,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -599,9 +599,9 @@ window.PDS_PRODUCTS = [
     "description": "Hähnchenbrustfilet, Schinken & Zwiebeln",
     "image": "michele.webp",
     "variants": {
-      "Klein · 26 cm": 8.5,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 8,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -621,8 +621,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -632,9 +632,9 @@ window.PDS_PRODUCTS = [
     "description": "Broccoli, frische Champignons, Spinat, Paprika & Zwiebeln",
     "image": "vegetaria.webp",
     "variants": {
-      "Klein · 26 cm": 8.5,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 25.0
+      "Klein · 26 cm": 8,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 25
     },
     "pizzaExtras": [
       "Käse",
@@ -654,8 +654,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -665,9 +665,9 @@ window.PDS_PRODUCTS = [
     "description": "Schafskäse, Spinat & Ei",
     "image": "speciale.webp",
     "variants": {
-      "Klein · 26 cm": 9.0,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -687,8 +687,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -698,9 +698,9 @@ window.PDS_PRODUCTS = [
     "description": "Thunfisch, Schinken, Oliven & Artischocken",
     "image": "capricciosa.webp",
     "variants": {
-      "Klein · 26 cm": 9.0,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -720,8 +720,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -731,9 +731,9 @@ window.PDS_PRODUCTS = [
     "description": "Salami, Oliven, Sardellen & Kapern",
     "image": "sicilia.webp",
     "variants": {
-      "Klein · 26 cm": 9.5,
-      "Groß · 30 cm": 11.5,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 9,
+      "Groß · 30 cm": 11,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -753,8 +753,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -764,9 +764,9 @@ window.PDS_PRODUCTS = [
     "description": "Speck, Zwiebeln & BBQ-Sauce",
     "image": "bbq-burger.webp",
     "variants": {
-      "Klein · 26 cm": 9.0,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -786,8 +786,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -797,9 +797,9 @@ window.PDS_PRODUCTS = [
     "description": "Vier Käsesorten",
     "image": "quattro-formaggi.webp",
     "variants": {
-      "Klein · 26 cm": 8.0,
-      "Groß · 30 cm": 11.0,
-      "Family · 50 cm": 28.0
+      "Klein · 26 cm": 8.5,
+      "Groß · 30 cm": 10.5,
+      "Family · 50 cm": 28
     },
     "pizzaExtras": [
       "Käse",
@@ -819,8 +819,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -830,9 +830,9 @@ window.PDS_PRODUCTS = [
     "description": "Krabben & Knoblauch",
     "image": "scampi.webp",
     "variants": {
-      "Klein · 26 cm": 10.0,
-      "Groß · 30 cm": 12.0,
-      "Family · 50 cm": 30.0
+      "Klein · 26 cm": 9.5,
+      "Groß · 30 cm": 11.5,
+      "Family · 50 cm": 30
     },
     "pizzaExtras": [
       "Käse",
@@ -852,8 +852,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -864,8 +864,8 @@ window.PDS_PRODUCTS = [
     "image": "margherita.webp",
     "variants": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     },
     "isExtra": true,
     "pizzaExtras": [
@@ -886,8 +886,8 @@ window.PDS_PRODUCTS = [
     ],
     "pizzaExtraPrices": {
       "Klein · 26 cm": 0.5,
-      "Groß · 30 cm": 1.0,
-      "Family · 50 cm": 4.0
+      "Groß · 30 cm": 1,
+      "Family · 50 cm": 4
     }
   },
   {
@@ -903,7 +903,7 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2.0
+    "pastaCheeseExtra": 2
   },
   {
     "id": 28,
@@ -918,7 +918,7 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2.0
+    "pastaCheeseExtra": 2
   },
   {
     "id": 30,
@@ -933,7 +933,7 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2.0
+    "pastaCheeseExtra": 2
   },
   {
     "id": 31,
@@ -948,7 +948,7 @@ window.PDS_PRODUCTS = [
       "Tortellini": 11.5,
       "Gnocchi": 11.5
     },
-    "pastaCheeseExtra": 2.0
+    "pastaCheeseExtra": 2
   },
   {
     "id": 32,
@@ -963,7 +963,7 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2.0
+    "pastaCheeseExtra": 2
   },
   {
     "id": 33,
@@ -972,9 +972,9 @@ window.PDS_PRODUCTS = [
     "description": "mit Fleischsauce",
     "image": "lasagne.webp",
     "variants": {
-      "Normal": 11.0
+      "Normal": 11
     },
-    "pastaCheeseExtra": 2.0
+    "pastaCheeseExtra": 2
   },
   {
     "id": 34,
@@ -983,8 +983,8 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "pommes-frites.webp",
     "variants": {
-      "Klein": 3.0,
-      "Groß": 4.0
+      "Klein": 4,
+      "Groß": 5
     }
   },
   {
@@ -994,7 +994,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "cheeseburger.webp",
     "variants": {
-      "Normal": 8.5
+      "Normal": 7.5
     }
   },
   {
@@ -1004,7 +1004,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "chicken-burger.webp",
     "variants": {
-      "Normal": 8.5
+      "Normal": 7.5
     }
   },
   {
@@ -1014,7 +1014,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "bbq-burger.webp",
     "variants": {
-      "Normal": 9.0
+      "Normal": 8.5
     }
   },
   {
@@ -1024,7 +1024,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "wings.webp",
     "variants": {
-      "Normal": 11.0
+      "Normal": 11
     }
   },
   {
@@ -1034,7 +1034,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "nuggets.webp",
     "variants": {
-      "Normal": 11.0
+      "Normal": 11
     }
   },
   {
@@ -1054,7 +1054,7 @@ window.PDS_PRODUCTS = [
     "description": "gefüllt mit 2 Belägen nach Wahl",
     "image": "pizza-broetchen.webp",
     "variants": {
-      "Normal": 7.0
+      "Normal": 6.5
     },
     "pizzaExtras": [
       "Käse",
@@ -1094,7 +1094,7 @@ window.PDS_PRODUCTS = [
     "description": "mit Pommes & Salat",
     "image": "schnitzel-wiener.webp",
     "variants": {
-      "Normal": 10.0
+      "Normal": 10
     }
   },
   {
@@ -1104,7 +1104,7 @@ window.PDS_PRODUCTS = [
     "description": "mit Pommes & Salat",
     "image": "jaeger.webp",
     "variants": {
-      "Normal": 11.0
+      "Normal": 11
     }
   },
   {
@@ -1134,7 +1134,7 @@ window.PDS_PRODUCTS = [
     "description": "Jedes Baguette mit Salat & Remoulade",
     "image": "baguette-salami.webp",
     "variants": {
-      "Normal": 7.0
+      "Normal": 6.5
     }
   },
   {
@@ -1144,7 +1144,7 @@ window.PDS_PRODUCTS = [
     "description": "Jedes Baguette mit Salat & Remoulade",
     "image": "baguette-schinken.webp",
     "variants": {
-      "Normal": 7.0
+      "Normal": 6.5
     }
   },
   {
@@ -1154,7 +1154,7 @@ window.PDS_PRODUCTS = [
     "description": "Jedes Baguette mit Salat & Remoulade",
     "image": "baguette-ei.webp",
     "variants": {
-      "Normal": 7.0
+      "Normal": 6
     }
   },
   {
@@ -1164,7 +1164,7 @@ window.PDS_PRODUCTS = [
     "description": "Jedes Baguette mit Salat & Remoulade",
     "image": "baguette-thunfisch.webp",
     "variants": {
-      "Normal": 7.5
+      "Normal": 6.5
     }
   },
   {
@@ -1174,7 +1174,7 @@ window.PDS_PRODUCTS = [
     "description": "Jedes Baguette mit Salat & Remoulade",
     "image": "baguette-haehnchen.webp",
     "variants": {
-      "Normal": 8.0
+      "Normal": 7.5
     },
     "extras": {
       "Weitere Beläge": 0.5
@@ -1187,7 +1187,7 @@ window.PDS_PRODUCTS = [
     "description": "Gemischter Salat",
     "image": "salat-mista.webp",
     "variants": {
-      "Normal": 5.0
+      "Normal": 5
     }
   },
   {
@@ -1197,7 +1197,7 @@ window.PDS_PRODUCTS = [
     "description": "Thunfisch, Ei, Schinken, Oliven & Käse",
     "image": "salat-capricciosa.webp",
     "variants": {
-      "Normal": 8.0
+      "Normal": 8
     }
   },
   {
@@ -1207,7 +1207,7 @@ window.PDS_PRODUCTS = [
     "description": "mit Schafskäse, Zwiebeln, Paprika, Oliven & mehr",
     "image": "salat-bauern.webp",
     "variants": {
-      "Normal": 8.0
+      "Normal": 8
     }
   },
   {
@@ -1237,7 +1237,7 @@ window.PDS_PRODUCTS = [
     "description": "0,33 L",
     "image": "cola-dose.webp",
     "variants": {
-      "0,33 L": 2.0
+      "0,33 L": 2
     }
   },
   {
@@ -1247,7 +1247,7 @@ window.PDS_PRODUCTS = [
     "description": "0,33 L",
     "image": "cola-dose.webp",
     "variants": {
-      "0,33 L": 2.0
+      "0,33 L": 2
     }
   },
   {
@@ -1257,7 +1257,7 @@ window.PDS_PRODUCTS = [
     "description": "0,33 L",
     "image": "fanta-dose.webp",
     "variants": {
-      "0,33 L": 2.0
+      "0,33 L": 2
     }
   },
   {
@@ -1267,7 +1267,7 @@ window.PDS_PRODUCTS = [
     "description": "0,33 L",
     "image": "mezzo-dose.webp",
     "variants": {
-      "0,33 L": 2.0
+      "0,33 L": 2
     }
   },
   {
@@ -1277,7 +1277,7 @@ window.PDS_PRODUCTS = [
     "description": "0,33 L",
     "image": "sprite-dose.webp",
     "variants": {
-      "0,33 L": 2.0
+      "0,33 L": 2
     }
   },
   {
@@ -1287,7 +1287,7 @@ window.PDS_PRODUCTS = [
     "description": "1,25 L",
     "image": "cola-flasche.webp",
     "variants": {
-      "1,25 L": 3.5
+      "1,25 L": 4
     }
   },
   {
@@ -1297,7 +1297,7 @@ window.PDS_PRODUCTS = [
     "description": "1,25 L",
     "image": "cola-flasche.webp",
     "variants": {
-      "1,25 L": 3.5
+      "1,25 L": 4
     }
   },
   {
@@ -1307,7 +1307,7 @@ window.PDS_PRODUCTS = [
     "description": "1,25 L",
     "image": "fanta-flasche.webp",
     "variants": {
-      "1,25 L": 3.5
+      "1,25 L": 4
     }
   },
   {
@@ -1317,7 +1317,7 @@ window.PDS_PRODUCTS = [
     "description": "1,25 L",
     "image": "mezzo-flasche.webp",
     "variants": {
-      "1,25 L": 3.5
+      "1,25 L": 4
     }
   },
   {
@@ -1327,7 +1327,7 @@ window.PDS_PRODUCTS = [
     "description": "1,25 L",
     "image": "sprite-flasche.webp",
     "variants": {
-      "1,25 L": 3.5
+      "1,25 L": 4
     }
   },
   {
@@ -1347,7 +1347,7 @@ window.PDS_PRODUCTS = [
     "description": "200 ml",
     "image": "capri-sun.webp",
     "variants": {
-      "200 ml": 1.0
+      "200 ml": 1
     }
   },
   {
