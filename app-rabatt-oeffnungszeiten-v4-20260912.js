@@ -96,11 +96,11 @@ async function checkNewCustomerDiscount(phone){
 }
 
 function pizzaPromoActive(){
-  // Nur am 01.10.2026 bis zum regulären Donnerstagsschluss um 01:00 Uhr am 02.10. (Europe/Berlin).
+  // 15-%-Pizza-Aktion ab 05.10.2026 aktiv, bis sie manuell abgeschaltet wird.
   const parts=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   const o=Object.fromEntries(parts.map(p=>[p.type,p.value]));
   const stamp=`${o.year}-${o.month}-${o.day}T${o.hour}:${o.minute}:${o.second}`;
-  return stamp>='2026-10-01T00:00:00' && stamp<'2026-10-02T01:00:00';
+  return stamp>='2026-10-05T00:00:00';
 }
 function isPizzaCartItem(x){
   const p=(window.PDS_PRODUCTS||[]).find(p=>String(p.id)===String(x.productId));
