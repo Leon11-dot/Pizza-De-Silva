@@ -286,4 +286,20 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js?v=20260923-fee-final',{updateViaCache:'none'});</script>
+<script>
+// Zusätzliche Sperre: Auch sichtbare Bestellbuttons reagieren außerhalb der Öffnungszeiten nicht.
+(function(){
+  function closed(){ return typeof window.pdsIsOpenNow === 'function' && !window.pdsIsOpenNow(); }
+  document.addEventListener('click',function(e){
+    if(!closed()) return;
+    const button=e.target.closest('button');
+    if(!button) return;
+    const action=button.getAttribute('onclick')||'';
+    if(/\\b(openCheckout|placeOrder)\\s*\\(/.test(action)){
+      e.preventDefault();e.stopImmediatePropagation();
+      alert('Momentan geschlossen. Bestellungen sind nur während der Öffnungszeiten möglich: So–Do 11:00–01:00 Uhr, Fr–Sa 11:00–02:00 Uhr.');
+    }
+  },true);
+})();
+</script>
 </body></html>
