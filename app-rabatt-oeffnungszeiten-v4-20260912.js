@@ -822,6 +822,8 @@ async function placeOrder(){
   const type=document.getElementById('type').value;
   const name=document.getElementById('name').value.trim();
   const phone=document.getElementById('phone').value.trim();
+  const orderEmail=document.getElementById('orderEmail').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderEmail)) return alert('Bitte eine gültige E-Mail-Adresse für die Bestellbenachrichtigung eingeben.');
   const address=document.getElementById('address').value.trim();
   const terms=document.getElementById('terms').checked;
   const timing=getOrderTiming();
@@ -860,7 +862,7 @@ async function placeOrder(){
   const paymentMethod=document.getElementById('payment').value;
   const order={id,number:Date.now()%100000,statusToken,createdAt:new Date().toISOString(),status:'new',eta:null,orderTiming:timing,
     expiresAt:Date.now()+Number(settings?.autoCancelMinutes||5)*60000,total,items:cart,
-    customer:{type,name,phone,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim(),
+    customer:{type,name,phone,email:orderEmail,address:type==='Lieferung'?address:'',deliveryZone:type==='Lieferung'?verifiedDeliveryZone.label:'',deliveryDistanceKm:type==='Lieferung'?verifiedDeliveryZone.distanceKm:null,deliveryFee:fee,payment:paymentMethod,note:document.getElementById('note').value.trim(),
       newCustomerDiscount:discounts.newCustomerDiscount,pizzaPromoDiscount:discounts.pizzaDiscount,discountTotal:discount,discountLabel:discounts.pizzaDiscount>0?'15 % Pizza-Rabatt (nur heute)':(discounts.newCustomerDiscount>0?'Neukunden-Rabatt 10 %':'')}};
 
   try{
