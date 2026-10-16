@@ -257,16 +257,43 @@ async function notifyOrderCustomer(id,newStatus,eta){
   try{
     const orders=await PDS_BACKEND.listOrders();
     const order=orders.find(x=>String(x.id)===String(id));
-    const to=order?.customer?.email;
-    if(!to) { console.warn('Keine Kunden-E-Mail für Bestellung',id); return; }
-    const token=sessionStorage.getItem('pds_access_token');
-    if(!token) throw new Error('Admin-Anmeldung fehlt');
-    const res=await fetch('https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/send-order-email',{
-      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':PDS_CONFIG.supabaseAnonKey},
-      body:JSON.stringify({to,customerName:order.customer?.name||'',orderNumber:String(order.number||order.orderNumber||''),status:newStatus,eta:eta||order.eta,fulfillment:order.customer?.type||''})
-    });
-    if(!res.ok) throw new Error('E-Mail-Versand fehlgeschlagen ('+res.status+')');
-  }catch(e){console.error('Bestellbenachrichtigung:',e);alert('Bestellstatus gespeichert, aber die E-Mail konnte nicht gesendet werden. Bitte Kunden telefonisch informieren.');}
+    if(!order) throw new Error('Bestellung nicht gefunden');
+    const to=String(order.customer?.email||'').trim();
+    if(!to) throw new Error('Keine E-Mail-Adresse bei dieser Bestellung gespeichert');
+    const url=PDS_CONFIG.supabaseUrl+'/functions/v1/send-order-email';
+    async function send(){
+      const token=sessionStorage.getItem('pds_access_token');
+      if(!token) throw new Error('Admin-Anmeldung abgelaufen. Bitte neu anmelden.');
+      return fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':PDS_CONFIG.supabaseAnonKey},
+        body:JSON.stringify({to,customerName:order.customer?.name||'',orderNumber:String(order.number||order.orderNumber||''),status:newStatus,eta:eta||order.eta,fulfillment:order.customer?.type||''})});
+    }
+    let res=await send();
+    if(res.status===401){
+      const refreshToken=sessionStorage.getItem('pds_refresh_token');
+      if(refreshToken){
+        const refresh=await fetch(PDS_CONFIG.supabaseUrl+'/auth/v1/token?grant_type=refresh_token',{
+          method:'POST',headers:{'Content-Type':'application/json','apikey':PDS_CONFIG.supabaseAnonKey},
+          body:JSON.stringify({refresh_token:refreshToken})
+        });
+        if(refresh.ok){
+          const data=await refresh.json();
+          sessionStorage.setItem('pds_access_token',data.access_token);
+          if(data.refresh_token)sessionStorage.setItem('pds_refresh_token',data.refresh_token);
+          res=await send();
+        }
+      }
+    }
+    if(!res.ok){
+      const detail=await res.text().catch(()=>'');
+      throw new Error('HTTP '+res.status+': '+detail.slice(0,220));
+    }
+    const result=await res.json();
+    if(!result.ok)throw new Error('Versand nicht bestätigt');
+    console.info('Bestell-E-Mail von Resend angenommen',id,newStatus);
+  }catch(e){
+    console.error('Bestellbenachrichtigung:',e);
+    alert('Bestellstatus gespeichert, aber Kunden-E-Mail NICHT versendet. '+e.message+' Bitte Kunden telefonisch informieren.');
+  }
 }
 
 async function accept(id){
