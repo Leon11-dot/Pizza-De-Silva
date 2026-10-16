@@ -253,11 +253,28 @@ function setEta(id,min,el){
   });
 }
 
+async function notifyOrderCustomer(id,newStatus,eta){
+  try{
+    const orders=await PDS_BACKEND.listOrders();
+    const order=orders.find(x=>String(x.id)===String(id));
+    const to=order?.customer?.email;
+    if(!to) { console.warn('Keine Kunden-E-Mail für Bestellung',id); return; }
+    const token=sessionStorage.getItem('pds_access_token');
+    if(!token) throw new Error('Admin-Anmeldung fehlt');
+    const res=await fetch('https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/send-order-email',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':PDS_CONFIG.supabaseAnonKey},
+      body:JSON.stringify({to,customerName:order.customer?.name||'',orderNumber:String(order.number||order.orderNumber||''),status:newStatus,eta:eta||order.eta,fulfillment:order.customer?.type||''})
+    });
+    if(!res.ok) throw new Error('E-Mail-Versand fehlgeschlagen ('+res.status+')');
+  }catch(e){console.error('Bestellbenachrichtigung:',e);alert('Bestellstatus gespeichert, aber die E-Mail konnte nicht gesendet werden. Bitte Kunden telefonisch informieren.');}
+}
+
 async function accept(id){
   const key=String(id);
   const eta=Number(selectedEtas[key]||0);
   if(!eta) return alert('Bitte zuerst eine Zeit auswählen.');
   await PDS_BACKEND.updateOrder(id,{status:'accepted',eta,updatedAt:new Date().toISOString()});
+  await notifyOrderCustomer(id,'accepted',eta);
   delete selectedEtas[key];
   localStorage.setItem('pds_selected_etas',JSON.stringify(selectedEtas));
   render();
@@ -265,11 +282,13 @@ async function accept(id){
 
 async function reject(id){
   await PDS_BACKEND.updateOrder(id,{status:'cancelled',cancelReason:'Vom Restaurant abgelehnt',updatedAt:new Date().toISOString()});
+  await notifyOrderCustomer(id,'cancelled');
   render();
 }
 
 async function status(id,s){
   await PDS_BACKEND.updateOrder(id,{status:s,updatedAt:new Date().toISOString()});
+  if(['cancelled','ready','on_the_way'].includes(s)) await notifyOrderCustomer(id,s);
   render();
 }
 
@@ -282,6 +301,7 @@ async function expire(all){
         cancelReason:'Nicht innerhalb der Bestätigungszeit angenommen',
         updatedAt:new Date().toISOString()
       });
+      await notifyOrderCustomer(x.id,'cancelled');
     }
   }
 }
