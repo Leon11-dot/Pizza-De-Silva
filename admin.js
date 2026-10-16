@@ -265,7 +265,7 @@ async function notifyOrderCustomer(id,newStatus,eta){
       const token=sessionStorage.getItem('pds_access_token');
       if(!token) throw new Error('Admin-Anmeldung abgelaufen. Bitte neu anmelden.');
       return fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':PDS_CONFIG.supabaseAnonKey},
-        body:JSON.stringify({to,customerName:order.customer?.name||'',orderNumber:String(order.number||order.orderNumber||''),status:newStatus,eta:eta||order.eta,fulfillment:order.customer?.type||''})});
+        body:JSON.stringify({to,customerName:order.customer?.name||'',orderNumber:String(order.number||order.orderNumber||''),status:newStatus,eta:eta||order.eta,fulfillment:order.customer?.type||'',items:(order.items||[]).map(i=>({name:i.name,qty:i.qty,variant:i.variant,extraName:i.extraName,extras:i.extras,price:i.price,total:i.total??i.lineTotal})),total:order.total})});
     }
     let res=await send();
     if(res.status===401){
