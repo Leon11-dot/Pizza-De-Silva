@@ -4,7 +4,7 @@
 function pdsBerlinNow(){
   const parts = new Intl.DateTimeFormat('de-DE',{
     timeZone:'Europe/Berlin',
-    weekday:'short', hour:'2-digit', minute:'2-digit', hour12:false
+    weekday:'short', hour:'2-digit', minute:'2-digit', hourCycle:'h23'
   }).formatToParts(new Date());
   const get=t=>parts.find(p=>p.type===t)?.value||'';
   const wd=get('weekday').replace('.','').toLowerCase();
