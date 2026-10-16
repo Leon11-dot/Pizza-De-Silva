@@ -14,20 +14,14 @@ function pdsBerlinNow(){
 
 function pdsIsOpenNow(){
   const {day,minutes}=pdsBerlinNow();
-
-  // Nach Mitternacht gehört die Öffnung noch zum Vortag.
-  if(minutes < 60){
-    const prev=(day+6)%7;
-    return prev>=0 && prev<=4; // So–Do bis 01:00
-  }
+  if(!Number.isInteger(day)) return false;
+  // Nach Mitternacht zählt die Schließzeit des vorherigen Öffnungstags.
   if(minutes < 120){
-    const prev=(day+6)%7;
-    return prev===5 || prev===6; // Fr–Sa bis 02:00
+    const previousDay=(day+6)%7;
+    const closingMinutes=(previousDay===5 || previousDay===6) ? 120 : 60;
+    return minutes < closingMinutes;
   }
-
-  // Tagesöffnung ab 11:00.
-  if(minutes < 11*60) return false;
-  return true;
+  return minutes >= 11*60;
 }
 
 function pdsOpeningHoursText(){
