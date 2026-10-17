@@ -1190,39 +1190,57 @@ window.PDS_PRODUCTS = [
     "id": 35,
     "category": "Finger Food",
     "name": "Cheeseburger mit Pommes",
-    "description": "",
+    "description": "Mit Pommes, Salat, Essiggurken, Zwiebeln, Tomaten, Ketchup, Mayonnaise und Käse",
     "image": "cheeseburger.webp",
     "variants": {
       "Normal": 7.5
     },
     "removeOptions": [
-      "Pommes"
+      "Salat",
+      "Essiggurken",
+      "Zwiebeln",
+      "Tomaten",
+      "Ketchup",
+      "Mayonnaise",
+      "Käse"
     ]
   },
   {
     "id": 36,
     "category": "Finger Food",
     "name": "Chicken Burger mit Pommes",
-    "description": "",
+    "description": "Mit Pommes, Salat, Essiggurken, Zwiebeln, Tomaten, Ketchup, Mayonnaise und Käse",
     "image": "chicken-burger.webp",
     "variants": {
       "Normal": 7.5
     },
     "removeOptions": [
-      "Pommes"
+      "Salat",
+      "Essiggurken",
+      "Zwiebeln",
+      "Tomaten",
+      "Ketchup",
+      "Mayonnaise",
+      "Käse"
     ]
   },
   {
     "id": 37,
     "category": "Finger Food",
     "name": "BBQ Burger mit Pommes",
-    "description": "",
+    "description": "Mit Pommes, Salat, Essiggurken, Zwiebeln, Tomaten, Ketchup, Mayonnaise und Käse",
     "image": "bbq-burger.webp",
     "variants": {
       "Normal": 8.5
     },
     "removeOptions": [
-      "Pommes"
+      "Salat",
+      "Essiggurken",
+      "Zwiebeln",
+      "Tomaten",
+      "Ketchup",
+      "Mayonnaise",
+      "Käse"
     ]
   },
   {
