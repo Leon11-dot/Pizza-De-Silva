@@ -1,5 +1,15 @@
 window.PDS_PRODUCTS = [
   {
+    "id": "FCW1",
+    "category": "Finger Food",
+    "name": "Hähnchen-Currywurst",
+    "description": "Mit Pommes und Sauce. Ketchup, Mayonnaise und Currysauce können einzeln abgewählt werden.",
+    "image": "pommes.webp",
+    "variants": {"Portion": 6},
+    "removeOptions": ["Ketchup", "Mayonnaise", "Currysauce"]
+  },
+
+  {
     "id": 1,
     "category": "Pizza",
     "name": "Margherita",
