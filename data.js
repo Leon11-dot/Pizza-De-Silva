@@ -5,10 +5,15 @@ window.PDS_PRODUCTS = [
     "name": "Hähnchen-Currywurst",
     "description": "Mit Pommes und Sauce. Ketchup, Mayonnaise und Currysauce können einzeln abgewählt werden.",
     "image": "pommes.webp",
-    "variants": {"Portion": 6},
-    "removeOptions": ["Ketchup", "Mayonnaise", "Currysauce"]
+    "variants": {
+      "Portion": 6
+    },
+    "removeOptions": [
+      "Ketchup",
+      "Mayonnaise",
+      "Currysauce"
+    ]
   },
-
   {
     "id": 1,
     "category": "Pizza",
@@ -40,7 +45,11 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse"
+    ]
   },
   {
     "id": 2,
@@ -73,7 +82,12 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 3,
@@ -106,7 +120,12 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "frische Champignons"
+    ]
   },
   {
     "id": 4,
@@ -139,7 +158,12 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Salami"
+    ]
   },
   {
     "id": 5,
@@ -172,7 +196,12 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Schinken"
+    ]
   },
   {
     "id": 6,
@@ -205,7 +234,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Spinat",
+      "Knoblauch"
+    ]
   },
   {
     "id": 7,
@@ -238,7 +273,12 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Thunfisch"
+    ]
   },
   {
     "id": 8,
@@ -271,7 +311,14 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Scharfe Salami",
+      "Peperoni",
+      "Oliven"
+    ]
   },
   {
     "id": 9,
@@ -304,7 +351,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Schinken",
+      "Ananas"
+    ]
   },
   {
     "id": 10,
@@ -337,7 +390,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Peperoni",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 11,
@@ -370,7 +429,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Fleischsauce",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 12,
@@ -403,7 +468,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Hähnchenbrustfilet",
+      "Zwiebeln",
+      "Käse"
+    ]
   },
   {
     "id": 13,
@@ -436,7 +507,14 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Hähnchenbrust",
+      "Sauce Hollandaise",
+      "Broccoli"
+    ]
   },
   {
     "id": 14,
@@ -469,7 +547,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Thunfisch",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 15,
@@ -502,7 +586,15 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Schinken",
+      "Salami",
+      "Spinat",
+      "frische Champignons"
+    ]
   },
   {
     "id": 16,
@@ -535,7 +627,14 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Schinken",
+      "Salami",
+      "frische Champignons"
+    ]
   },
   {
     "id": 17,
@@ -568,7 +667,11 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Mozzarella"
+    ]
   },
   {
     "id": 18,
@@ -600,7 +703,15 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Schinken",
+      "Salami",
+      "Bolognese",
+      "frischen Champignons"
+    ]
   },
   {
     "id": 19,
@@ -633,7 +744,14 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Hähnchenbrustfilet",
+      "Schinken",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 20,
@@ -666,7 +784,16 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Broccoli",
+      "frische Champignons",
+      "Spinat",
+      "Paprika",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 21,
@@ -699,7 +826,14 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Schafskäse",
+      "Spinat",
+      "Ei"
+    ]
   },
   {
     "id": 22,
@@ -732,7 +866,15 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Thunfisch",
+      "Schinken",
+      "Oliven",
+      "Artischocken"
+    ]
   },
   {
     "id": 23,
@@ -765,7 +907,15 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Salami",
+      "Oliven",
+      "Sardellen",
+      "Kapern"
+    ]
   },
   {
     "id": 24,
@@ -798,7 +948,14 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Speck",
+      "Zwiebeln",
+      "BBQ-Sauce"
+    ]
   },
   {
     "id": 25,
@@ -831,7 +988,10 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Käse"
+    ]
   },
   {
     "id": 26,
@@ -864,7 +1024,13 @@ window.PDS_PRODUCTS = [
       "Klein · 26 cm": 0.5,
       "Groß · 30 cm": 1,
       "Family · 50 cm": 4
-    }
+    },
+    "removeOptions": [
+      "Tomatensauce",
+      "Käse",
+      "Krabben",
+      "Knoblauch"
+    ]
   },
   {
     "id": "extra",
@@ -913,7 +1079,10 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2
+    "pastaCheeseExtra": 2,
+    "removeOptions": [
+      "Fleischsauce"
+    ]
   },
   {
     "id": 28,
@@ -928,7 +1097,13 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2
+    "pastaCheeseExtra": 2,
+    "removeOptions": [
+      "Tomaten",
+      "Thunfisch",
+      "Oliven",
+      "Sahnesauce"
+    ]
   },
   {
     "id": 30,
@@ -943,7 +1118,11 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2
+    "pastaCheeseExtra": 2,
+    "removeOptions": [
+      "Speck",
+      "Sahnesauce"
+    ]
   },
   {
     "id": 31,
@@ -958,7 +1137,10 @@ window.PDS_PRODUCTS = [
       "Tortellini": 11.5,
       "Gnocchi": 11.5
     },
-    "pastaCheeseExtra": 2
+    "pastaCheeseExtra": 2,
+    "removeOptions": [
+      "Meeresfrüchten"
+    ]
   },
   {
     "id": 32,
@@ -973,7 +1155,11 @@ window.PDS_PRODUCTS = [
       "Tortellini": 9.5,
       "Gnocchi": 9.5
     },
-    "pastaCheeseExtra": 2
+    "pastaCheeseExtra": 2,
+    "removeOptions": [
+      "Schinken",
+      "Sahnesauce"
+    ]
   },
   {
     "id": 33,
@@ -984,7 +1170,10 @@ window.PDS_PRODUCTS = [
     "variants": {
       "Normal": 11
     },
-    "pastaCheeseExtra": 2
+    "pastaCheeseExtra": 2,
+    "removeOptions": [
+      "Fleischsauce"
+    ]
   },
   {
     "id": 34,
@@ -1005,7 +1194,10 @@ window.PDS_PRODUCTS = [
     "image": "cheeseburger.webp",
     "variants": {
       "Normal": 7.5
-    }
+    },
+    "removeOptions": [
+      "Pommes"
+    ]
   },
   {
     "id": 36,
@@ -1015,7 +1207,10 @@ window.PDS_PRODUCTS = [
     "image": "chicken-burger.webp",
     "variants": {
       "Normal": 7.5
-    }
+    },
+    "removeOptions": [
+      "Pommes"
+    ]
   },
   {
     "id": 37,
@@ -1025,7 +1220,10 @@ window.PDS_PRODUCTS = [
     "image": "bbq-burger.webp",
     "variants": {
       "Normal": 8.5
-    }
+    },
+    "removeOptions": [
+      "Pommes"
+    ]
   },
   {
     "id": 38,
@@ -1105,7 +1303,11 @@ window.PDS_PRODUCTS = [
     "image": "schnitzel-wiener.webp",
     "variants": {
       "Normal": 10
-    }
+    },
+    "removeOptions": [
+      "Pommes",
+      "Salat"
+    ]
   },
   {
     "id": 44,
@@ -1115,7 +1317,11 @@ window.PDS_PRODUCTS = [
     "image": "jaeger.webp",
     "variants": {
       "Normal": 11
-    }
+    },
+    "removeOptions": [
+      "Pommes",
+      "Salat"
+    ]
   },
   {
     "id": 45,
@@ -1125,7 +1331,12 @@ window.PDS_PRODUCTS = [
     "image": "bolognese-schnitzel.webp",
     "variants": {
       "Normal": 12.5
-    }
+    },
+    "removeOptions": [
+      "Käse überbacken",
+      "Pommes",
+      "Salat"
+    ]
   },
   {
     "id": 46,
@@ -1135,7 +1346,12 @@ window.PDS_PRODUCTS = [
     "image": "hawaii-schnitzel.webp",
     "variants": {
       "Normal": 12.5
-    }
+    },
+    "removeOptions": [
+      "Käse überbacken",
+      "Pommes",
+      "Salat"
+    ]
   },
   {
     "id": 47,
@@ -1145,7 +1361,12 @@ window.PDS_PRODUCTS = [
     "image": "baguette-salami.webp",
     "variants": {
       "Normal": 6.5
-    }
+    },
+    "removeOptions": [
+      "Salami",
+      "Salat",
+      "Remoulade"
+    ]
   },
   {
     "id": 48,
@@ -1155,7 +1376,12 @@ window.PDS_PRODUCTS = [
     "image": "baguette-schinken.webp",
     "variants": {
       "Normal": 6.5
-    }
+    },
+    "removeOptions": [
+      "Schinken",
+      "Salat",
+      "Remoulade"
+    ]
   },
   {
     "id": 49,
@@ -1165,7 +1391,12 @@ window.PDS_PRODUCTS = [
     "image": "baguette-ei.webp",
     "variants": {
       "Normal": 6
-    }
+    },
+    "removeOptions": [
+      "Ei",
+      "Salat",
+      "Remoulade"
+    ]
   },
   {
     "id": 50,
@@ -1175,7 +1406,12 @@ window.PDS_PRODUCTS = [
     "image": "baguette-thunfisch.webp",
     "variants": {
       "Normal": 6.5
-    }
+    },
+    "removeOptions": [
+      "Thunfisch",
+      "Salat",
+      "Remoulade"
+    ]
   },
   {
     "id": 51,
@@ -1188,7 +1424,12 @@ window.PDS_PRODUCTS = [
     },
     "extras": {
       "Weitere Beläge": 0.5
-    }
+    },
+    "removeOptions": [
+      "Hähnchenbrustfilet",
+      "Salat",
+      "Remoulade"
+    ]
   },
   {
     "id": 52,
@@ -1198,7 +1439,8 @@ window.PDS_PRODUCTS = [
     "image": "salat-mista.webp",
     "variants": {
       "Normal": 5
-    }
+    },
+    "removeOptions": []
   },
   {
     "id": 53,
@@ -1208,7 +1450,14 @@ window.PDS_PRODUCTS = [
     "image": "salat-capricciosa.webp",
     "variants": {
       "Normal": 8
-    }
+    },
+    "removeOptions": [
+      "Thunfisch",
+      "Ei",
+      "Schinken",
+      "Oliven",
+      "Käse"
+    ]
   },
   {
     "id": 54,
@@ -1218,7 +1467,13 @@ window.PDS_PRODUCTS = [
     "image": "salat-bauern.webp",
     "variants": {
       "Normal": 8
-    }
+    },
+    "removeOptions": [
+      "Schafskäse",
+      "Zwiebeln",
+      "Paprika",
+      "Oliven"
+    ]
   },
   {
     "id": 55,
@@ -1228,7 +1483,11 @@ window.PDS_PRODUCTS = [
     "image": "salat-pomodori.webp",
     "variants": {
       "Normal": 6.5
-    }
+    },
+    "removeOptions": [
+      "Tomaten",
+      "Zwiebeln"
+    ]
   },
   {
     "id": 66,
