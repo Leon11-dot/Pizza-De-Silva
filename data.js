@@ -4,7 +4,7 @@ window.PDS_PRODUCTS = [
     "category": "Finger Food",
     "name": "Hähnchen-Currywurst",
     "description": "Mit Pommes und Sauce. Ketchup, Mayonnaise und Currysauce können einzeln abgewählt werden.",
-    "image": "pommes.webp",
+    "image": "wide_appetizing_food_close_up_on_a_rustic_wooden.png",
     "variants": {
       "Portion": 6
     },
