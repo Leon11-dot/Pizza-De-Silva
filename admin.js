@@ -74,23 +74,15 @@ async function enableAdminPush(){
 }
 
 
-let adminView='current';
-
-function showCurrentOrders(){
-  adminView='current';
-  const current=document.getElementById('orders');
-  const history=document.getElementById('historyPanel');
-  if(current) current.style.display='';
-  if(history) history.style.display='none';
-}
-
-function showOrderHistory(){
-  adminView='history';
-  const current=document.getElementById('orders');
-  const history=document.getElementById('historyPanel');
-  if(current) current.style.display='none';
-  if(history) history.style.display='';
-  load();
+let orderTab='new';
+function setOrderTab(tab){
+  orderTab=['new','accepted','done'].includes(tab)?tab:'new';
+  document.querySelectorAll('[data-order-tab]').forEach(b=>{
+    const active=b.dataset.orderTab===orderTab;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',String(active));
+  });
+  render();
 }
 
 async function resumeAudioOnInteraction(){
@@ -384,11 +376,12 @@ async function render(){
     all=await PDS_BACKEND.listOrders();
 
     document.getElementById('modeLabel').textContent=PDS_BACKEND.modeLabel;
-    document.getElementById('sNew').textContent=all.filter(x=>x.status==='new').length;
-    document.getElementById('sAccepted').textContent=all.filter(x=>x.status==='accepted').length;
-    document.getElementById('sPrep').textContent=all.filter(x=>x.status==='preparing').length;
-    document.getElementById('sDone').textContent=all.filter(x=>x.status==='done').length;
-    document.getElementById('sRevenue').textContent=money(all.filter(x=>x.status!=='cancelled').reduce((s,x)=>s+x.total,0));
+    const newCount=all.filter(x=>x.status==='new').length;
+    const acceptedCount=all.filter(x=>['accepted','preparing','ready'].includes(x.status)).length;
+    const doneCount=all.filter(x=>['done','cancelled'].includes(x.status)).length;
+    document.getElementById('tabNewCount').textContent=newCount;
+    document.getElementById('tabAcceptedCount').textContent=acceptedCount;
+    document.getElementById('tabDoneCount').textContent=doneCount;
 
     const currentNewIds=new Set(all.filter(x=>x.status==='new').map(x=>String(x.id)));
     const hasNewArrival=[...currentNewIds].some(id=>!lastNewIds.has(id));
@@ -401,8 +394,8 @@ async function render(){
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
 
-    const currentOrders=all.filter(x=>x.status!=='done' && x.status!=='cancelled');
-    const historyOrders=all.filter(x=>x.status==='done' || x.status==='cancelled');
+    const visibleOrders=all.filter(x=>orderTab==='new'?x.status==='new':orderTab==='accepted'?['accepted','preparing','ready'].includes(x.status):['done','cancelled'].includes(x.status));
+    const isHistory=orderTab==='done';
 
     const renderOrderCard=(x,isHistory=false)=>{
       const items=(x.items||[]).map(i=>`<li>${i.qty}× ${i.name} (${i.variant})${i.extraName?' + '+i.extraName:''}${i.note?' – '+i.note:''}</li>`).join('');
@@ -430,14 +423,9 @@ async function render(){
     };
 
     const ordersBox=document.getElementById('orders');
-    if(ordersBox) ordersBox.innerHTML=currentOrders.length
-      ? currentOrders.map(x=>renderOrderCard(x,false)).join('')
-      : '<div class="empty">Keine aktuellen Bestellungen.</div>';
-
-    const historyBox=document.getElementById('historyOrders');
-    if(historyBox) historyBox.innerHTML=historyOrders.length
-      ? historyOrders.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(x=>renderOrderCard(x,true)).join('')
-      : '<div class="empty">Noch keine abgeschlossenen oder stornierten Bestellungen.</div>';
+    if(ordersBox) ordersBox.innerHTML=visibleOrders.length
+      ? visibleOrders.map(x=>renderOrderCard(x,isHistory)).join('')
+      : '<div class="empty">Keine Bestellungen in diesem Bereich.</div>';
   }catch(e){
     console.error(e);
     PDS_BACKEND.signOut();
