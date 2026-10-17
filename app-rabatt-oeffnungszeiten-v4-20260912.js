@@ -507,6 +507,10 @@ function openProduct(p){
         <b>+ ${money(Number(p.pastaCheeseExtra||2))}</b>
       </label>`;
     ef.querySelector('#pPastaCheese').onchange=updateProductModalTotal;
+  }else if(Array.isArray(p.removeOptions) && p.removeOptions.length){
+    ef.style.display='grid';
+    ef.innerHTML='<label>Was möchtest du weglassen? (kostenlos)</label><div class="extras-grid" id="pRemoveOptions">'+
+      p.removeOptions.map(x=>'<label class="extra-check"><input type="checkbox" value="'+x+'"><span>Ohne '+x+'</span></label>').join('')+'</div>';
   }else if(p.pizzaExtras && p.pizzaExtras.length){
     ef.style.display='grid';
     ef.innerHTML=`
@@ -581,6 +585,12 @@ function addProduct(){
       price += extraPrice;
       extraItems=[{name:extraName,price:extraPrice}];
     }
+  }
+
+  const removed=[...document.querySelectorAll('#pRemoveOptions input:checked')].map(x=>'Ohne '+x.value);
+  if(removed.length){
+    extraName=[extraName,...removed].filter(Boolean).join(', ');
+    extraItems.push(...removed.map(name=>({name,price:0})));
   }
 
   cart.push({
