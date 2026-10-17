@@ -43,7 +43,7 @@
 </nav>
 <section class="orders" id="orders"></section>
 </main>
-<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20261017-status-tabs"></script>
+<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20261018-clean-admin-v1"></script>
 
 <script>
 let pdsShopSettings=null;
@@ -143,7 +143,7 @@ async function installAdminApp(){
     await reg.update();
   }catch(e){}
 
-  alert('Chrome hat die Installation noch nicht freigegeben. Bitte diese Seite einmal neu laden und dann erneut auf „ADMIN-APP INSTALLIEREN“ tippen.');
+  alert('Installation auf Android: Öffne diese Seite in Google Chrome, tippe oben rechts auf ⋮ und wähle „App installieren“ oder „Zum Startbildschirm hinzufügen“. Falls der Menüpunkt fehlt, lade die Seite neu und prüfe, ob Chrome aktuell ist.');
 }
 
 if('serviceWorker' in navigator && location.protocol==='https:'){
