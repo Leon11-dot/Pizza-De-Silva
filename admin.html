@@ -20,8 +20,7 @@
 <main class="admin" id="panel" style="display:none">
   <section class="admin-hero"><div><h1>Bestellzentrale</h1><p>Neue Bestellungen annehmen, Zeit festlegen und Status verwalten.</p></div><div><span class="sys">System aktiv</span><div class="meta" id="modeLabel" style="color:#ffe8df;text-align:right;margin-top:5px"></div></div></section>
   <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm startet automatisch bei einer neuen Bestellung und läuft bis zur Annahme oder Ablehnung.</div></div>
-  <div class="stats"><div class="stat"><span>Neu</span><strong id="sNew">0</strong></div><div class="stat"><span>Angenommen</span><strong id="sAccepted">0</strong></div><div class="stat"><span>In Zubereitung</span><strong id="sPrep">0</strong></div><div class="stat"><span>Erledigt</span><strong id="sDone">0</strong></div><div class="stat"><span>Bestellwert</span><strong id="sRevenue">0 €</strong></div></div>
-  <div class="notice" style="margin-bottom:14px">🔒 Diese Bestellzentrale ist nur für freigeschaltete Pizza-De-Silva-Admins erreichbar.</div>
+
   <div class="notice" id="shopSwitchBox" style="margin-bottom:14px">
     <b>🛍️ Bestellarten EIN / AUS</b><br>
     <span id="shopSwitchStatus">Status wird geladen…</span>
@@ -38,16 +37,138 @@
     <button class="btn primary" id="adminInstallBtn" type="button" style="margin-top:9px" onclick="installAdminApp()">📲 ADMIN-APP INSTALLIEREN</button>
   </div>
 
-<div id="pushBox" class="notice" style="margin-bottom:14px">
-    <b>📳 Handy-Bestellalarm</b><br>
-    <span id="pushStatus">Noch nicht aktiviert.</span><br>
-    <button class="btn primary" id="pushEnableBtn" type="button" style="margin-top:9px" onclick="enableAdminPush()">🔔 Handy-Alarm aktivieren</button>
-  </div>
-
-  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
   <button class="btn secondary" id="currentOrdersBtn" onclick="showCurrentOrders()">🛎️ Aktuelle Bestellungen</button>
   <button class="btn secondary" id="historyBtn" onclick="showOrderHistory()">📋 Bestellverlauf</button>
 </div>
+<section class="orders" id="orders"></section>
+</main>
+<script src="config.js"></script><script src="backend.js"></script><script src="admin.js?v=20261017-status-tabs"></script>
+
+<script>
+let pdsShopSettings=null;
+async function loadShopSwitches(){
+  try{
+    pdsShopSettings=await PDS_BACKEND.getSettings();
+    renderShopSwitches();
+  }catch(e){
+    const s=document.getElementById('shopSwitchStatus');
+    if(s) s.textContent='Status konnte nicht geladen werden.';
+  }
+}
+function renderShopSwitches(){
+  if(!pdsShopSettings) return;
+  const d=!!pdsShopSettings.deliveryOpen, p=!!pdsShopSettings.pickupOpen;
+  const db=document.getElementById('deliveryToggleBtn'), pb=document.getElementById('pickupToggleBtn');
+  if(db){db.textContent=d?'🚚 Lieferung: EIN':'🚚 Lieferung: AUS';db.className='btn '+(d?'primary':'secondary');}
+  if(pb){pb.textContent=p?'🏠 Abholung: EIN':'🏠 Abholung: AUS';pb.className='btn '+(p?'primary':'secondary');}
+  const s=document.getElementById('shopSwitchStatus');
+  if(s) s.textContent='Lieferung '+(d?'geöffnet':'geschlossen')+' · Abholung '+(p?'geöffnet':'geschlossen');
+}
+async function toggleOrderType(kind){
+  if(!pdsShopSettings) await loadShopSwitches();
+  if(!pdsShopSettings) return;
+  if(kind==='delivery') pdsShopSettings.deliveryOpen=!pdsShopSettings.deliveryOpen;
+  if(kind==='pickup') pdsShopSettings.pickupOpen=!pdsShopSettings.pickupOpen;
+  pdsShopSettings.storeOpen=!!(pdsShopSettings.deliveryOpen||pdsShopSettings.pickupOpen);
+  const status=document.getElementById('shopSwitchStatus');
+  if(status) status.textContent='Wird gespeichert…';
+  try{
+    await PDS_BACKEND.saveSettings(pdsShopSettings);
+    renderShopSwitches();
+  }catch(e){
+    if(kind==='delivery') pdsShopSettings.deliveryOpen=!pdsShopSettings.deliveryOpen;
+    if(kind==='pickup') pdsShopSettings.pickupOpen=!pdsShopSettings.pickupOpen;
+    renderShopSwitches();
+    alert('Änderung konnte nicht gespeichert werden.');
+  }
+}
+document.addEventListener('DOMContentLoaded',loadShopSwitches);
+</script>
+
+<script>
+let pdsAdminInstallPrompt = null;
+
+function pdsAdminStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true ||
+         document.referrer.startsWith('android-app://');
+}
+
+function pdsShowInstallReady(ready){
+  const btn=document.getElementById('adminInstallBtn');
+  const status=document.getElementById('adminInstallStatus');
+  if(!btn||!status) return;
+  if(pdsAdminStandalone()){
+    document.getElementById('adminInstallBox').style.display='none';
+    return;
+  }
+  btn.style.display='inline-flex';
+  if(ready){
+    status.textContent='✅ Bereit – jetzt tippen und die Admin-App installieren.';
+  }else{
+    status.textContent='Chrome prüft die App-Installation. Falls noch kein Fenster erscheint, Seite einmal neu laden.';
+  }
+}
+
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  pdsAdminInstallPrompt=e;
+  pdsShowInstallReady(true);
+});
+
+window.addEventListener('appinstalled', function(){
+  pdsAdminInstallPrompt=null;
+  const box=document.getElementById('adminInstallBox');
+  if(box) box.style.display='none';
+});
+
+async function installAdminApp(){
+  if(pdsAdminStandalone()){
+    alert('Die Pizza De Silva Admin-App ist bereits installiert.');
+    return;
+  }
+  if(pdsAdminInstallPrompt){
+    pdsAdminInstallPrompt.prompt();
+    const result=await pdsAdminInstallPrompt.userChoice;
+    if(result?.outcome==='accepted'){
+      pdsAdminInstallPrompt=null;
+    }
+    return;
+  }
+
+  // Ask Chrome to re-evaluate after SW activation.
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    await reg.update();
+  }catch(e){}
+
+  alert('Chrome hat die Installation noch nicht freigegeben. Bitte diese Seite einmal neu laden und dann erneut auf „ADMIN-APP INSTALLIEREN“ tippen.');
+}
+
+if('serviceWorker' in navigator && location.protocol==='https:'){
+  navigator.serviceWorker.register('/admin-sw.js?v=20260930-shop-switch-v1',{
+    scope:'/',
+    updateViaCache:'none'
+  }).then(async reg=>{
+    try{ await reg.update(); }catch(e){}
+    pdsShowInstallReady(!!pdsAdminInstallPrompt);
+  }).catch(err=>{
+    const s=document.getElementById('adminInstallStatus');
+    if(s) s.textContent='Service Worker konnte nicht aktiviert werden. Bitte Seite neu laden.';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  pdsShowInstallReady(!!pdsAdminInstallPrompt);
+});
+</script>
+
+</body></html  <nav class="order-tabs" aria-label="Bestellstatus">
+    <button type="button" class="order-tab active" data-order-tab="new" onclick="setOrderTab('new')">Neue Bestellungen <span id="tabNewCount">0</span></button>
+    <button type="button" class="order-tab" data-order-tab="accepted" onclick="setOrderTab('accepted')">Angenommen <span id="tabAcceptedCount">0</span></button>
+    <button type="button" class="order-tab" data-order-tab="done" onclick="setOrderTab('done')">Erledigt <span id="tabDoneCount">0</span></button>
+  </nav>
 <section class="orders" id="orders"></section>
 <section id="historyPanel" style="display:none">
   <div class="admin-hero" style="padding:16px 20px;margin-top:0">
