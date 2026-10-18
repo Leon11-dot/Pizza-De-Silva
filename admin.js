@@ -108,7 +108,15 @@ function showLogin(message=''){
   document.getElementById('loginError').innerHTML=message?`<div class="notice">${message}</div>`:'';
 }
 
+
+function syncNativePush(){
+ try{if(window.PizzaAdminPush && PDS_BACKEND.isSignedIn()){
+  const jwt=sessionStorage.getItem('pds_access_token');
+  if(jwt)window.PizzaAdminPush.register(jwt);
+ }}catch(e){console.warn('Native push registration pending');}
+}
 function showPanel(){
+ setTimeout(syncNativePush,800);
   document.getElementById('login').style.display='none';
   document.getElementById('panel').style.display='block';
   document.getElementById('logoutBtn').style.display='inline-flex';
@@ -171,6 +179,7 @@ async function login(){
 }
 
 function logout(){
+ try{window.PizzaAdminPush?.logout();}catch(e){}
   PDS_BACKEND.signOut();
   if(timer){clearInterval(timer);timer=null}
   showLogin('Du wurdest abgemeldet.');
