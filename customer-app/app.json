@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Pizza De Silva",
+    "slug": "pizza-de-silva",
+    "scheme": "pizzadesilva",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#fff9f3",
+    "android": {
+      "package": "de.pizzadesilva.kunden",
+      "permissions": [
+        "INTERNET"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "de.pizzadesilva.kunden",
+      "supportsTablet": true
+    },
+    "plugins": [],
+    "extra": {
+      "siteUrl": "https://www.pizzadesilva.de/"
+    }
+  }
+}
