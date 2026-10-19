@@ -1,6 +1,6 @@
 
 // === Pizza De Silva: Handy-Push für neue Bestellungen ===
-const PDS_VAPID_PUBLIC_KEY='BB2RAC97nR5edcRLB9Tq-XKg_ioHyCE2WZcvyT4d9z1PPrhJ2CryYoc-h4FoqEIJ3e4-tYqdGlwh8ufRhSvArs0';
+const PDS_VAPID_PUBLIC_KEY='BKlfZ_NjAyOm1GuHjIcMbH3pUEachl0ZW06ihTMhrzJOGL0qd0xaywI4w-n_1dvr56xZac8TBCzb3awIbiCBdrI';
 
 function pdsUrlBase64ToUint8Array(base64String){
   const padding='='.repeat((4-base64String.length%4)%4);
@@ -44,6 +44,11 @@ async function enableAdminPush(){
 
     const reg=await navigator.serviceWorker.ready;
     let sub=await reg.pushManager.getSubscription();
+    if(sub){
+      const key=sub.options?.applicationServerKey;
+      const current=key?btoa(String.fromCharCode(...new Uint8Array(key))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''):'';
+      if(current!==PDS_VAPID_PUBLIC_KEY){await sub.unsubscribe();sub=null;}
+    }
     if(!sub){
       sub=await reg.pushManager.subscribe({
         userVisibleOnly:true,
