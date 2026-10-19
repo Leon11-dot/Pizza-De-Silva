@@ -38,6 +38,7 @@ async function enableAdminPush(){
     if(!PDS_BACKEND.isSignedIn()) throw new Error('Bitte zuerst als Admin anmelden.');
     if(!('serviceWorker' in navigator) || !('PushManager' in window)) throw new Error('Push wird von diesem Browser nicht unterstützt.');
 
+    if(/iPhone|iPad|iPod/.test(navigator.userAgent) && !navigator.standalone) throw new Error('Auf dem iPhone bitte erst über Safari zum Home-Bildschirm hinzufügen und die App dort öffnen.');
     const permission=await Notification.requestPermission();
     if(permission!=='granted') throw new Error('Benachrichtigungen wurden nicht erlaubt.');
 
@@ -111,11 +112,12 @@ function showLogin(message=''){
 
 function syncNativePush(){
  try{if(window.PizzaAdminPush && PDS_BACKEND.isSignedIn()){
-  const jwt=sessionStorage.getItem('pds_access_token');
+  const jwt=PDS_BACKEND.getAdminAccessToken();
   if(jwt)window.PizzaAdminPush.register(jwt);
  }}catch(e){console.warn('Native push registration pending');}
 }
 function showPanel(){
+  setTimeout(updatePushStatus,700);
  setTimeout(syncNativePush,800);
   document.getElementById('login').style.display='none';
   document.getElementById('panel').style.display='block';
