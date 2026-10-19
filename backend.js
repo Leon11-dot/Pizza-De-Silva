@@ -10,8 +10,20 @@ window.PDS_BACKEND = (() => {
     };
   }
 
-  function getAccessToken() { return sessionStorage.getItem("pds_access_token") || ""; }
-  function getRefreshToken() { return sessionStorage.getItem("pds_refresh_token") || ""; }
+  // Persist admin sessions only inside the installed native Android app.
+  const nativeAdmin = () => !!window.PizzaAdminPush;
+  const adminStore = () => nativeAdmin() ? localStorage : sessionStorage;
+  function getAccessToken() { return adminStore().getItem("pds_access_token") || ""; }
+  function getRefreshToken() { return adminStore().getItem("pds_refresh_token") || ""; }
+  function storeAdminTokens(data) {
+    const store=adminStore();
+    store.setItem("pds_access_token",data.access_token||"");
+    if(data.refresh_token)store.setItem("pds_refresh_token",data.refresh_token);
+    if(nativeAdmin()){
+      sessionStorage.removeItem("pds_access_token");
+      sessionStorage.removeItem("pds_refresh_token");
+    }
+  }
 
   function authHeaders(extra={}) {
     const token = getAccessToken();
@@ -35,8 +47,7 @@ window.PDS_BACKEND = (() => {
       return false;
     }
     const data = await res.json();
-    sessionStorage.setItem("pds_access_token", data.access_token || "");
-    sessionStorage.setItem("pds_refresh_token", data.refresh_token || refreshToken);
+    storeAdminTokens(data);
     return true;
   }
 
@@ -103,7 +114,8 @@ window.PDS_BACKEND = (() => {
 
   async function verifyAdmin() {
     if (!live) return true;
-    if (!getAccessToken()) return false;
+    if (!getAccessToken() && !getRefreshToken()) return false;
+    if (!getAccessToken() && !await refreshSession()) return false;
     try {
       const rows = await request("admin_users?select=email&limit=1", {}, true);
       return Array.isArray(rows) && rows.length === 1;
@@ -127,9 +139,8 @@ window.PDS_BACKEND = (() => {
     if (!res.ok) throw new Error(await res.text() || "Anmeldung fehlgeschlagen");
     const data = await res.json();
 
-    sessionStorage.setItem("pds_access_token", data.access_token || "");
-    sessionStorage.setItem("pds_refresh_token", data.refresh_token || "");
-    sessionStorage.setItem("pds_admin_email", email);
+    storeAdminTokens(data);
+    adminStore().setItem("pds_admin_email", email);
 
     const allowed = await verifyAdmin();
     if (!allowed) {
@@ -140,9 +151,11 @@ window.PDS_BACKEND = (() => {
   }
 
   function signOut() {
-    sessionStorage.removeItem("pds_access_token");
-    sessionStorage.removeItem("pds_refresh_token");
-    sessionStorage.removeItem("pds_admin_email");
+    for(const store of [sessionStorage,localStorage]){
+      store.removeItem("pds_access_token");
+      store.removeItem("pds_refresh_token");
+      store.removeItem("pds_admin_email");
+    }
   }
 
 
@@ -241,7 +254,8 @@ window.PDS_BACKEND = (() => {
     signIn,
     signOut,
     verifyAdmin,
-    isSignedIn() { return !live || !!getAccessToken(); },
+    isSignedIn() { return !live || !!(getAccessToken() || getRefreshToken()); },
+    getAdminAccessToken: getAccessToken,
 
     async getSettings() {
       if (!live) return {
