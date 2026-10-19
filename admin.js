@@ -50,7 +50,7 @@ async function enableAdminPush(){
       });
     }
 
-    const token=sessionStorage.getItem('pds_access_token')||'';
+    const token=PDS_BACKEND.getAdminAccessToken()||'';
     const res=await fetch('https://rsxviwsmymlrwgphydae.supabase.co/functions/v1/admin-push-subscribe',{
       method:'POST',
       headers:{
