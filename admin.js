@@ -135,20 +135,17 @@ function showPanel(){
 // Browser erlauben Ton zuverlässig erst nach einer Benutzeraktion.
 // Deshalb wird der Alarm beim Anmelden bzw. beim ersten Klick/Tipp automatisch freigeschaltet.
 function armOrderAlarm(){
-  sound=true;
-  if(!window.pdsOrderAlarm){
-    window.pdsOrderAlarm=new Audio('/pds_original_alarm.mp3?v=20261023-real');
-    window.pdsOrderAlarm.preload='auto';
-    window.pdsOrderAlarm.loop=true;
-    window.pdsOrderAlarm.volume=1;
-  }
-  // Browsers need a user gesture before automatic playback.
-  const a=window.pdsOrderAlarm;
-  if(!a.dataset?.armed){
-    a.muted=true;
-    const p=a.play();
-    if(p&&p.then)p.then(()=>{a.pause();a.currentTime=0;a.muted=false;a.dataset.armed='1';}).catch(()=>{a.muted=false});
-  }
+ sound=true;
+ if(!window.pdsOrderAlarm){
+  const a=new Audio('/pds_original_alarm.mp3?v=20261023-original-v3');
+  a.preload='auto';a.loop=true;a.volume=1;
+  window.pdsOrderAlarm=a;
+ }
+ const a=window.pdsOrderAlarm;
+ if(a.dataset.armed==='1')return;
+ a.muted=true;
+ const p=a.play();
+ if(p&&p.then)p.then(()=>{a.pause();a.currentTime=0;a.muted=false;a.dataset.armed='1';}).catch(()=>{a.muted=false});
 }
 function syncOrderAlarm(has){
   const a=window.pdsOrderAlarm;
@@ -198,27 +195,11 @@ async function initAdmin(){
   await render();
 }
 
-async function beep(){
- if(!sound)return;
- try{
-  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==='suspended')await audioCtx.resume();
-  const now=audioCtx.currentTime;
-  [[784,0,.28],[988,.17,.34],[1175,.39,.46],[988,1.06,.28],[1175,1.23,.38],[1568,1.45,.52]].forEach(([freq,offset,dur])=>{
-   const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
-   osc.type='sine';osc.frequency.value=freq;
-   gain.gain.setValueAtTime(.0001,now+offset);
-   gain.gain.exponentialRampToValueAtTime(.34,now+offset+.018);
-   gain.gain.exponentialRampToValueAtTime(.0001,now+offset+dur);
-   osc.connect(gain);gain.connect(audioCtx.destination);
-   osc.start(now+offset);osc.stop(now+offset+dur+.02);
-  });
- }catch(e){console.warn('Fallback-Bestellalarm',e)}
-}
-
+async function beep(){ armOrderAlarm(); syncOrderAlarm(true); }
 async function enableSound(){
-  armOrderAlarm();
-  try{ await beep(); }catch(e){}
+ armOrderAlarm();
+ const a=window.pdsOrderAlarm;
+ if(a){a.muted=false;a.pause();a.currentTime=0;await a.play().catch(e=>console.warn('Alarm-Test fehlgeschlagen',e));}
 }
 
 
