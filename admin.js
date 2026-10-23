@@ -138,7 +138,8 @@ function armOrderAlarm(){
   try{
     sound = true;
     if(!window.pdsOrderAlarm){
-      window.pdsOrderAlarm = new Audio('./Pizza-De-Silva-ALARM-Neue-Bestellung.wav?v=20260910-auto');
+      // Do not preload the obsolete alarm audio; the restaurant chime uses Web Audio.
+      return;
       window.pdsOrderAlarm.preload = 'auto';
       window.pdsOrderAlarm.volume = 1.0;
     }
