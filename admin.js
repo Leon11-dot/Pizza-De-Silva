@@ -155,7 +155,7 @@ function syncOrderAlarm(has){
   if(!has){if(a){a.pause();a.currentTime=0;}return;}
   if(!sound)return;
   if(!a){return;}
-  if(a.paused){a.play().catch(e=>console.warn('Originalalarm blockiert',e));}
+  if(a.paused){a.play().catch(e=>{console.warn('Originalalarm nicht verfügbar',e);beep()});}
 }
 
 // Schon der erste Klick/Tipp irgendwo im Adminpanel schaltet den Alarm frei.
@@ -198,7 +198,23 @@ async function initAdmin(){
   await render();
 }
 
-async function beep(){syncOrderAlarm(true)}
+async function beep(){
+ if(!sound)return;
+ try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended')await audioCtx.resume();
+  const now=audioCtx.currentTime;
+  [[784,0,.28],[988,.17,.34],[1175,.39,.46],[988,1.06,.28],[1175,1.23,.38],[1568,1.45,.52]].forEach(([freq,offset,dur])=>{
+   const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+   osc.type='sine';osc.frequency.value=freq;
+   gain.gain.setValueAtTime(.0001,now+offset);
+   gain.gain.exponentialRampToValueAtTime(.34,now+offset+.018);
+   gain.gain.exponentialRampToValueAtTime(.0001,now+offset+dur);
+   osc.connect(gain);gain.connect(audioCtx.destination);
+   osc.start(now+offset);osc.stop(now+offset+dur+.02);
+  });
+ }catch(e){console.warn('Fallback-Bestellalarm',e)}
+}
 
 async function enableSound(){
   armOrderAlarm();
@@ -364,7 +380,7 @@ async function render(){
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
     syncOrderAlarm(has);
-    if(has&&sound&&!timer)timer=setInterval(()=>syncOrderAlarm(true),3000);
+    if(has&&sound&&!timer)timer=setInterval(()=>{if(!window.pdsOrderAlarm||window.pdsOrderAlarm.error||window.pdsOrderAlarm.paused)beep()},3200);
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
