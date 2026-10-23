@@ -103,7 +103,7 @@ async function resumeAudioOnInteraction(){
 });
 
 const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
-let sound=localStorage.getItem('pds_sound_enabled')==='1',timer=null,audioCtx=null;
+let sound=true,timer=null,audioCtx=null;
 let lastNewIds=new Set();
 let selectedEtas=JSON.parse(localStorage.getItem('pds_selected_etas')||'{}');
 
@@ -405,7 +405,7 @@ async function render(){
     lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
-    if(has&&sound&&!timer)timer=setInterval(beep,9000);
+    if(has&&sound&&!timer){beep();timer=setInterval(beep,3200)}
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
