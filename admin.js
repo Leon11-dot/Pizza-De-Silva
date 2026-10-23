@@ -135,35 +135,27 @@ function showPanel(){
 // Browser erlauben Ton zuverlässig erst nach einer Benutzeraktion.
 // Deshalb wird der Alarm beim Anmelden bzw. beim ersten Klick/Tipp automatisch freigeschaltet.
 function armOrderAlarm(){
-  try{
-    sound = true;
-    if(!window.pdsOrderAlarm){
-      // Do not preload the obsolete alarm audio; the restaurant chime uses Web Audio.
-      return;
-      window.pdsOrderAlarm.preload = 'auto';
-      window.pdsOrderAlarm.volume = 1.0;
-    }
-    // Direkt innerhalb einer Benutzeraktion kurz stumm starten, damit spätere Alarme automatisch spielen dürfen.
-    const a = window.pdsOrderAlarm;
-    const oldVol = a.volume;
-    a.volume = 0;
-    const p = a.play();
-    if(p && typeof p.then === 'function'){
-      p.then(()=>{
-        a.pause();
-        a.currentTime = 0;
-        a.volume = oldVol;
-      }).catch(()=>{
-        a.volume = oldVol;
-      });
-    }else{
-      a.pause();
-      a.currentTime = 0;
-      a.volume = oldVol;
-    }
-  }catch(e){
-    console.warn('Alarm konnte noch nicht freigeschaltet werden', e);
+  sound=true;
+  if(!window.pdsOrderAlarm){
+    window.pdsOrderAlarm=new Audio('/Pizza_De_Silva_Original_Aus_Video.mp3?v=20261023');
+    window.pdsOrderAlarm.preload='auto';
+    window.pdsOrderAlarm.loop=true;
+    window.pdsOrderAlarm.volume=1;
   }
+  // Browsers need a user gesture before automatic playback.
+  const a=window.pdsOrderAlarm;
+  if(!a.dataset?.armed){
+    a.muted=true;
+    const p=a.play();
+    if(p&&p.then)p.then(()=>{a.pause();a.currentTime=0;a.muted=false;a.dataset.armed='1';}).catch(()=>{a.muted=false});
+  }
+}
+function syncOrderAlarm(has){
+  const a=window.pdsOrderAlarm;
+  if(!has){if(a){a.pause();a.currentTime=0;}return;}
+  if(!sound)return;
+  if(!a){return;}
+  if(a.paused){a.play().catch(e=>console.warn('Originalalarm blockiert',e));}
 }
 
 // Schon der erste Klick/Tipp irgendwo im Adminpanel schaltet den Alarm frei.
@@ -206,24 +198,7 @@ async function initAdmin(){
   await render();
 }
 
-async function beep(){
- if(!sound) return;
- try{
-  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==='suspended') await audioCtx.resume();
-  const now=audioCtx.currentTime;
-  // Professional restaurant POS alert: bright multi-tone chime, not a siren.
-  [[784,0,.28],[988,.17,.34],[1175,.39,.46],[988,1.06,.28],[1175,1.23,.38],[1568,1.45,.52]].forEach(([freq,offset,dur])=>{
-    const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
-    osc.type='sine';osc.frequency.value=freq;
-    gain.gain.setValueAtTime(.0001,now+offset);
-    gain.gain.exponentialRampToValueAtTime(.34,now+offset+.018);
-    gain.gain.exponentialRampToValueAtTime(.0001,now+offset+dur);
-    osc.connect(gain);gain.connect(audioCtx.destination);
-    osc.start(now+offset);osc.stop(now+offset+dur+.02);
-  });
- }catch(e){console.warn('Bestellalarm Fehler',e)}
-}
+async function beep(){syncOrderAlarm(true)}
 
 async function enableSound(){
   armOrderAlarm();
@@ -388,7 +363,8 @@ async function render(){
     lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
-    if(has&&sound&&!timer){beep();timer=setInterval(beep,3200)}
+    syncOrderAlarm(has);
+    if(has&&sound&&!timer)timer=setInterval(()=>syncOrderAlarm(true),3000);
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
