@@ -137,7 +137,7 @@ function showPanel(){
 function armOrderAlarm(){
   sound=true;
   if(!window.pdsOrderAlarm){
-    window.pdsOrderAlarm=new Audio('/Pizza_De_Silva_Original_Aus_Video.mp3?v=20261023');
+    window.pdsOrderAlarm=new Audio('/pds_original_alarm.mp3?v=20261023-real');
     window.pdsOrderAlarm.preload='auto';
     window.pdsOrderAlarm.loop=true;
     window.pdsOrderAlarm.volume=1;
@@ -155,7 +155,7 @@ function syncOrderAlarm(has){
   if(!has){if(a){a.pause();a.currentTime=0;}return;}
   if(!sound)return;
   if(!a){return;}
-  if(a.paused){a.play().catch(e=>{console.warn('Originalalarm nicht verfügbar',e);beep()});}
+  if(a.paused){a.play().catch(e=>console.warn('Originalalarm konnte nicht abgespielt werden',e));}
 }
 
 // Schon der erste Klick/Tipp irgendwo im Adminpanel schaltet den Alarm frei.
@@ -375,12 +375,12 @@ async function render(){
 
     const currentNewIds=new Set(all.filter(x=>x.status==='new').map(x=>String(x.id)));
     const hasNewArrival=[...currentNewIds].some(id=>!lastNewIds.has(id));
-    if(hasNewArrival && sound && !timer) beep();
+    if(hasNewArrival && sound && !timer) syncOrderAlarm(true);
     lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
     syncOrderAlarm(has);
-    if(has&&sound&&!timer)timer=setInterval(()=>{if(!window.pdsOrderAlarm||window.pdsOrderAlarm.error||window.pdsOrderAlarm.paused)beep()},3200);
+    if(has&&sound&&!timer)timer=setInterval(()=>syncOrderAlarm(true),3000);
     if(!has&&timer){clearInterval(timer);timer=null}
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
