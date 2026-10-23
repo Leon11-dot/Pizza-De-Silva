@@ -206,40 +206,22 @@ async function initAdmin(){
 }
 
 async function beep(){
-  if(!sound) return;
-  try{
-    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    if(audioCtx.state==='suspended') await audioCtx.resume();
-    const start=audioCtx.currentTime;
-    const master=audioCtx.createGain();
-    master.gain.setValueAtTime(0.0001,start);
-    master.gain.exponentialRampToValueAtTime(0.32,start+0.03);
-    master.gain.setValueAtTime(0.32,start+2.85);
-    master.gain.exponentialRampToValueAtTime(0.0001,start+3.0);
-    master.connect(audioCtx.destination);
-    const notes=[
-      [880,0.00,0.34],[660,0.36,0.34],
-      [880,0.72,0.34],[660,1.08,0.34],
-      [990,1.44,0.34],[700,1.80,0.34],
-      [990,2.16,0.34],[700,2.52,0.34]
-    ];
-    notes.forEach(([freq,offset,duration])=>{
-      const osc=audioCtx.createOscillator();
-      const gain=audioCtx.createGain();
-      osc.type='square';
-      osc.frequency.setValueAtTime(freq,start+offset);
-      gain.gain.setValueAtTime(0.0001,start+offset);
-      gain.gain.exponentialRampToValueAtTime(0.22,start+offset+0.015);
-      gain.gain.setValueAtTime(0.22,start+offset+duration-0.04);
-      gain.gain.exponentialRampToValueAtTime(0.0001,start+offset+duration);
-      osc.connect(gain);
-      gain.connect(master);
-      osc.start(start+offset);
-      osc.stop(start+offset+duration);
-    });
-  }catch(e){
-    console.warn('Bestellalarm Fehler',e);
-  }
+ if(!sound) return;
+ try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') await audioCtx.resume();
+  const now=audioCtx.currentTime;
+  // Professional restaurant POS alert: bright multi-tone chime, not a siren.
+  [[784,0,.28],[988,.17,.34],[1175,.39,.46],[988,1.06,.28],[1175,1.23,.38],[1568,1.45,.52]].forEach(([freq,offset,dur])=>{
+    const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    osc.type='sine';osc.frequency.value=freq;
+    gain.gain.setValueAtTime(.0001,now+offset);
+    gain.gain.exponentialRampToValueAtTime(.34,now+offset+.018);
+    gain.gain.exponentialRampToValueAtTime(.0001,now+offset+dur);
+    osc.connect(gain);gain.connect(audioCtx.destination);
+    osc.start(now+offset);osc.stop(now+offset+dur+.02);
+  });
+ }catch(e){console.warn('Bestellalarm Fehler',e)}
 }
 
 async function enableSound(){
@@ -401,7 +383,7 @@ async function render(){
 
     const currentNewIds=new Set(all.filter(x=>x.status==='new').map(x=>String(x.id)));
     const hasNewArrival=[...currentNewIds].some(id=>!lastNewIds.has(id));
-    if(hasNewArrival && sound) beep();
+    if(hasNewArrival && sound && !timer) beep();
     lastNewIds=currentNewIds;
     const has=all.some(x=>x.status==='new');
     document.getElementById('alarm').classList.toggle('show',has);
