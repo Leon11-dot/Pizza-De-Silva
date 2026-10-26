@@ -116,7 +116,7 @@ function boostPdsAlarm(){
   if(!Ctx)return;
   const ctx=new Ctx();
   const source=ctx.createMediaElementSource(a);
-  const gain=ctx.createGain();gain.gain.value=2.6;
+  const gain=ctx.createGain();gain.gain.value=10.0;
   const limiter=ctx.createDynamicsCompressor();
   limiter.threshold.value=-5;limiter.knee.value=0;limiter.ratio.value=18;
   limiter.attack.value=.003;limiter.release.value=.08;
