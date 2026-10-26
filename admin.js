@@ -116,10 +116,10 @@ function boostPdsAlarm(){
   if(!Ctx)return;
   const ctx=new Ctx();
   const source=ctx.createMediaElementSource(a);
-  const gain=ctx.createGain();gain.gain.value=1.65;
+  const gain=ctx.createGain();gain.gain.value=2.6;
   const limiter=ctx.createDynamicsCompressor();
-  limiter.threshold.value=-9;limiter.knee.value=0;limiter.ratio.value=18;
-  limiter.attack.value=.003;limiter.release.value=.12;
+  limiter.threshold.value=-5;limiter.knee.value=0;limiter.ratio.value=18;
+  limiter.attack.value=.003;limiter.release.value=.08;
   source.connect(gain);gain.connect(limiter);limiter.connect(ctx.destination);
   pdsAlarmAudioGraph={ctx};ctx.resume().catch(()=>{});
  }catch(e){console.warn('Alarm-Verstärkung nicht verfügbar',e);}
