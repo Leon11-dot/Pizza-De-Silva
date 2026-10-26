@@ -105,6 +105,26 @@ async function resumeAudioOnInteraction(){
 const money=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:PDS_CONFIG.currency||'EUR'});
 let sound=true,timer=null,audioCtx=null;
 let lastNewIds=new Set();
+let pdsAlarmAudioGraph=null;
+function boostPdsAlarm(){
+ const a=window.pdsOrderAlarm;
+ if(!a)return;
+ a.volume=1;
+ if(pdsAlarmAudioGraph){pdsAlarmAudioGraph.ctx.resume().catch(()=>{});return;}
+ try{
+  const Ctx=window.AudioContext||window.webkitAudioContext;
+  if(!Ctx)return;
+  const ctx=new Ctx();
+  const source=ctx.createMediaElementSource(a);
+  const gain=ctx.createGain();gain.gain.value=1.65;
+  const limiter=ctx.createDynamicsCompressor();
+  limiter.threshold.value=-9;limiter.knee.value=0;limiter.ratio.value=18;
+  limiter.attack.value=.003;limiter.release.value=.12;
+  source.connect(gain);gain.connect(limiter);limiter.connect(ctx.destination);
+  pdsAlarmAudioGraph={ctx};ctx.resume().catch(()=>{});
+ }catch(e){console.warn('Alarm-Verstärkung nicht verfügbar',e);}
+}
+
 let selectedEtas=JSON.parse(localStorage.getItem('pds_selected_etas')||'{}');
 
 function showLogin(message=''){
@@ -142,6 +162,7 @@ function armOrderAlarm(){
   window.pdsOrderAlarm=a;
  }
  const a=window.pdsOrderAlarm;
+ boostPdsAlarm();
  if(a.dataset.armed==='1')return;
  a.muted=true;
  const p=a.play();
@@ -152,6 +173,7 @@ function syncOrderAlarm(has){
   if(!has){if(a){a.pause();a.currentTime=0;}return;}
   if(!sound)return;
   if(!a){return;}
+  a.volume=1;
   if(a.paused){a.play().catch(e=>console.warn('Originalalarm konnte nicht abgespielt werden',e));}
 }
 
@@ -198,6 +220,7 @@ async function initAdmin(){
 async function beep(){ armOrderAlarm(); syncOrderAlarm(true); }
 async function enableSound(){
  armOrderAlarm();
+ boostPdsAlarm();
  const a=window.pdsOrderAlarm;
  if(a){a.muted=false;a.pause();a.currentTime=0;await a.play().catch(e=>console.warn('Alarm-Test fehlgeschlagen',e));}
 }
