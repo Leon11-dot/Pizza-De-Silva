@@ -1678,26 +1678,6 @@ window.PDS_PRODUCTS = [
     }
   },
   {
-    "id": "LI02",
-    "category": "Pizza",
-    "name": "Pizza Döner Hollandaise",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Portion": 7.5
-    }
-  },
-  {
-    "id": "LI03",
-    "category": "Pizza",
-    "name": "Pizza Döner (Groß)",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Groß": 7
-    }
-  },
-  {
     "id": "LI04",
     "category": "Pizza",
     "name": "Pizza Frutti di Mare",
@@ -1721,26 +1701,6 @@ window.PDS_PRODUCTS = [
     "id": "LI06",
     "category": "Salate",
     "name": "Pollo Salat",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Portion": 9
-    }
-  },
-  {
-    "id": "LI07",
-    "category": "Salate",
-    "name": "Döner Salat",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Portion": 9.5
-    }
-  },
-  {
-    "id": "LI08",
-    "category": "Nudelgerichte",
-    "name": "Pasta Döner",
     "description": "",
     "image": "margherita.webp",
     "variants": {
@@ -1775,36 +1735,6 @@ window.PDS_PRODUCTS = [
     "image": "margherita.webp",
     "variants": {
       "Portion": 13.5
-    }
-  },
-  {
-    "id": "LI12",
-    "category": "Aufläufe",
-    "name": "Döner Auflauf (Tomaten-Sahne)",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Portion": 13
-    }
-  },
-  {
-    "id": "LI13",
-    "category": "Aufläufe",
-    "name": "Pomdöner Auflauf",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Portion": 11.5
-    }
-  },
-  {
-    "id": "LI14",
-    "category": "Aufläufe",
-    "name": "Döner Auflauf (Hollandaise)",
-    "description": "",
-    "image": "margherita.webp",
-    "variants": {
-      "Portion": 11
     }
   },
   {
