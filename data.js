@@ -1674,7 +1674,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 7.5
+      "Portion": 6.48
     }
   },
   {
@@ -1684,7 +1684,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 9.5
+      "Portion": 8.48
     }
   },
   {
@@ -1694,7 +1694,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 9
+      "Portion": 7.98
     }
   },
   {
@@ -1704,7 +1704,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 9
+      "Portion": 7.98
     }
   },
   {
@@ -1714,7 +1714,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 9.5
+      "Portion": 8.48
     }
   },
   {
@@ -1724,7 +1724,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 9.5
+      "Portion": 8.48
     }
   },
   {
@@ -1734,7 +1734,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 13.5
+      "Portion": 12.48
     }
   },
   {
@@ -1744,7 +1744,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 11
+      "Portion": 9.98
     }
   },
   {
@@ -1754,7 +1754,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 11
+      "Portion": 9.98
     }
   },
   {
@@ -1764,7 +1764,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 11
+      "Portion": 9.98
     }
   },
   {
@@ -1774,7 +1774,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 8
+      "Portion": 6.98
     }
   },
   {
@@ -1784,7 +1784,7 @@ window.PDS_PRODUCTS = [
     "description": "",
     "image": "margherita.webp",
     "variants": {
-      "Portion": 9
+      "Portion": 7.98
     }
   }
 ];
