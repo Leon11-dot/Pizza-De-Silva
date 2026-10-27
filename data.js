@@ -1666,5 +1666,195 @@ window.PDS_PRODUCTS = [
     "variants": {
       "0,5 L": 1.5
     }
+  },
+  {
+    "id": "LI01",
+    "category": "Pizza",
+    "name": "Pizza Sucuk",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 7.5
+    }
+  },
+  {
+    "id": "LI02",
+    "category": "Pizza",
+    "name": "Pizza Döner Hollandaise",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 7.5
+    }
+  },
+  {
+    "id": "LI03",
+    "category": "Pizza",
+    "name": "Pizza Döner (Groß)",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Groß": 7
+    }
+  },
+  {
+    "id": "LI04",
+    "category": "Pizza",
+    "name": "Pizza Frutti di Mare",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9.5
+    }
+  },
+  {
+    "id": "LI05",
+    "category": "Salate",
+    "name": "Tonno Salat",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9
+    }
+  },
+  {
+    "id": "LI06",
+    "category": "Salate",
+    "name": "Pollo Salat",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9
+    }
+  },
+  {
+    "id": "LI07",
+    "category": "Salate",
+    "name": "Döner Salat",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9.5
+    }
+  },
+  {
+    "id": "LI08",
+    "category": "Nudelgerichte",
+    "name": "Pasta Döner",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9
+    }
+  },
+  {
+    "id": "LI09",
+    "category": "Nudelgerichte",
+    "name": "Pasta Sucuk",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9.5
+    }
+  },
+  {
+    "id": "LI10",
+    "category": "Asiatische Gerichte",
+    "name": "Gebratene Nudeln",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9.5
+    }
+  },
+  {
+    "id": "LI11",
+    "category": "Asiatische Gerichte",
+    "name": "Hähnchen Curry",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 13.5
+    }
+  },
+  {
+    "id": "LI12",
+    "category": "Aufläufe",
+    "name": "Döner Auflauf (Tomaten-Sahne)",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 13
+    }
+  },
+  {
+    "id": "LI13",
+    "category": "Aufläufe",
+    "name": "Pomdöner Auflauf",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 11.5
+    }
+  },
+  {
+    "id": "LI14",
+    "category": "Aufläufe",
+    "name": "Döner Auflauf (Hollandaise)",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 11
+    }
+  },
+  {
+    "id": "LI15",
+    "category": "Aufläufe",
+    "name": "Spinat-Broccoli Auflauf",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 11
+    }
+  },
+  {
+    "id": "LI16",
+    "category": "Aufläufe",
+    "name": "Gemüse Auflauf",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 11
+    }
+  },
+  {
+    "id": "LI17",
+    "category": "Aufläufe",
+    "name": "Bolognese Auflauf",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 11
+    }
+  },
+  {
+    "id": "LI18",
+    "category": "Finger Food",
+    "name": "Hamburger",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 8
+    }
+  },
+  {
+    "id": "LI19",
+    "category": "Finger Food",
+    "name": "Baconburger",
+    "description": "",
+    "image": "margherita.webp",
+    "variants": {
+      "Portion": 9
+    }
   }
 ];
