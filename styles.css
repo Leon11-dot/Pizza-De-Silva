@@ -493,3 +493,43 @@ select option:disabled{color:#999}
   .delivery-zones-overview .zone-row span{display:block}
   .delivery-zones-overview .zone-row span:last-child{text-align:left;margin-top:2px}
 }
+
+/* Design-Refresh 2026: klarere Hierarchie, mobile Bedienbarkeit */
+:root{scroll-behavior:smooth}
+body{overflow-x:hidden}
+.pds-announcement{background:#7f100b;color:#fff;text-align:center;padding:9px 14px;font-size:.9rem;font-weight:750;letter-spacing:.025em}
+.topbar{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hero{isolation:isolate}
+.hero h1{line-height:1.06;text-wrap:balance}
+.hero-inner>p{max-width:590px;line-height:1.65}
+.hero-actions{flex-wrap:wrap}
+.btn,.chip,.feature-card{transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible,.chip:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f4b73b;outline-offset:3px}
+.feature-card img{transition:transform .3s ease}
+.feature-card:hover img{transform:scale(1.04)}
+.feature-card{overflow:hidden}
+.section-head h2,.featured-head h2{line-height:1.12}
+.product{border-color:#ead8c9}
+.product .body h3{line-height:1.3}
+.product .price{font-variant-numeric:tabular-nums}
+.footer a:hover{text-decoration:underline;color:#fff}
+@media(max-width:620px){
+ .pds-announcement{font-size:.76rem;padding:8px 9px}
+ #appInstallBanner{padding:8px 10px}
+ #appInstallBanner .app-install-inner{flex-wrap:nowrap}
+ #appInstallBanner .app-install-text{font-size:.78rem;line-height:1.25}
+ #appInstallBanner .app-install-btn{font-size:.76rem;padding:9px 10px;white-space:nowrap}
+ .hero-inner{padding:32px 20px 36px}
+ .hero h1{font-size:clamp(2rem,9vw,3.25rem)}
+ .hero-actions .btn{flex:1 1 150px}
+ .featured-head{align-items:flex-start;flex-direction:column}
+ .featured-grid{gap:10px}
+ .feature-card div{padding:10px}
+ .feature-card b{font-size:.88rem;line-height:1.3}
+ .shop-layout .products{grid-template-columns:1fr}
+ .category-panel .categories{scroll-snap-type:x proximity}
+ .category-panel .chip{scroll-snap-align:start}
+ .modal{border-radius:18px;padding:18px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
