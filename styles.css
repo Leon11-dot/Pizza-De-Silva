@@ -533,3 +533,12 @@ body{overflow-x:hidden}
  .modal{border-radius:18px;padding:18px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* PDS 2026: sanftes Einblenden beim Scrollen */
+@media (prefers-reduced-motion: no-preference){
+  .pds-reveal-enabled .pds-reveal:not(.pds-visible){opacity:0;transform:translate3d(0,28px,0)}
+  .pds-reveal-enabled .pds-reveal{transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
+  .pds-reveal-enabled .pds-reveal.pds-visible{opacity:1;transform:translate3d(0,0,0)}
+  .pds-reveal-enabled .product.pds-reveal{transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .2s ease}
+}
+@media(prefers-reduced-motion:reduce){.pds-reveal{opacity:1!important;transform:none!important}}
