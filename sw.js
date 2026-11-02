@@ -1,4 +1,4 @@
-const CACHE='pizza-de-silva-v20260915-promo-delivery-v1';
+const CACHE='pizza-de-silva-v20261102-scroll-reveal';
 self.addEventListener('install',event=>self.skipWaiting());
 self.addEventListener('activate',event=>{
   event.waitUntil((async()=>{
