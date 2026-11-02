@@ -305,4 +305,30 @@ document.addEventListener('DOMContentLoaded', () => {
   },true);
 })();
 </script>
+
+<!-- PDS scroll reveal 2026-11 -->
+<script>
+(function(){
+  if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.documentElement.classList.add('pds-reveal-enabled');
+  const observer=new IntersectionObserver((entries)=>{
+    for(const entry of entries){
+      if(entry.isIntersecting){entry.target.classList.add('pds-visible');observer.unobserve(entry.target);}
+    }
+  },{threshold:0.08,rootMargin:'0px 0px -24px 0px'});
+  const selectors='.section-head,.featured-head,.feature-card,.catalog-heading,.category-panel,.product,.cta-inner,.footer-inner > div';
+  function scan(){
+    document.querySelectorAll(selectors).forEach(el=>{
+      if(el.classList.contains('pds-reveal'))return;
+      el.classList.add('pds-reveal');
+      observer.observe(el);
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',scan,{once:true}); else scan();
+  const products=document.getElementById('products');
+  if(products){new MutationObserver(scan).observe(products,{childList:true});}
+  const categories=document.getElementById('categories');
+  if(categories){new MutationObserver(scan).observe(categories,{childList:true});}
+})();
+</script>
 </body></html>
