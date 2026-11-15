@@ -168,7 +168,6 @@ padding:12px 14px;text-align:center;font-weight:900}
   <h2 id="pName"></h2><p class="desc" id="pDesc"></p>
   <div class="field"><label id="pVariantLabel">Größe / Variante</label><select id="pVariant"></select></div>
   <div class="field" id="extraField" style="display:none"><label>Extra</label><select id="pExtra"><option value="">Kein Extra</option></select></div>
-  <div class="field"><label>Wunsch / Hinweis</label><input id="pNote" placeholder="z. B. ohne Zwiebeln, extra scharf"></div>
   <button class="btn primary" style="width:100%" onclick="addProduct()">In den Warenkorb</button>
 </div></div>
 
@@ -209,14 +208,14 @@ padding:12px 14px;text-align:center;font-weight:900}
     </div>
   </div>
   <div class="field"><label>Zahlung</label><select id="payment"><option>Barzahlung</option><option>Kartenzahlung vor Ort</option><option>Mit Karte zahlen</option></select></div>
-  <div class="field"><label>Bemerkung</label><textarea id="note" rows="3" placeholder="Klingel, Etage, Sonderwünsche ..."></textarea></div>
+  <div class="field"><label>Bemerkung zur Bestellung</label><textarea id="note" rows="3" placeholder="z. B. Klingel, Etage, Lieferhinweis"></textarea><small>Zusätzliche Zutaten bitte beim Produkt auswählen. Wünsche nach kostenpflichtigen Extras in diesem Feld werden nicht berücksichtigt.</small></div>
   <label style="display:flex;gap:9px;align-items:flex-start;font-size:.85rem;margin:12px 0"><input type="checkbox" id="terms"><span>Ich bestätige, dass meine Angaben stimmen und die Bestellung erst nach Annahme durch Pizza De Silva verbindlich wird.</span></label>
   <div class="notice">Nach dem Absenden siehst du deine Bestellnummer. Sobald wir annehmen, wird die ungefähre Liefer- oder Abholzeit angezeigt.</div>
   <button class="btn primary" style="width:100%;margin-top:13px" onclick="placeOrder()">Bestellung senden</button>
   <div id="checkoutResult" style="margin-top:12px"></div>
 </div></div>
 
-<script src="config.js?v=20260918-products"></script><script src="backend.js?v=20260918-products"></script><script src="data.js?v=20261027-new-items-minus050"></script><script src="app-rabatt-oeffnungszeiten-v4-20260912.js?v=20261017-currywurst-options"></script>
+<script src="config.js?v=20260918-products"></script><script src="backend.js?v=20260918-products"></script><script src="data.js?v=20261027-new-items-minus050"></script><script src="app-rabatt-oeffnungszeiten-v4-20260912.js?v=20261115-extras-checkout"></script>
 <script>
 let pdsDirectInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pdsDirectInstallPrompt=e;const b=document.getElementById('appInstallBanner');if(b)b.classList.add('show');});
