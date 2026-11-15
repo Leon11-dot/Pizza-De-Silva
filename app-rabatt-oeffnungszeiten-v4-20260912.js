@@ -507,18 +507,14 @@ function openProduct(p){
         <b>+ ${money(Number(p.pastaCheeseExtra||2))}</b>
       </label>`;
     ef.querySelector('#pPastaCheese').onchange=updateProductModalTotal;
-  }else if(Array.isArray(p.removeOptions) && p.removeOptions.length){
-    ef.style.display='grid';
-    ef.innerHTML='<label>Was möchtest du weglassen? (kostenlos)</label><div class="extras-grid" id="pRemoveOptions">'+
-      p.removeOptions.map(x=>'<label class="extra-check"><input type="checkbox" value="'+x+'"><span>Ohne '+x+'</span></label>').join('')+'</div>';
   }else if(p.pizzaExtras && p.pizzaExtras.length){
     ef.style.display='grid';
     ef.innerHTML=`
-      <label>Extra-Zutaten</label>
+      <label>Extra-Zutaten auswählen</label>
       <div class="extras-info">${Number(p.freePizzaExtras||0)>0
-          ? `Wähle bis zu ${Number(p.freePizzaExtras)} Füllungen inklusive. Jede weitere Füllung + ${money(pizzaExtraUnitPrice())}.`
-          : 'Mehrere Extras möglich. Jede Zutat wird einzeln berechnet.'
-        }</div>
+        ? `Bis zu ${Number(p.freePizzaExtras)} Füllungen inklusive. Jede weitere Füllung + ${money(pizzaExtraUnitPrice())}.`
+        : 'Zusätzliche Zutaten sind kostenpflichtig und müssen hier ausgewählt werden.'
+      }</div>
       <div id="noExtraBox" class="no-extra active">Ohne Extra-Zutat <span>+ 0,00 €</span></div>
       <div id="pizzaExtras" class="extras-grid">
         ${p.pizzaExtras.map(x=>`
@@ -527,14 +523,21 @@ function openProduct(p){
             <span>+ ${x}</span>
             <b data-price></b>
           </label>`).join('')}
-      </div>`;
+      </div>
+      ${Array.isArray(p.removeOptions)&&p.removeOptions.length
+        ? '<label>Was möchtest du weglassen? (kostenlos)</label><div class="extras-grid" id="pRemoveOptions">'+p.removeOptions.map(x=>'<label class="extra-check"><input type="checkbox" value="'+x+'"><span>Ohne '+x+'</span></label>').join('')+'</div>'
+        : ''}`;
     ef.querySelectorAll('#pizzaExtras input').forEach(cb=>{
       cb.addEventListener('change',()=>{
         const chosen=selectedPizzaExtras();
-        document.getElementById('noExtraBox')?.classList.toggle('active', chosen.length===0);
+        document.getElementById('noExtraBox')?.classList.toggle('active',chosen.length===0);
         updatePizzaExtraPrices();
       });
     });
+  }else if(Array.isArray(p.removeOptions) && p.removeOptions.length){
+    ef.style.display='grid';
+    ef.innerHTML='<label>Was möchtest du weglassen? (kostenlos)</label><div class="extras-grid" id="pRemoveOptions">'+
+      p.removeOptions.map(x=>'<label class="extra-check"><input type="checkbox" value="'+x+'"><span>Ohne '+x+'</span></label>').join('')+'</div>';
   }else if(p.extras && !Array.isArray(p.extras)){
     ef.style.display='grid';
     ef.innerHTML='<label>Extra</label><select id="pExtra"><option value="">Kein Extra</option></select>';
@@ -548,14 +551,13 @@ function openProduct(p){
     ef.innerHTML='';
   }
 
-  document.getElementById('pNote').value='';
   let totalBox=document.getElementById('pCurrentTotal');
   if(!totalBox){
     totalBox=document.createElement('div');
     totalBox.id='pTotalBox';
     totalBox.className='modal-total';
     totalBox.innerHTML='Aktueller Preis: <strong id="pCurrentTotal"></strong>';
-    document.getElementById('pNote').closest('.field').after(totalBox);
+    document.getElementById('extraField').after(totalBox);
   }
   showModal('productModal');
   if(p.pizzaExtras) updatePizzaExtraPrices(); else updateProductModalTotal();
@@ -563,7 +565,7 @@ function openProduct(p){
 
 function addProduct(){
   const variant=document.getElementById('pVariant').value;
-  const note=document.getElementById('pNote').value.trim();
+  const note='';
   let price=Number(selected.variants[variant]||0);
   let extraName='';
   let extraItems=[];
