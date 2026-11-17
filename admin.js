@@ -81,6 +81,13 @@ async function enableAdminPush(){
 
 
 let orderTab='new';
+let selectedOrderMonth='2026-11';
+function setOrderMonth(value){
+  if(!/^20\d{2}-(0[1-9]|1[0-2])$/.test(value)||value<'2026-11')return;
+  selectedOrderMonth=value;
+  render();
+}
+
 function setOrderTab(tab){
   orderTab=['new','accepted','done'].includes(tab)?tab:'new';
   document.querySelectorAll('[data-order-tab]').forEach(b=>{
@@ -319,28 +326,35 @@ async function printTaxReport(){
   let orders;
   try{orders=await PDS_BACKEND.listOrders()}catch(e){return alert('Bestellungen konnten nicht geladen werden.')}
   const month=document.getElementById('taxMonth')?.value||'2026-11';
+  if(month<'2026-11')return alert('Auswertungen sind erst ab November 2026 verfügbar.');
   const relevant=orders.filter(o=>o.status==='done' && String(o.createdAt||'').slice(0,7)===month);
-  const productRates=new Map((window.PDS_PRODUCTS||[]).map(p=>[String(p.id),p.category==='Getränke'?19:7]));
+  const products=window.PDS_PRODUCTS||[];
+  const productRates=new Map(products.map(p=>[String(p.id),p.category==='Getränke'?19:7]));
+  const nameRates=new Map(products.map(p=>[String(p.name||'').toLocaleLowerCase('de-DE'),p.category==='Getränke'?19:7]));
   const moneyTax=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'});
   const escTax=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let totals={7:0,19:0},unassigned=0,grand=0;
   const rows=relevant.map(o=>{
     const gross=Number(o.total||0);grand+=gross;
-    const lines=(o.items||[]).map(i=>({amount:Number(i.total??i.lineTotal??(Number(i.price||0)*Number(i.qty||1))),rate:productRates.get(String(i.productId??i.product_id))}));
-    const base=lines.reduce((s,i)=>s+i.amount,0);
+    const lines=(o.items||[]).map(i=>({
+      amount:Number(i.total??i.lineTotal??(Number(i.price??i.unitPrice??0)*Number(i.qty||1))),
+      rate:productRates.get(String(i.productId??i.product_id))??nameRates.get(String(i.name||'').toLocaleLowerCase('de-DE'))
+    }));
+    const base=lines.reduce((sum,i)=>sum+i.amount,0);
     let r7=0,r19=0,unknown=0;
-    // Rabatt und Lieferkosten sind ohne gespeicherte Steuerschlüssel nicht sicher zuzuordnen.
-    const allKnown=lines.length>0&&lines.every(i=>i.rate===7||i.rate===19);
-    const noAdjustments=Math.abs(base-gross)<0.011;
-    if(allKnown&&noAdjustments){
-      r7=lines.filter(i=>i.rate===7).reduce((s,i)=>s+i.amount,0);
-      r19=lines.filter(i=>i.rate===19).reduce((s,i)=>s+i.amount,0);
+    const allKnown=lines.length>0&&lines.every(i=>(i.rate===7||i.rate===19)&&i.amount>=0);
+    // Der Bruttobetrag der Bestellung wird bei vollständig zugeordneten Artikeln
+    // proportional verteilt (z.B. bei Neukundenrabatt oder Lieferkosten).
+    if(allKnown&&base>0&&gross>=0){
+      const gross7=lines.filter(i=>i.rate===7).reduce((sum,i)=>sum+i.amount,0);
+      r7=Math.round(gross*gross7/base*100)/100;
+      r19=Math.round((gross-r7)*100)/100;
       totals[7]+=r7;totals[19]+=r19;
     }else{unknown=gross;unassigned+=gross;}
     return '<tr><td>'+escTax(o.number||o.id)+'</td><td>'+escTax(new Date(o.createdAt).toLocaleDateString('de-DE'))+'</td><td>'+moneyTax(r7)+'</td><td>'+moneyTax(r19)+'</td><td>'+moneyTax(unknown)+'</td><td>'+moneyTax(gross)+'</td></tr>';
   }).join('');
   const tax7=totals[7]*7/107,tax19=totals[19]*19/119;
-  const html='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Pizza De Silva - Steuerübersicht '+escTax(month)+'</title><style>body{font:13px Arial;margin:25px;color:#111}h1{font-size:22px}table{border-collapse:collapse;width:100%}th,td{padding:7px;border-bottom:1px solid #ccc;text-align:right}th:first-child,td:first-child{text-align:left}.note{margin:15px 0;padding:12px;border:1px solid #aaa}@media print{button{display:none}}</style></head><body><h1>Pizza De Silva – Bestellübersicht '+escTax(month)+'</h1><p>Nur abgeschlossene Bestellungen; Stornos und offene Bestellungen ausgeschlossen.</p><table><thead><tr><th>Bestellung</th><th>Datum</th><th>Brutto 7 %</th><th>Brutto 19 %</th><th>Nicht zugeordnet</th><th>Gesamt</th></tr></thead><tbody>'+rows+'</tbody></table><h2>Monatssummen</h2><p>Brutto 7 %: '+moneyTax(totals[7])+' · enthaltene USt 7 %: '+moneyTax(tax7)+'</p><p>Brutto 19 %: '+moneyTax(totals[19])+' · enthaltene USt 19 %: '+moneyTax(tax19)+'</p><p>Nicht zugeordnet: '+moneyTax(unassigned)+' · Gesamt: <b>'+moneyTax(grand)+'</b></p><div class="note"><b>Prüfhinweis:</b> Dies ist eine vorläufige Bestellübersicht, keine steuerlich geprüfte Umsatzsteuerauswertung. Bei Rabatten, Lieferkosten oder fehlender Produktzuordnung wird der Betrag bewusst nicht einer Steuerklasse zugewiesen. Zahlungseingänge, Erstattungen, tatsächliche Steuersätze und Kassenbuch bitte mit der Buchhaltung abgleichen.</div><button onclick="window.print()">Drucken / als PDF speichern</button></body></html>';
+  const html='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Pizza De Silva - Steuerübersicht '+escTax(month)+'</title><style>body{font:13px Arial;margin:25px;color:#111}h1{font-size:22px}table{border-collapse:collapse;width:100%}th,td{padding:7px;border-bottom:1px solid #ccc;text-align:right}th:first-child,td:first-child{text-align:left}.note{margin:15px 0;padding:12px;border:1px solid #aaa}@media print{button{display:none}}</style></head><body><h1>Pizza De Silva – Bestellübersicht '+escTax(month)+'</h1><p>Nur abgeschlossene Bestellungen; Stornos und offene Bestellungen ausgeschlossen.</p><table><thead><tr><th>Bestellung</th><th>Datum</th><th>Brutto 7 %</th><th>Brutto 19 %</th><th>Nicht zugeordnet</th><th>Gesamt</th></tr></thead><tbody>'+rows+'</tbody></table><h2>Monatssummen</h2><p>Brutto 7 %: '+moneyTax(totals[7])+' · enthaltene USt 7 %: '+moneyTax(tax7)+'</p><p>Brutto 19 %: '+moneyTax(totals[19])+' · enthaltene USt 19 %: '+moneyTax(tax19)+'</p><p>Nicht zugeordnet: '+moneyTax(unassigned)+' · Gesamt: <b>'+moneyTax(grand)+'</b></p><div class="note"><b>Prüfhinweis:</b> Dies ist eine vorläufige Bestellübersicht, keine steuerlich geprüfte Umsatzsteuerauswertung. Rabatte und Lieferkosten werden rechnerisch proportional auf die Steuerklassen verteilt. Bei fehlender Produktzuordnung wird der Betrag nicht zugewiesen. Diese Zuordnung muss steuerlich geprüft werden. Zahlungseingänge, Erstattungen, tatsächliche Steuersätze und Kassenbuch bitte mit der Buchhaltung abgleichen.</div><button onclick="window.print()">Drucken / als PDF speichern</button></body></html>';
   const w=window.open('','_blank');if(!w)return alert('Bitte Popups für den Druck erlauben.');
   w.document.open();w.document.write(html);w.document.close();
 }
@@ -414,7 +428,7 @@ async function render(){
 
     const labels={new:'NEU – Bestätigung nötig',accepted:'Angenommen',preparing:'In Zubereitung',ready:'Bereit / unterwegs',done:'Abgeschlossen',cancelled:'Storniert'};
 
-    const visibleOrders=all.filter(x=>String(x.createdAt||'').slice(0,7)==='2026-11').filter(x=>orderTab==='new'?x.status==='new':orderTab==='accepted'?['accepted','preparing','ready'].includes(x.status):['done','cancelled'].includes(x.status));
+    const visibleOrders=all.filter(x=>String(x.createdAt||'').slice(0,7)===selectedOrderMonth).filter(x=>orderTab==='new'?x.status==='new':orderTab==='accepted'?['accepted','preparing','ready'].includes(x.status):['done','cancelled'].includes(x.status));
     const isHistory=orderTab==='done';
 
     const renderOrderCard=(x,isHistory=false)=>{
