@@ -19,7 +19,7 @@
     </div></div>
 <main class="admin" id="panel" style="display:none">
 <section style="margin:12px auto;padding:12px;max-width:900px;background:#fff5eb;border:1px solid #e2c4b5;border-radius:12px"><b>🔔 Bestellalarm für iPhone und Android</b><p id="pushStatus" style="margin:8px 0">Benachrichtigungen prüfen …</p><button type="button" id="pushEnableBtn" class="btn primary" onclick="enableAdminPush()">🔔 Handy-Alarm aktivieren</button></section>
-  <section class="admin-hero"><div><h1>Bestellzentrale</h1><p>Neue Bestellungen annehmen, Zeit festlegen und Status verwalten.</p></div><div><span class="sys">System aktiv</span><div class="meta" id="modeLabel" style="color:#ffe8df;text-align:right;margin-top:5px"></div></div></section>
+  <div id="modeLabel" style="display:none"></div>
   <div class="alarm" id="alarm"><span style="font-size:1.7rem">🔔</span><div><b>Neue Bestellung!</b><br>Alarm startet automatisch bei einer neuen Bestellung und läuft bis zur Annahme oder Ablehnung.</div></div>
   <div class="notice" id="shopSwitchBox" style="margin-bottom:14px">
     <b>🛍️ Bestellarten EIN / AUS</b><br>
@@ -31,11 +31,11 @@
   </div>
 
   
-  <div id="adminInstallBox" class="notice" style="margin-bottom:14px">
+  <details id="adminInstallBox" class="notice" style="margin-bottom:10px;padding:8px 12px"><summary style="cursor:pointer;font-weight:700">📲 Admin-App installieren (optional)</summary><div style="margin-top:8px">
     <b>📲 Pizza De Silva Admin-App</b><br>
     <span id="adminInstallStatus">Du kannst diese Adminseite als App auf deinem Handy installieren.</span><br>
-    <button class="btn primary" id="adminInstallBtn" type="button" style="margin-top:9px" onclick="installAdminApp()">📲 ADMIN-APP INSTALLIEREN</button>
-  </div>
+    <button class="btn secondary" id="adminInstallBtn" type="button" style="margin-top:9px" onclick="installAdminApp()">Admin-App installieren</button></div>
+  </details>
 
 <nav class="order-tabs" aria-label="Bestellstatus">
 <button type="button" class="order-tab active" data-order-tab="new" onclick="setOrderTab('new')">Zubereiten <span id="tabNewCount">0</span></button>
