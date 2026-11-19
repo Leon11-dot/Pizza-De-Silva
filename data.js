@@ -1,5 +1,15 @@
 window.PDS_PRODUCTS = [
   {
+    "id": "DOENER-NORMAL",
+    "category": "Finger Food",
+    "name": "Döner normal",
+    "description": "Döner – normale Portion",
+    "image": "margherita.webp",
+    "variants": {
+      "Normal": 6
+    }
+  },
+  {
     "id": "FCW1",
     "category": "Finger Food",
     "name": "Hähnchen-Currywurst",
