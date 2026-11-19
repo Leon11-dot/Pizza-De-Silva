@@ -366,6 +366,7 @@ const CATEGORY_META={
   "Pizza":{icon:"🍕",title:"Pizza",sub:"Frisch aus dem Ofen – Größen und mehrere Extra-Zutaten auswählbar."},
   "Nudelgerichte":{icon:"🍝",title:"Nudelgerichte",sub:"Wähle Spaghetti, Penne, Maccheroni, Tortellini oder Gnocchi. Käse überbacken +2,00 €."},
   "Finger Food":{icon:"🍟",title:"Finger Food",sub:"Knusprige Klassiker und Beilagen."},
+  "Döner":{icon:"🥙",title:"Döner",sub:"Frisch zubereiteter Döner."},
   "Pizzabrötchen":{icon:"🥖",title:"Pizzabrötchen",sub:"Warm, frisch und ideal zum Teilen."},
   "Fleischgerichte":{icon:"🍗",title:"Fleischgerichte",sub:"Herzhafte Gerichte frisch zubereitet."},
   "Baguettes":{icon:"🥖",title:"Baguettes",sub:"Knusprig belegt und frisch zubereitet."},
