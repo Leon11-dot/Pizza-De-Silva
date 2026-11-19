@@ -1,5 +1,24 @@
 window.PDS_PRODUCTS = [
   {
+    "id": "PIZZA-DOENER",
+    "category": "Pizza",
+    "name": "Pizza Döner",
+    "description": "Pizza mit Tomatensauce, Käse und Dönerfleisch",
+    "image": "margherita.webp",
+    "variants": {
+      "Normal · 30 cm": 9.5
+    },
+    "pizzaExtras": [
+      "Käse", "Schinken", "Salami", "Thunfisch", "Ananas", "Mais",
+      "Spinat", "Broccoli", "Zwiebeln", "Schafskäse", "Sucuk",
+      "Oliven", "Peperoni", "Hähnchenbrust"
+    ],
+    "pizzaExtraPrices": {
+      "Normal · 30 cm": 1
+    },
+    "removeOptions": ["Tomatensauce", "Käse"]
+  },
+  {
     "id": "DOENER-NORMAL",
     "category": "Döner",
     "name": "Döner normal",
