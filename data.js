@@ -1,7 +1,7 @@
 window.PDS_PRODUCTS = [
   {
     "id": "DOENER-NORMAL",
-    "category": "Finger Food",
+    "category": "Döner",
     "name": "Döner normal",
     "description": "Döner – normale Portion",
     "image": "margherita.webp",
