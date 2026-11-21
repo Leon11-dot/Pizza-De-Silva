@@ -298,6 +298,22 @@ async function reject(id){
   render();
 }
 
+async function restoreCancelledOrder(id){
+  const orders=await PDS_BACKEND.listOrders();
+  const order=orders.find(x=>String(x.id)===String(id));
+  if(!order || order.status!=='cancelled') return alert('Diese Bestellung ist nicht mehr storniert oder wurde nicht gefunden.');
+  if(!confirm('Bestellung #'+order.number+' wirklich wieder auf Angenommen setzen? Eine Stornierung oder Erstattung bei Zahlungsdiensten wird dadurch nicht rückgängig gemacht.')) return;
+  try{
+    await PDS_BACKEND.updateOrder(id,{status:'accepted',cancelReason:null,updatedAt:new Date().toISOString()});
+    orderTab='accepted';
+    render();
+    alert('Bestellung #'+order.number+' wurde wieder als Angenommen markiert. Bitte Kunden und gegebenenfalls Zahlungsanbieter separat informieren.');
+  }catch(e){
+    console.error(e);
+    alert('Wiederherstellung fehlgeschlagen: '+(e.message||e));
+  }
+}
+
 async function status(id,s){
   await PDS_BACKEND.updateOrder(id,{status:s,updatedAt:new Date().toISOString()});
   if(['cancelled','ready','on_the_way'].includes(s)) await notifyOrderCustomer(id,s);
@@ -439,6 +455,7 @@ async function render(){
         const timeBtn=(m)=>`<button class="time ${chosen===m?'sel':''}" data-minutes="${m}" onclick="setEta('${x.id}',${m},this)">${m} Min</button>`;
         actions=`<div class="actions">${[20,30,40,50,60,90].map(timeBtn).join('')}</div><div class="actions"><button class="btn green" onclick="accept('${x.id}')">✓ Annehmen</button><button class="btn danger" onclick="reject('${x.id}')">✕ Ablehnen</button></div>`;
       }
+      if(x.status==='cancelled')actions=`<div class="actions"><button class="btn green" onclick="restoreCancelledOrder('${x.id}')">↩ Storno rückgängig / Annehmen</button></div>`;
       if(!isHistory && x.status==='accepted')actions=`<div class="actions"><button class="btn blue" onclick="status('${x.id}','preparing')">In Zubereitung</button></div>`;
       if(!isHistory && x.status==='preparing')actions=`<div class="actions"><button class="btn secondary" onclick="status('${x.id}','ready')">${x.customer.type==='Abholung'?'Bereit zur Abholung':'Als unterwegs markieren'}</button></div>`;
       if(!isHistory && x.status==='ready')actions=`<div class="actions"><button class="btn green" onclick="status('${x.id}','done')">Abschließen</button></div>`;
